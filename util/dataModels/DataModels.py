@@ -45,6 +45,8 @@ class Shelf(object):
 class Book:
     title: str
     id: uuid.UUID | uuid.uuid4()
+    isbn: str | None # need to add data validation on this field
+    issn: str | None
     shelf: Shelf | None
     author: list | None
     genre: str | None
@@ -55,7 +57,7 @@ class Book:
     volume_number: int | None
     genre: str | None
     language: str | None
-    format: str | None
+    format: str | None # might make an enum for this, e.g., comic, audiobook, ebook, magazine, etc
     fiction: bool=True
     read: bool=True
 
@@ -63,5 +65,5 @@ class Book:
         self.shelf = shelf
 
     def update_attributes(self, attributes: dict):
-        # In progress
+        # In progress, needs to flexibly accept attributes without requiring all values
         self.author = attributes["author"]
