@@ -2,8 +2,8 @@ import uuid
 from dataclasses import dataclass
 
 @dataclass
-class Bookcase(object):
-    number: int
+class Bookcase:
+    number: int | None
     id: uuid.UUID | uuid.uuid4()
     name: str | None
     sorting_method: str | None
@@ -22,7 +22,7 @@ class Bookcase(object):
         self.genre = genre
 
 @dataclass
-class Shelf(object):
+class Shelf:
     number: int | None
     id: uuid.UUID | uuid.uuid4()
     bookcase: Bookcase | None
