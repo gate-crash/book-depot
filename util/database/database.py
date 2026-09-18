@@ -94,6 +94,36 @@ def add_shelf(bookcase=None):
     except sqlite3.IntegrityError:
         print("Data already exists, skipping.")
 
+def add_author(first_name, last_name):
+    try:
+        author_id = str(uuid.uuid4())
+        cursor.execute(
+            "INSERT INTO authors (uuid, firstName, lastName) VALUES (?, ?, ?)",
+            (author_id, first_name, last_name,)
+        )
+
+        conn.commit()
+        print("Data saved successfully.")
+
+    except sqlite3.IntegrityError as e:
+        print("Data error.")
+        print(e)
+
+def check_author(first_name, last_name):
+    try:
+        author_id = str(uuid.uuid4())
+        cursor.execute(
+            "SELECT * FROM authors WHERE firstName = ? AND lastName = ?;",
+            (first_name, last_name,)
+        )
+
+        conn.commit()
+        print("Data saved successfully.")
+
+    except sqlite3.IntegrityError as e:
+        print("Data error.")
+        print(e)
+
 def add_book(title, shelf=None):
     try:
         book_id = str(uuid.uuid4())
