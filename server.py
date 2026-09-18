@@ -16,4 +16,5 @@ with socketserver.TCPServer(("", PORT), Handler) as httpd:
     3. Add sqlite backend with persistence
     4. Add startup command
     5. Add support to run locally without remote server
+    6. Add data export/import functionality
     '''
