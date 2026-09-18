@@ -7,20 +7,47 @@ cursor = conn.cursor()
 
 def database_init():
     try:
+        # Need to expand and appropriately set up the tables to support but not require
+        # all the fields documented in the data models
         table_schema = """
                         CREATE TABLE IF NOT EXISTS bookcases (
-                            uuid TEXT PRIMARY KEY
+                            uuid TEXT PRIMARY KEY,
+                            number INTEGER,
+                            name TEXT,
+                            sortingMethod TEXT,
+                            genre TEXT
                         );
                         CREATE TABLE IF NOT EXISTS shelves (
                             uuid TEXT PRIMARY KEY,
                             bookcase TEXT NOT NULL,
+                            number INTEGER,
+                            sortingMethod TEXT,
+                            genre TEXT,
                             FOREIGN KEY (bookcase) REFERENCES bookcases (uuid)
+                        );
+                        CREATE TABLE IF NOT EXISTS authors (
+                            uuid TEXT PRIMARY KEY,
+                            firstName TEXT NOT NULL,
+                            lastName TEXT
                         );
                         CREATE TABLE IF NOT EXISTS books (
                             uuid TEXT PRIMARY KEY,
-                            title TEXT NOT NULL,
+                            title TEXT NOT NULL CHECK (length(title) <= 100),
                             shelf TEXT NOT NULL,
-                            FOREIGN KEY (shelf) REFERENCES shelves (uuid)
+                            author TEXT,
+                            isbn TEXT CHECK (length(isbn) <= 13),
+                            issn TEXT CHECK (length(issn) <= 8),
+                            genre TEXT CHECK (length(genre) <= 20),
+                            series TEXT CHECK (length(series) <= 20),
+                            volumeNumber INTEGER,
+                            language TEXT CHECK (length(language) <= 20),
+                            format TEXT CHECK (length(format) <= 20),
+                            fiction BOOLEAN,
+                            read BOOLEAN,
+                            publishDate DATE,
+                            printingDate DATE,
+                            FOREIGN KEY (shelf) REFERENCES shelves (uuid),
+                            FOREIGN KEY (author) REFERENCES authors (uuid)
                         );
                        """
 
@@ -81,6 +108,8 @@ def add_book(title, shelf=None):
     except sqlite3.IntegrityError as e:
         print("Data error.")
         print(e)
+'''
+These are testing lines to confirm the ability to add a book to the db
 
 bookcase = add_bookcase()
 shelf = add_shelf(bookcase)
@@ -99,6 +128,7 @@ for row in rows:
 cursor.execute("SELECT * FROM books")
 rows = cursor.fetchall()
 for row in rows:
-    print(row)
+    print(row)    
+'''
 
 conn.close()
