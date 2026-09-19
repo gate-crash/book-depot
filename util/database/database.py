@@ -196,6 +196,8 @@ def check_books_by_author(conn: sqlite3.Connection, first_name, last_name):
     author_search = check_author_by_name(conn, first_name, last_name)
 
     if author_search is not None:
+        #TODO: add support for multiple results - this currently assumes only one
+
         author_uuid = author_search[0][0]
 
         try:
