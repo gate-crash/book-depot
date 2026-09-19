@@ -42,6 +42,12 @@ class Shelf:
         self.genre = genre
 
 @dataclass
+class Author:
+    id: uuid.UUID | uuid.uuid4()
+    first_name: str | None
+    last_name: str | None
+
+@dataclass
 class Book:
     title: str
     id: uuid.UUID | uuid.uuid4()
