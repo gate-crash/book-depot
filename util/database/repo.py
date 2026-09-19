@@ -261,8 +261,3 @@ class DatabaseRepo:
 
         self.conn.close()
         return data
-
-
-from database import Database
-repo = DatabaseRepo(Database().conn)
-print(repo.fetch_all_books())
