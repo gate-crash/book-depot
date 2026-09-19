@@ -196,16 +196,17 @@ def check_books_by_author(conn: sqlite3.Connection, first_name, last_name):
     author_search = check_author_by_name(conn, first_name, last_name)
 
     if author_search is not None:
-        author_id = author_search[0][0]
-        print(author_id)
+        author_uuid = author_search[0][0]
 
         try:
-            cursor.execute(
-                "SELECT * FROM books WHERE author = ?;",
-                (author_id,)
+            data = cursor.execute(
+                """SELECT *
+                        FROM books
+                        INNER JOIN authors
+                        WHERE authors.uuid = ?;""",
+                (author_uuid,)
             )
 
-            conn.commit()
             return cursor.fetchall()
 
         except sqlite3.IntegrityError as e:
@@ -214,16 +215,18 @@ def check_books_by_author(conn: sqlite3.Connection, first_name, last_name):
     else:
         print("No author found by that name.")
 
-def check_all_books(conn: sqlite3.Connection):
+def return_all_books(conn: sqlite3.Connection):
     cursor = conn.cursor()
 
     try:
-        cursor.execute(
+        data = cursor.execute(
             "SELECT * FROM books;",
         )
 
-        conn.commit()
-        return cursor.fetchall()
+        # conn.commit()
+        # return cursor.fetchall()
+        for row in data:
+            print(row)
 
     except sqlite3.IntegrityError as e:
         print("Data error.")
@@ -237,6 +240,5 @@ def check_all_books(conn: sqlite3.Connection):
 # id = str(check_author_by_name(conn, first_name="Herman", last_name="Melville")[0])
 # add_book(conn, "Moby Dick", id, shelf='604c43eb-f007-46f6-84b0-e4416c414945')
 print(check_books_by_author(conn, first_name="Herman", last_name="Melville"))
-print(check_all_books(conn))
 
 conn.close()
