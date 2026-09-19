@@ -1,17 +1,17 @@
 from util.database.database import Database
-from util.database.repo import DatabaseRepo as dbr
+from util.database.repo import DatabaseRepo as DbR
 import util.dataModels.DataModels as DataModels
 
 def __main__():
 
     db = Database()
     db.database_init()
-    repo = dbr(db.conn)
+    repo = DbR(db.conn)
 
     # try:
         # database = Database()
         # database.database_init()
-        # repo = dbr(database)
+        # repo = DbR(database)
 
     # except Exception as error:
     #     print(error)
@@ -31,6 +31,8 @@ def __main__():
 
         print("Success!")
         print(repo.find_book_by_title(title))
+
+        repo.__close__()
 
     gather_book_data()
 

@@ -6,7 +6,12 @@ class DatabaseRepo:
     def __init__(self, conn: sqlite3.Connection):
         self.conn = conn
         self.cursor = self.conn.cursor()
-    
+
+    def __close__(self):
+        self.conn.commit()
+        self.cursor.close()
+        self.conn.close()
+
     def add_bookcase(self):
 
         try:
@@ -22,7 +27,6 @@ class DatabaseRepo:
         except sqlite3.IntegrityError:
             print("Data already exists, skipping.")
 
-        self.conn.close()
         return bookcase_id
 
     def delete_bookcase(self, bookcase_id):
@@ -39,8 +43,6 @@ class DatabaseRepo:
         except sqlite3.IntegrityError:
             print("Delete failed.")
 
-        self.conn.close()
-
     def fetch_all_bookcases(self):
 
         try:
@@ -54,7 +56,6 @@ class DatabaseRepo:
         except sqlite3.IntegrityError as e:
             print("Data error.")
 
-        self.conn.close()
         return data
 
     def add_shelf(self, bookcase=None):
@@ -72,7 +73,6 @@ class DatabaseRepo:
         except sqlite3.IntegrityError:
             print("Data already exists, skipping.")
 
-        self.conn.close()
         return shelf_id
 
     def delete_shelf(self, shelf_id):
@@ -89,8 +89,6 @@ class DatabaseRepo:
         except sqlite3.IntegrityError:
             print("Data delete failed.")
 
-        self.conn.close()
-
     def get_shelves(self, bookcase):
 
         try:
@@ -106,7 +104,6 @@ class DatabaseRepo:
         except sqlite3.IntegrityError as e:
             print("Data error.")
 
-        self.conn.close()
         return data
 
     def add_author(self, first_name, last_name):
@@ -126,7 +123,6 @@ class DatabaseRepo:
             print("Data error.")
             print(e)
 
-        self.conn.close()
         return author_id
 
     def check_author_by_name(self, first_name, last_name):
@@ -144,7 +140,6 @@ class DatabaseRepo:
             print("Data error.")
             print(e)
 
-        self.conn.close()
         return data
 
     def fetch_all_authors(self):
@@ -160,11 +155,9 @@ class DatabaseRepo:
         except sqlite3.IntegrityError as e:
             print("Data error.")
 
-        self.conn.close()
         return data
 
     def add_book(self, title, author, shelf=None):
-
 
         try:
             book_id = str(uuid.uuid4())
@@ -180,8 +173,6 @@ class DatabaseRepo:
             print("Data error.")
             print(e)
 
-        self.conn.close()
-
     def delete_book(self, book_id):
 
         try:
@@ -195,8 +186,6 @@ class DatabaseRepo:
 
         except sqlite3.IntegrityError as e:
             print("Data error.")
-
-        self.conn.close()
 
     def check_books_by_author(self, first_name, last_name):
         #Still working on this
@@ -224,11 +213,9 @@ class DatabaseRepo:
         else:
             print("No author found by that name.")
 
-        self.conn.close()
         return data
 
     def fetch_all_books(self):
-
 
         try:
             self.cursor.execute(
@@ -241,11 +228,9 @@ class DatabaseRepo:
         except sqlite3.IntegrityError as e:
             print("Data error.")
 
-        self.conn.close()
         return data
 
     def find_book_by_title(self, title):
-
 
         try:
             self.cursor.execute(
@@ -259,5 +244,4 @@ class DatabaseRepo:
         except sqlite3.IntegrityError as e:
             print("Data error.")
 
-        self.conn.close()
         return data
