@@ -22,12 +22,16 @@ def __main__():
         author = input("What's its author? ")
         isbn = input("What's its ISBN? ")
 
-        book = DataModels.Book(title, author, isbn)
+        author_split = author.split()
+        author = repo.add_author(author_split[0], author_split[1])
+        print(author)
+
+        book = DataModels.Book(title = title, author = author, isbn = isbn)
         print(book)
 
         bookcase = repo.add_bookcase()
         shelf = repo.add_shelf(bookcase)
-        repo.add_book(book.title, book.author, shelf)
+        repo.add_book(title = book.title, author = book.author, shelf = shelf)
 
         print("Success!")
         print(repo.find_book_by_title(title))
