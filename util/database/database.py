@@ -1,11 +1,17 @@
-import shelve
 import sqlite3
 import uuid
+import configparser
 
-conn = sqlite3.connect("bookDepot_data.db")
-cursor = conn.cursor()
+config = configparser.ConfigParser()
+config.read("../config.ini")
 
-def database_init():
+database_config = config["database"]
+database_name = database_config["name"]
+conn = sqlite3.connect(database_name)
+
+def database_init(conn: sqlite3.Connection  ):
+    cursor = conn.cursor()
+
     try:
         # Need to expand and appropriately set up the tables to support but not require
         # all the fields documented in the data models
@@ -59,12 +65,16 @@ def database_init():
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
         print(cursor.fetchall())
 
+        conn.close()
+
     except sqlite3.OperationalError as e:
         raise e
 
-database_init()
+# database_init(conn)
 
-def add_bookcase():
+def add_bookcase(conn: sqlite3.Connection):
+    cursor = conn.cursor()
+
     try:
         bookcase_id = str(uuid.uuid4())
         cursor.execute(
@@ -79,7 +89,23 @@ def add_bookcase():
     except sqlite3.IntegrityError:
         print("Data already exists, skipping.")
 
-def add_shelf(bookcase=None):
+def get_bookcases(conn: sqlite3.Connection):
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            "SELECT * FROM bookcases;",
+        )
+
+        conn.commit()
+        return cursor.fetchall()
+
+    except sqlite3.IntegrityError as e:
+        print("Data error.")
+
+def add_shelf(conn: sqlite3.Connection, bookcase=None):
+    cursor = conn.cursor()
+
     try:
         shelf_id = str(uuid.uuid4())
         cursor.execute(
@@ -94,7 +120,25 @@ def add_shelf(bookcase=None):
     except sqlite3.IntegrityError:
         print("Data already exists, skipping.")
 
-def add_author(first_name, last_name):
+def get_shelves(conn: sqlite3.Connection, bookcase):
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            "SELECT * FROM shelves WHERE bookcase = ?;",
+            (bookcase,)
+        )
+
+        conn.commit()
+
+        return cursor.fetchall()
+
+    except sqlite3.IntegrityError as e:
+        print("Data error.")
+
+def add_author(conn: sqlite3.Connection, first_name, last_name):
+    cursor = conn.cursor()
+
     try:
         author_id = str(uuid.uuid4())
         cursor.execute(
@@ -103,33 +147,38 @@ def add_author(first_name, last_name):
         )
 
         conn.commit()
+
         print("Data saved successfully.")
+        return author_id
 
     except sqlite3.IntegrityError as e:
         print("Data error.")
         print(e)
 
-def check_author(first_name, last_name):
+def check_author_by_name(conn: sqlite3.Connection, first_name, last_name):
+    cursor = conn.cursor()
+
     try:
-        author_id = str(uuid.uuid4())
         cursor.execute(
             "SELECT * FROM authors WHERE firstName = ? AND lastName = ?;",
             (first_name, last_name,)
         )
 
         conn.commit()
-        print("Data saved successfully.")
+        return cursor.fetchall()
 
     except sqlite3.IntegrityError as e:
         print("Data error.")
         print(e)
 
-def add_book(title, shelf=None):
+def add_book(conn: sqlite3.Connection, title, author, shelf=None):
+    cursor = conn.cursor()
+
     try:
         book_id = str(uuid.uuid4())
         cursor.execute(
-            "INSERT INTO books (title, uuid, shelf) VALUES (?, ?, ?)",
-                (title, book_id, shelf,)
+            "INSERT INTO books (title, uuid, author, shelf) VALUES (?, ?, ?, ?)",
+                (title, book_id, author, shelf,)
         )
 
         conn.commit()
@@ -138,27 +187,56 @@ def add_book(title, shelf=None):
     except sqlite3.IntegrityError as e:
         print("Data error.")
         print(e)
-'''
-These are testing lines to confirm the ability to add a book to the db
 
-bookcase = add_bookcase()
-shelf = add_shelf(bookcase)
-book = add_book("Moby Dick", shelf)
+def check_books_by_author(conn: sqlite3.Connection, first_name, last_name):
+    #Still working on this
 
-cursor.execute("SELECT * FROM bookcases")
-rows = cursor.fetchall()
-for row in rows:
-    print(row)
+    cursor = conn.cursor()
 
-cursor.execute("SELECT * FROM shelves")
-rows = cursor.fetchall()
-for row in rows:
-    print(row)
+    author_search = check_author_by_name(conn, first_name, last_name)
 
-cursor.execute("SELECT * FROM books")
-rows = cursor.fetchall()
-for row in rows:
-    print(row)    
-'''
+    if author_search is not None:
+        author_id = author_search[0][0]
+        print(author_id)
+
+        try:
+            cursor.execute(
+                "SELECT * FROM books WHERE author = ?;",
+                (author_id,)
+            )
+
+            conn.commit()
+            return cursor.fetchall()
+
+        except sqlite3.IntegrityError as e:
+            print("Data error.")
+
+    else:
+        print("No author found by that name.")
+
+def check_all_books(conn: sqlite3.Connection):
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            "SELECT * FROM books;",
+        )
+
+        conn.commit()
+        return cursor.fetchall()
+
+    except sqlite3.IntegrityError as e:
+        print("Data error.")
+
+
+# add_author(conn, first_name="Herman", last_name="Melville")
+# add_bookcase(conn)
+# print(get_bookcases(conn))
+# add_shelf(conn, '604c43eb-f007-46f6-84b0-e4416c414945')
+# print(get_shelves(conn, '604c43eb-f007-46f6-84b0-e4416c414945'))
+# id = str(check_author_by_name(conn, first_name="Herman", last_name="Melville")[0])
+# add_book(conn, "Moby Dick", id, shelf='604c43eb-f007-46f6-84b0-e4416c414945')
+print(check_books_by_author(conn, first_name="Herman", last_name="Melville"))
+print(check_all_books(conn))
 
 conn.close()
