@@ -1,5 +1,6 @@
 import uuid
 from dataclasses import dataclass
+from datetime import datetime
 
 @dataclass
 class Bookcase:
@@ -12,10 +13,13 @@ class Bookcase:
     def generate_shelf(self, **kwargs):
         shelf = Shelf(bookcase=self, **kwargs)
 
+    def update_number(self, number: int):
+        self.number = number
+
     def name_case(self, name: str):
         self.name = name
 
-    def update_sort(self, sorting_method: str):
+    def update_sorting_method(self, sorting_method: str):
         self.sorting_method = sorting_method
 
     def update_genre(self, genre: str):
@@ -48,13 +52,18 @@ class Author:
     last_name: str | None
 
 @dataclass
+class Loan:
+    id: uuid.UUID | uuid.uuid4()
+
+
+@dataclass
 class Book:
     title: str
     id: uuid.UUID | uuid.uuid4()
     isbn: str | None # need to add data validation on this field
     issn: str | None
     shelf: Shelf | None
-    author: list | None
+    author: Author | None
     genre: str | None
     language: str | None
     publish_date: str | None
@@ -64,7 +73,7 @@ class Book:
     genre: str | None
     language: str | None
     format: str | None # might make an enum for this, e.g., comic, audiobook, ebook, magazine, etc
-    possession: str | None # this is meant to denote whose possession it's in if it's not shelved
+    possession: Loan | None # this is meant to denote whose possession it's in if it's not shelved
     edition: int | None
     description: str | None
     notes: str | None
@@ -78,4 +87,5 @@ class Book:
 
     def update_attributes(self, attributes: dict):
         # In progress, needs to flexibly accept attributes without requiring all values
-        self.author = attributes["author"]
+        for key, value in attributes.items():
+            setattr(self, key, value)
