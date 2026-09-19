@@ -1,15 +1,37 @@
 from util.database.database import Database
-from util.database.repo import DatabaseRepo
+from util.database.repo import DatabaseRepo as dbr
+import util.dataModels.DataModels as DataModels
 
 def __main__():
 
-    try:
-        database = Database()
+    db = Database()
+    db.database_init()
+    repo = dbr(db.conn)
 
-        Database.database_init()
+    # try:
+        # database = Database()
+        # database.database_init()
+        # repo = dbr(database)
 
-    except Exception as error:
-        print(error)
+    # except Exception as error:
+    #     print(error)
 
-    return
+    def gather_book_data():
+        print("Tell me about your book! ")
+        title= input("What's its title? ")
+        author = input("What's its author? ")
+        isbn = input("What's its ISBN? ")
 
+        book = DataModels.Book(title, author, isbn)
+        print(book)
+
+        bookcase = repo.add_bookcase()
+        shelf = repo.add_shelf(bookcase)
+        repo.add_book(book.title, book.author, shelf)
+
+        print("Success!")
+        print(repo.find_book_by_title(title))
+
+    gather_book_data()
+
+__main__()

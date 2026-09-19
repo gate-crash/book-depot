@@ -4,11 +4,11 @@ from datetime import datetime
 
 @dataclass
 class Bookcase:
-    number: int | None
-    id: uuid.UUID | uuid.uuid4()
-    name: str | None
-    sorting_method: str | None
-    genre: str | None
+    number: int | None = None
+    id: str | None = str(uuid.uuid4())
+    name: str | None = None
+    sorting_method: str | None = None
+    genre: str | None = None
 
     def generate_shelf(self, **kwargs):
         shelf = Shelf(bookcase=self, **kwargs)
@@ -27,11 +27,11 @@ class Bookcase:
 
 @dataclass
 class Shelf:
-    number: int | None
-    id: uuid.UUID | uuid.uuid4()
-    bookcase: Bookcase | None
-    sorting_method: str | None
-    genre: str | None
+    number: int | None = None
+    id: str | None = str(uuid.uuid4())
+    bookcase: Bookcase | None = None
+    sorting_method: str | None = None
+    genre: str | None = None
 
     def update_number(self, number: int):
         self.number = number
@@ -47,37 +47,37 @@ class Shelf:
 
 @dataclass
 class Author:
-    id: uuid.UUID | uuid.uuid4()
-    first_name: str | None
-    last_name: str | None
+    id: str | None = str(uuid.uuid4())
+    first_name: str | None = None
+    last_name: str | None = None
 
 @dataclass
 class Loan:
-    id: uuid.UUID | uuid.uuid4()
+    id: str | None = str(uuid.uuid4())
 
 
 @dataclass
 class Book:
     title: str
-    id: uuid.UUID | uuid.uuid4()
-    isbn: str | None # need to add data validation on this field
-    issn: str | None
-    shelf: Shelf | None
-    author: Author | None
-    genre: str | None
-    language: str | None
-    publish_date: str | None
-    printing_date: str | None
-    series: str | None
-    volume_number: int | None
-    genre: str | None
-    language: str | None
-    format: str | None # might make an enum for this, e.g., comic, audiobook, ebook, magazine, etc
-    possession: Loan | None # this is meant to denote whose possession it's in if it's not shelved
-    edition: int | None
-    description: str | None
-    notes: str | None
-    thumbnail_filename: str | None
+    id: str | None = str(uuid.uuid4())
+    isbn: str | None = None # need to add data validation on this field
+    issn: str | None = None
+    shelf: Shelf | None = None
+    author: Author | None = None
+    genre: str | None = None
+    language: str | None = None
+    publish_date: str | None = None
+    printing_date: str | None = None
+    series: str | None = None
+    volume_number: int | None = None
+    genre: str | None = None
+    language: str | None = None
+    format: str | None = None # might make an enum for this, e.g., comic, audiobook, ebook, magazine, etc
+    possession: Loan | None = None # this is meant to denote whose possession it's in if it's not shelved
+    edition: int | None = None
+    description: str | None = None
+    notes: str | None = None
+    thumbnail_filename: str | None = None
     fiction: bool=True
     read: bool=True
     shelved: bool=True
@@ -89,3 +89,10 @@ class Book:
         # In progress, needs to flexibly accept attributes without requiring all values
         for key, value in attributes.items():
             setattr(self, key, value)
+
+# title = "title"
+# author = "author"
+# isbn = "isbn"
+# test_book = Book(title=title, author=isbn, isbn=isbn)
+# print(test_book)
+

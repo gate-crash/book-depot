@@ -1,11 +1,20 @@
 import sqlite3
-import configparser
+from configparser import ConfigParser
+import os
+
 
 class Database:
 
     def __init__(self):
-        config = configparser.ConfigParser()
-        config.read("../config.ini")
+
+        config = ConfigParser()
+
+        # get the path to config.ini
+        config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../config.ini')
+
+        config.read(config_path)
+
+        config.read(config_path)
 
         self.database_config = config["database"]
         self.database_name = self.database_config["name"]
@@ -71,7 +80,7 @@ class Database:
             cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
             print(cursor.fetchall())
 
-            self.conn.close()
+            # self.conn.close()
 
         except sqlite3.OperationalError as e:
             raise e
