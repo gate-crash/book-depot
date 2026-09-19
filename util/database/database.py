@@ -48,6 +48,7 @@ class Database:
                                 series TEXT CHECK (length(series) <= 20),
                                 volumeNumber INTEGER,
                                 language TEXT CHECK (length(language) <= 20),
+                                edition INTEGER,
                                 format TEXT CHECK (length(format) <= 20),
                                 fiction BOOLEAN,
                                 read BOOLEAN,
@@ -55,6 +56,8 @@ class Database:
                                 possession TEXT CHECK (length(title) <= 100),
                                 publishDate DATE,
                                 printingDate DATE,
+                                description TEXT CHECK (length(title) <= 500),
+                                notes TEXT CHECK (length(title) <= 500),
                                 FOREIGN KEY (shelf) REFERENCES shelves (uuid),
                                 FOREIGN KEY (author) REFERENCES authors (uuid)
                             );

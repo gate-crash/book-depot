@@ -65,6 +65,10 @@ class Book:
     language: str | None
     format: str | None # might make an enum for this, e.g., comic, audiobook, ebook, magazine, etc
     possession: str | None # this is meant to denote whose possession it's in if it's not shelved
+    edition: int | None
+    description: str | None
+    notes: str | None
+    thumbnail_filename: str | None
     fiction: bool=True
     read: bool=True
     shelved: bool=True
