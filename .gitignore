@@ -218,3 +218,4 @@ __marimo__/
 .streamlit/secrets.toml
 /util/database/bookDepot_data.db
 /identifier.sqlite
+/bookDepot_data.db
