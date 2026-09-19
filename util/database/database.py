@@ -72,15 +72,3 @@ class Database:
 
         except sqlite3.OperationalError as e:
             raise e
-
-
-# add_author(conn, first_name="Herman", last_name="Melville")
-# add_bookcase(conn)
-# print(get_bookcases(conn))
-# add_shelf(conn, '604c43eb-f007-46f6-84b0-e4416c414945')
-# print(get_shelves(conn, '604c43eb-f007-46f6-84b0-e4416c414945'))
-# id = str(check_author_by_name(conn, first_name="Herman", last_name="Melville")[0])
-# add_book(conn, "Moby Dick", id, shelf='604c43eb-f007-46f6-84b0-e4416c414945')
-# print(check_books_by_author(conn, first_name="Herman", last_name="Melville"))
-
-Database.database_init()
