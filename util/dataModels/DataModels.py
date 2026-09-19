@@ -58,8 +58,10 @@ class Book:
     genre: str | None
     language: str | None
     format: str | None # might make an enum for this, e.g., comic, audiobook, ebook, magazine, etc
+    possession: str | None # this is meant to denote whose possession it's in if it's not shelved
     fiction: bool=True
     read: bool=True
+    shelved: bool=True
 
     def update_shelf(self, shelf: Shelf):
         self.shelf = shelf
