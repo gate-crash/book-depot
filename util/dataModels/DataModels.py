@@ -1,7 +1,7 @@
 import uuid
 from dataclasses import dataclass
 from datetime import datetime
-from Descriptors import Genre, SortingMethod, Format
+from Descriptors import Genre, SortingMethod, Format, Language
 
 @dataclass
 class Bookcase:
@@ -68,7 +68,7 @@ class Book:
     shelf: Shelf | None = None
     author: Author | None = None
     genre: Genre | None = None
-    language: str | None = None
+    language: Language | None = None
     publish_date: str | None = None
     printing_date: str | None = None
     series: str | None = None
