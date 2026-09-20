@@ -4,6 +4,7 @@ import enum
 class Format(enum.Enum):
     hardcover = "Hardcover Book"
     softcover = "Softcover Book"
+    binder_book = "Binder Book"
     album = "Album"
     comic_issue = "Comic Issue"
     comic_volume = "Comic Volume"
