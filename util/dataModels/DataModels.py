@@ -1,7 +1,8 @@
 import uuid
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from datetime import datetime
-from Descriptors import Genre, SortingMethod, Format, Language
+
+from util.dataModels.Descriptors import Genre, SortingMethod, Format, Language
 
 @dataclass
 class Bookcase:
@@ -26,6 +27,9 @@ class Bookcase:
     def update_genre(self, genre: str):
         self.genre = genre
 
+    def clean_dict(self):
+        return asdict(self, dict_factory=lambda x: {k: v for k, v in x if v is not None})
+
 @dataclass
 class Shelf:
     number: int | None = None
@@ -46,11 +50,17 @@ class Shelf:
     def update_genre(self, genre: str):
         self.genre = genre
 
+    def clean_dict(self):
+        return asdict(self, dict_factory=lambda x: {k: v for k, v in x if v is not None})
+
 @dataclass
 class Author:
     id: str | None = str(uuid.uuid4())
     first_name: str | None = None
     last_name: str | None = None
+
+    def clean_dict(self):
+        return asdict(self, dict_factory=lambda x: {k: v for k, v in x if v is not None})
 
 @dataclass
 class Possession:
@@ -58,6 +68,9 @@ class Possession:
     lend_date: datetime | None = None
     holder: str | None = None
     holder_contact: str | None = None
+
+    def clean_dict(self):
+        return asdict(self, dict_factory=lambda x: {k: v for k, v in x if v is not None})
 
 @dataclass
 class Book:
@@ -91,3 +104,6 @@ class Book:
         # In progress, needs to flexibly accept attributes without requiring all values
         for key, value in attributes.items():
             setattr(self, key, value)
+
+    def clean_dict(self):
+        return asdict(self, dict_factory=lambda x: {k: v for k, v in x if v is not None})

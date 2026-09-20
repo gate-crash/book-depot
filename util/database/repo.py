@@ -1,5 +1,9 @@
 import sqlite3
 import uuid
+from dataclasses import asdict
+from typing import Type
+
+from util.dataModels import DataModels
 
 class DatabaseRepo:
     
@@ -12,14 +16,28 @@ class DatabaseRepo:
         self.cursor.close()
         self.conn.close()
 
-    def add_bookcase(self):
+    def insert_data(self, table_name, data: dict):
+        print(data)
+        columns = list(data.keys())
+        print(columns)
+        values = list(data.values())
+        print(values)
+
+        placeholders = ", ".join(["?"] * len(columns))
+        column_names = ", ".join(columns)
+
+        sql = f"INSERT INTO {table_name} ({column_names}) VALUES ({placeholders})"
+
+        return sql, values
+
+    def add_bookcase(self, **kwargs):
+        if kwargs["id"] is None:
+            bookcase_id = str(uuid.uuid4())
+        else:
+            bookcase_id = kwargs["id"]
 
         try:
-            bookcase_id = str(uuid.uuid4())
-            self.cursor.execute(
-                "INSERT INTO bookcases (uuid) VALUES (?)",
-                (bookcase_id,)
-            )
+            self.insert_data_flexibly('bookcases', **kwargs)
 
             self.conn.commit()
             print("Data saved successfully.")
@@ -33,7 +51,7 @@ class DatabaseRepo:
 
         try:
             self.cursor.execute(
-                "DELETE FROM bookcases WHERE uuid = ?;",
+                "DELETE FROM bookcases WHERE id = ?;",
                 (bookcase_id,)
             )
             self.conn.commit()
@@ -63,7 +81,7 @@ class DatabaseRepo:
         try:
             shelf_id = str(uuid.uuid4())
             self.cursor.execute(
-                "INSERT INTO shelves (uuid, bookcase) VALUES (?, ?)",
+                "INSERT INTO shelves (id, bookcase) VALUES (?, ?)",
                 (shelf_id , bookcase,)
             )
 
@@ -79,7 +97,7 @@ class DatabaseRepo:
 
         try:
             self.cursor.execute(
-                "DELETE FROM shelves WHERE uuid = ?;",
+                "DELETE FROM shelves WHERE id = ?;",
                 (shelf_id,)
             )
             self.conn.commit()
@@ -111,7 +129,7 @@ class DatabaseRepo:
         try:
             author_id = str(uuid.uuid4())
             self.cursor.execute(
-                "INSERT INTO authors (uuid, firstName, lastName) VALUES (?, ?, ?)",
+                "INSERT INTO authors (id, firstName, lastName) VALUES (?, ?, ?)",
                 (author_id, first_name, last_name,)
             )
 
@@ -162,7 +180,7 @@ class DatabaseRepo:
         try:
             book_id = str(uuid.uuid4())
             self.cursor.execute(
-                "INSERT INTO books (title, uuid, author, shelf) VALUES (?, ?, ?, ?)",
+                "INSERT INTO books (title, id, author, shelf) VALUES (?, ?, ?, ?)",
                     (title, book_id, author, shelf,)
             )
 
@@ -177,7 +195,7 @@ class DatabaseRepo:
 
         try:
             self.cursor.execute(
-                    "DELETE FROM books WHERE uuid = ?;",
+                    "DELETE FROM books WHERE id = ?;",
                     (book_id,)
             )
 
@@ -194,15 +212,15 @@ class DatabaseRepo:
         if author_search is not None:
             #TODO: add support for multiple results - this currently assumes only one
 
-            author_uuid = author_search[0][0]
+            author_id = author_search[0][0]
 
             try:
                 self.cursor.execute(
                     """SELECT *
                             FROM books
                             INNER JOIN authors
-                            WHERE authors.uuid = ?;""",
-                    (author_uuid,)
+                            WHERE authors.id = ?;""",
+                    (author_id,)
                 )
 
                 data = self.cursor.fetchall()
@@ -245,3 +263,18 @@ class DatabaseRepo:
             print("Data error.")
 
         return data
+
+    def create_possession(self, **kwargs):
+        try:
+            loan_id = str(uuid.uuid4())
+            self.cursor.execute(
+                "INSERT INTO possession (id) VALUES (?)",
+                    (loan_id,)
+            )
+
+            self.conn.commit()
+            print("Data saved successfully.")
+
+        except sqlite3.IntegrityError as e:
+            print("Data error.")
+            print(e)

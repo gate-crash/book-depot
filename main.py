@@ -38,6 +38,14 @@ def __main__():
 
         repo.__close__()
 
-    gather_book_data()
+    # gather_book_data()
+
+    book = DataModels.Book(title="Test", isbn="Test")
+    print(book)
+    clean = book.clean_dict()
+    print(clean)
+    test = repo.insert_data(table_name='books', data=clean)
+    print(test[0])
+    print(tuple(test[1]))
 
 __main__()
