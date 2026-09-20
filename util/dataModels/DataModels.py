@@ -9,23 +9,8 @@ class Bookcase:
     number: int | None = None
     id: str | None = str(uuid.uuid4())
     name: str | None = None
-    sorting_method: SortingMethod | None = None
+    sorting_method: str | None = None
     genre: Genre | None = None
-
-    def generate_shelf(self, **kwargs):
-        shelf = Shelf(bookcase=self, **kwargs)
-
-    def update_number(self, number: int):
-        self.number = number
-
-    def name_case(self, name: str):
-        self.name = name
-
-    def update_sorting_method(self, sorting_method: str):
-        self.sorting_method = sorting_method
-
-    def update_genre(self, genre: str):
-        self.genre = genre
 
     def clean_dict(self):
         return asdict(self, dict_factory=lambda x: {k: v for k, v in x if v is not None})
@@ -35,20 +20,8 @@ class Shelf:
     number: int | None = None
     id: str | None = str(uuid.uuid4())
     bookcase: Bookcase | None = None
-    sorting_method: SortingMethod | None = None
+    sorting_method: str | None = None
     genre: Genre | None = None
-
-    def update_number(self, number: int):
-        self.number = number
-
-    def update_bookcase(self, bookcase: Bookcase):
-        self.bookcase = bookcase
-
-    def update_sorting_method(self, sorting_method: str):
-        self.sorting_method = sorting_method
-
-    def update_genre(self, genre: str):
-        self.genre = genre
 
     def clean_dict(self):
         return asdict(self, dict_factory=lambda x: {k: v for k, v in x if v is not None})

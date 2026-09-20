@@ -17,35 +17,16 @@ class DatabaseRepo:
         self.conn.close()
 
     def insert_data(self, table_name, data: dict):
-        print(data)
         columns = list(data.keys())
-        print(columns)
         values = list(data.values())
-        print(values)
 
         placeholders = ", ".join(["?"] * len(columns))
         column_names = ", ".join(columns)
 
         sql = f"INSERT INTO {table_name} ({column_names}) VALUES ({placeholders})"
 
-        return sql, values
-
-    def add_bookcase(self, **kwargs):
-        if kwargs["id"] is None:
-            bookcase_id = str(uuid.uuid4())
-        else:
-            bookcase_id = kwargs["id"]
-
-        try:
-            self.insert_data_flexibly('bookcases', **kwargs)
-
-            self.conn.commit()
-            print("Data saved successfully.")
-
-        except sqlite3.IntegrityError:
-            print("Data already exists, skipping.")
-
-        return bookcase_id
+        self.cursor.execute(sql, values)
+        self.conn.commit()
 
     def delete_bookcase(self, bookcase_id):
 
@@ -75,23 +56,6 @@ class DatabaseRepo:
             print("Data error.")
 
         return data
-
-    def add_shelf(self, bookcase=None):
-
-        try:
-            shelf_id = str(uuid.uuid4())
-            self.cursor.execute(
-                "INSERT INTO shelves (id, bookcase) VALUES (?, ?)",
-                (shelf_id , bookcase,)
-            )
-
-            self.conn.commit()
-            print("Data saved successfully.")
-
-        except sqlite3.IntegrityError:
-            print("Data already exists, skipping.")
-
-        return shelf_id
 
     def delete_shelf(self, shelf_id):
 
@@ -124,25 +88,6 @@ class DatabaseRepo:
 
         return data
 
-    def add_author(self, first_name, last_name):
-
-        try:
-            author_id = str(uuid.uuid4())
-            self.cursor.execute(
-                "INSERT INTO authors (id, firstName, lastName) VALUES (?, ?, ?)",
-                (author_id, first_name, last_name,)
-            )
-
-            self.conn.commit()
-
-            print("Data saved successfully.")
-
-        except sqlite3.IntegrityError as e:
-            print("Data error.")
-            print(e)
-
-        return author_id
-
     def check_author_by_name(self, first_name, last_name):
 
         try:
@@ -174,22 +119,6 @@ class DatabaseRepo:
             print("Data error.")
 
         return data
-
-    def add_book(self, title, author, shelf=None):
-
-        try:
-            book_id = str(uuid.uuid4())
-            self.cursor.execute(
-                "INSERT INTO books (title, id, author, shelf) VALUES (?, ?, ?, ?)",
-                    (title, book_id, author, shelf,)
-            )
-
-            self.conn.commit()
-            print("Data saved successfully.")
-
-        except sqlite3.IntegrityError as e:
-            print("Data error.")
-            print(e)
 
     def delete_book(self, book_id):
 

@@ -1,6 +1,7 @@
 from util.database.database import Database
 from util.database.repo import DatabaseRepo as DbR
 import util.dataModels.DataModels as DataModels
+from util.dataModels.Descriptors import SortingMethod
 
 def __main__():
 
@@ -40,12 +41,12 @@ def __main__():
 
     # gather_book_data()
 
-    book = DataModels.Book(title="Test", isbn="Test")
-    print(book)
-    clean = book.clean_dict()
-    print(clean)
-    test = repo.insert_data(table_name='books', data=clean)
-    print(test[0])
-    print(tuple(test[1]))
+    bookcase = DataModels.Bookcase(number=1, name="Test", sorting_method=SortingMethod.alphabetical_az.value)
+    print(bookcase)
+    # print(bookcase.clean_dict())
+
+    repo.insert_data('bookcases', bookcase.clean_dict())
+
+    print(repo.fetch_all_bookcases())
 
 __main__()
