@@ -47,7 +47,7 @@ class SortingMethod(enum.Enum):
     dewey_decimal = "Dewey Decimal"
     color = "Color"
     chronological_publish = "Chronological (Publish date)"
-    chronlogical_print = "Chronological (Printing date)"
+    chronological_print = "Chronological (Printing date)"
     size = "Size"
     lcc = "Library of Congress Classification"
 
