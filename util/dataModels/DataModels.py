@@ -1,14 +1,15 @@
 import uuid
 from dataclasses import dataclass
 from datetime import datetime
+from Descriptors import Genre, SortingMethod, Format
 
 @dataclass
 class Bookcase:
     number: int | None = None
     id: str | None = str(uuid.uuid4())
     name: str | None = None
-    sorting_method: str | None = None
-    genre: str | None = None
+    sorting_method: SortingMethod | None = None
+    genre: Genre | None = None
 
     def generate_shelf(self, **kwargs):
         shelf = Shelf(bookcase=self, **kwargs)
@@ -30,8 +31,8 @@ class Shelf:
     number: int | None = None
     id: str | None = str(uuid.uuid4())
     bookcase: Bookcase | None = None
-    sorting_method: str | None = None
-    genre: str | None = None
+    sorting_method: SortingMethod | None = None
+    genre: Genre | None = None
 
     def update_number(self, number: int):
         self.number = number
@@ -52,9 +53,11 @@ class Author:
     last_name: str | None = None
 
 @dataclass
-class Loan:
+class Possession:
     id: str | None = str(uuid.uuid4())
-
+    lend_date: datetime | None = None
+    holder: str | None = None
+    holder_contact: str | None = None
 
 @dataclass
 class Book:
@@ -64,16 +67,15 @@ class Book:
     issn: str | None = None
     shelf: Shelf | None = None
     author: Author | None = None
-    genre: str | None = None
+    genre: Genre | None = None
     language: str | None = None
     publish_date: str | None = None
     printing_date: str | None = None
     series: str | None = None
     volume_number: int | None = None
     genre: str | None = None
-    language: str | None = None
-    format: str | None = None # might make an enum for this, e.g., comic, audiobook, ebook, magazine, etc
-    possession: Loan | None = None # this is meant to denote whose possession it's in if it's not shelved
+    format: Format | None = None # might make an enum for this, e.g., comic, audiobook, ebook, magazine, etc
+    possession: Possession | None = None # this is meant to denote whose possession it's in if it's not shelved
     edition: int | None = None
     description: str | None = None
     notes: str | None = None
@@ -89,10 +91,3 @@ class Book:
         # In progress, needs to flexibly accept attributes without requiring all values
         for key, value in attributes.items():
             setattr(self, key, value)
-
-# title = "title"
-# author = "author"
-# isbn = "isbn"
-# test_book = Book(title=title, author=isbn, isbn=isbn)
-# print(test_book)
-
