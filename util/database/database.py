@@ -17,7 +17,7 @@ class Database:
         config.read(config_path)
 
         self.database_config = config["database"]
-        self.database_name = self.database_config["name"]
+        self.database_name = self.database_config["path"] + self.database_config["name"]
         self.conn = sqlite3.connect(self.database_name)
 
     def database_init(self):
