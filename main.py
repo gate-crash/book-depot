@@ -23,30 +23,29 @@ def __main__():
         author = input("What's its author? ")
         isbn = input("What's its ISBN? ")
 
-        author_split = author.split()
-        author = repo.add_author(author_split[0], author_split[1])
+        first_name = author.split()[0]
+        last_name = author.split()[1]
+        author = DataModels.Author(first_name=first_name, last_name=last_name).clean_dict()
+        repo.insert_data('authors', author)
         print(author)
 
-        book = DataModels.Book(title = title, author = author, isbn = isbn)
+        book = DataModels.Book(title = title, author = author, isbn = isbn).clean_dict()
         print(book)
 
-        bookcase = repo.add_bookcase()
-        shelf = repo.add_shelf(bookcase)
-        repo.add_book(title = book.title, author = book.author, shelf = shelf)
+        bookcase = DataModels.Bookcase(number=1).clean_dict()
+        repo.insert_data('bookcases', bookcase)
+
+        shelf = DataModels.Shelf(bookcase=bookcase['id']).clean_dict()
+        repo.insert_data('shelves', shelf)
+
+        book = DataModels.Book(title=title, author=author['id'], isbn=isbn, shelf=shelf['id']).clean_dict()
+        repo.insert_data('books', book)
 
         print("Success!")
         print(repo.find_book_by_title(title))
 
         repo.__close__()
 
-    # gather_book_data()
-
-    bookcase = DataModels.Bookcase(number=1, name="Test", sorting_method=SortingMethod.alphabetical_az.value)
-    print(bookcase)
-    # print(bookcase.clean_dict())
-
-    repo.insert_data('bookcases', bookcase.clean_dict())
-
-    print(repo.fetch_all_bookcases())
+    gather_book_data()
 
 __main__()
