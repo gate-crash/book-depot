@@ -1,9 +1,12 @@
-from pytest import fixture
+import pytest
+from src.util.dataModels.DataModels import Bookcase
 
-@Test
-class MyTestCase():
-    def test_something(self):
-        self.assertEqual(True, False)  # add assertion here
+def test_clean_dict():
+
+    bookcase = Bookcase().clean_dict()
+
+    length = len(bookcase)
+    assert length == 1
 
 
 if __name__ == '__main__':
