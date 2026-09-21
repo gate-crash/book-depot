@@ -42,18 +42,19 @@ class Possession(DataGeneric):
 @dataclass
 class Book(DataGeneric):
     title: str | None = None
-    isbn: str | None = None # need to add data validation on this field
+    isbn: str | None = None
     issn: str | None = None
     shelf: Shelf | None = None
     author: Author | None = None
-    genre: str | None = Descriptors.Genre.fiction_general.value
+    genre: str | None = None
     language: str | None = Descriptors.Language.en.value
     publish_date: str | None = None
     printing_date: str | None = None
     series: str | None = None
     volume_number: int | None = None
     format: str | None = Descriptors.Format.paperback.value
-    possession: Possession | None = None # this is meant to denote whose possession it's in if it's not shelved
+    # possession is meant to denote whose possession it's in if it's not shelved
+    possession: Possession | None = None
     edition: int | None = None
     description: str | None = None
     notes: str | None = None
@@ -70,3 +71,14 @@ class Book(DataGeneric):
         # In progress, needs to flexibly accept attributes without requiring all values
         for key, value in attributes.items():
             setattr(self, key, value)
+
+    def __post_init__(self):
+
+        if self.isbn:
+            isbn = str(self.isbn).replace('-', '')
+            print(isbn)
+
+            if len(isbn) <= 13 | isbn.isdigit():
+                self.isbn = str(isbn)
+            else:
+                raise(ValueError("ISBN must be 13 numbers long or shorter."))
