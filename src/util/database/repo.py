@@ -2,6 +2,7 @@ import sqlite3
 import uuid
 from configparser import ConfigParser
 import os
+import logging
 
 class DatabaseRepo:
     
@@ -230,7 +231,8 @@ class DatabaseRepo:
             )
 
             self.conn.commit()
-            print("Data saved successfully.")
+            logging.log(msg="Data for possession {loan_id} saved successfully."
+                        .format(loan_id=loan_id), level=logging.DEBUG)
 
         except sqlite3.IntegrityError as e:
             print("Data error.")

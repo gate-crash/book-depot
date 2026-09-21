@@ -1,7 +1,7 @@
+import logging
 import sqlite3
 from configparser import ConfigParser
 import os
-
 
 class Database:
 
@@ -15,8 +15,8 @@ class Database:
         config.read(config_path)
 
         self.database_config = config["database"]
-        self.database_name = self.database_config["path"] + self.database_config["name"]
-        self.conn = sqlite3.connect(self.database_name)
+        self.database_path = self.database_config["path"] + self.database_config["name"]
+        self.conn = sqlite3.connect(self.database_path)
 
         self.tables_config = config["tables"]
         self.bookcases_table = self.tables_config["bookcases"]
@@ -25,7 +25,7 @@ class Database:
         self.possessions_table = self.tables_config["possessions"]
         self.books_table = self.tables_config["books"]
 
-    def database_init(self):
+    def setup(self):
 
         cursor = self.conn.cursor()
 
@@ -93,15 +93,42 @@ class Database:
                 possessions=self.possessions_table,
                 books=self.books_table))
 
-            print("Table schema created.")
+            logging.log(msg="Table schema created.", level=logging.DEBUG)
             cursor.executescript(table_schema)
             self.conn.commit()
-            print("Table schema committed.")
+            logging.log(msg="Table schema committed.", level=logging.DEBUG)
 
             cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-            print(cursor.fetchall())
-
-            # self.conn.close()
+            db_validation = cursor.fetchall()
+            logging.log(
+                msg="Database created at {database_path}. Tables created: {db_validation}"
+                .format(
+                    database_path=self.database_path,
+                    db_validation=db_validation
+                ),
+                level=logging.DEBUG)
 
         except sqlite3.OperationalError as e:
             raise e
+    
+    def close(self):
+        self.conn.close()
+        
+    def check(self):
+        cursor = self.conn.cursor()
+
+        if os.path.isfile(self.database_path):
+            try:
+                cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+                print(cursor.fetchall())
+                logging.log(msg="Database at {database_path} found."
+                            .format(database_path=self.database_path), level=logging.DEBUG)
+                return True
+            except sqlite3.OperationalError as e:
+                raise e
+
+        else:
+            logging.log(msg="Database at {database_path} doesn't exist."
+                        .format(database_path=self.database_path), level=logging.WARN)
+            return False
+        
