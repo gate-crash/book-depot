@@ -47,8 +47,9 @@ class DatabaseRepo:
 
             print("Data deleted successfully.")
 
-        except sqlite3.IntegrityError:
+        except sqlite3.IntegrityError as e:
             print("Delete failed.")
+            raise e
 
     def fetch_all_bookcases(self):
 
@@ -63,6 +64,7 @@ class DatabaseRepo:
 
         except sqlite3.IntegrityError as e:
             print("Data error.")
+            raise e
 
         return data
 
@@ -78,8 +80,10 @@ class DatabaseRepo:
 
             print("Data deleted successfully.")
 
-        except sqlite3.IntegrityError:
+        except sqlite3.IntegrityError as e:
             print("Data delete failed.")
+            raise e
+
 
     def get_shelves(self, bookcase):
 
@@ -96,6 +100,7 @@ class DatabaseRepo:
 
         except sqlite3.IntegrityError as e:
             print("Data error.")
+            raise e
 
         return data
 
@@ -113,7 +118,7 @@ class DatabaseRepo:
 
         except sqlite3.IntegrityError as e:
             print("Data error.")
-            print(e)
+            raise e
 
         return data
 
@@ -130,6 +135,7 @@ class DatabaseRepo:
 
         except sqlite3.IntegrityError as e:
             print("Data error.")
+            raise e
 
         return data
 
@@ -147,6 +153,7 @@ class DatabaseRepo:
 
         except sqlite3.IntegrityError as e:
             print("Data error.")
+            raise e
 
     def check_books_by_author(self, first_name, last_name):
         #Still working on this
@@ -171,6 +178,7 @@ class DatabaseRepo:
 
             except sqlite3.IntegrityError as e:
                 print("Data error.")
+                raise e
 
         else:
             print("No author found by that name.")
@@ -190,6 +198,7 @@ class DatabaseRepo:
 
         except sqlite3.IntegrityError as e:
             print("Data error.")
+            raise e
 
         return data
 
@@ -207,6 +216,7 @@ class DatabaseRepo:
 
         except sqlite3.IntegrityError as e:
             print("Data error.")
+            raise e
 
         return data
 
@@ -224,4 +234,4 @@ class DatabaseRepo:
 
         except sqlite3.IntegrityError as e:
             print("Data error.")
-            print(e)
+            raise e
