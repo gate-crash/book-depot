@@ -10,3 +10,4 @@ A library management tool for home book aficionados.
     4. Add startup command
     5. Add support to run locally without remote server
     6. Add data export/import functionality
+    7. Add a function that creates a ./data folder in root
