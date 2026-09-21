@@ -5,17 +5,13 @@ import src.util.dataModels.DataModels as DataModels
 
 def __main__():
 
-    db = Database()
-    db.database_init()
-    repo = DbR(db.conn)
-
-    # try:
-        # database = Database()
+    try:
+        database = Database()
         # database.database_init()
-        # repo = DbR(database)
+        repo = DbR(database.conn)
 
-    # except Exception as error:
-    #     print(error)
+    except Exception as error:
+        raise error
 
     def gather_book_data():
         print("Tell me about your book! ")

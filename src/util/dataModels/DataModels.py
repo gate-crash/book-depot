@@ -2,6 +2,7 @@ import uuid
 from dataclasses import dataclass, asdict
 from datetime import datetime
 
+from src.util.dataModels import Descriptors
 from src.util.dataModels.Descriptors import Genre, Format, Language
 
 @dataclass
@@ -17,7 +18,7 @@ class Bookcase(DataGeneric):
     name: str | None = None
     sorting_method: str | None = None
     genre: Genre | None = None
-
+    sequence_ordinal: int | None = None
 
 @dataclass
 class Shelf(DataGeneric):
@@ -25,6 +26,7 @@ class Shelf(DataGeneric):
     bookcase: Bookcase | None = None
     sorting_method: str | None = None
     genre: Genre | None = None
+    sequence_ordinal: int | None = None
 
 @dataclass
 class Author(DataGeneric):
@@ -44,18 +46,19 @@ class Book(DataGeneric):
     issn: str | None = None
     shelf: Shelf | None = None
     author: Author | None = None
-    genre: Genre | None = None
-    language: Language | None = None
+    genre: str | None = Descriptors.Genre.fiction_general.value
+    language: str | None = Descriptors.Language.en.value
     publish_date: str | None = None
     printing_date: str | None = None
     series: str | None = None
     volume_number: int | None = None
-    format: Format | None = None # might make an enum for this, e.g., comic, audiobook, ebook, magazine, etc
+    format: str | None = Descriptors.Format.paperback.value
     possession: Possession | None = None # this is meant to denote whose possession it's in if it's not shelved
     edition: int | None = None
     description: str | None = None
     notes: str | None = None
     thumbnail_filename: str | None = None
+    sequence_ordinal: float | None = None
     fiction: bool=True
     read: bool=True
     shelved: bool=True

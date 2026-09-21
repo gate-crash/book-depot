@@ -36,6 +36,7 @@ class Database:
                                 number INTEGER,
                                 name TEXT,
                                 sorting_method TEXT,
+                                sequence_ordinal INCREMENT INTEGER,
                                 genre TEXT
                             );
                             CREATE TABLE IF NOT EXISTS {shelves} (
@@ -44,6 +45,7 @@ class Database:
                                 number INTEGER,
                                 sorting_method TEXT,
                                 genre TEXT,
+                                sequence_ordinal INCREMENT INTEGER,
                                 FOREIGN KEY (bookcase) REFERENCES {bookcases} (id)
                             );
                             CREATE TABLE IF NOT EXISTS {authors} (
@@ -78,6 +80,7 @@ class Database:
                                 printing_date DATE,
                                 description TEXT CHECK (length(description) <= 500),
                                 notes TEXT CHECK (length(notes) <= 500),
+                                sequence_ordinal FLOAT,
                                 FOREIGN KEY (possession) REFERENCES {possessions} (id),
                                 FOREIGN KEY (shelf) REFERENCES {shelves} (id),
                                 FOREIGN KEY (author) REFERENCES {authors} (id)
