@@ -1,15 +1,22 @@
 import sqlite3
 import uuid
-from dataclasses import asdict
-from typing import Type
-
-from util.dataModels import DataModels
+from configparser import ConfigParser
+import os
 
 class DatabaseRepo:
     
     def __init__(self, conn: sqlite3.Connection):
         self.conn = conn
         self.cursor = self.conn.cursor()
+
+        config = ConfigParser()
+
+        # get the path to config.ini
+        config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../config.ini')
+
+        config.read(config_path)
+
+        self.table_config = config["tables"]
 
     def __close__(self):
         self.conn.commit()
@@ -32,7 +39,8 @@ class DatabaseRepo:
 
         try:
             self.cursor.execute(
-                "DELETE FROM bookcases WHERE id = ?;",
+                "DELETE FROM {bookcases} WHERE id = ?;"
+                .format(bookcases=self.table_config["bookcases"]),
                 (bookcase_id,)
             )
             self.conn.commit()
@@ -46,7 +54,8 @@ class DatabaseRepo:
 
         try:
             self.cursor.execute(
-                "SELECT * FROM bookcases;",
+                "SELECT * FROM {bookcases};"
+                .format(bookcases=self.table_config["bookcases"]),
             )
 
             self.conn.commit()
@@ -61,7 +70,8 @@ class DatabaseRepo:
 
         try:
             self.cursor.execute(
-                "DELETE FROM shelves WHERE id = ?;",
+                "DELETE FROM {shelves} WHERE id = ?;"
+                .format(shelves=self.table_config["shelves"]),
                 (shelf_id,)
             )
             self.conn.commit()
@@ -75,7 +85,8 @@ class DatabaseRepo:
 
         try:
             self.cursor.execute(
-                "SELECT * FROM shelves WHERE bookcase = ?;",
+                "SELECT * FROM {shelves} WHERE bookcase = ?;"
+                .format(shelves=self.table_config["shelves"]),
                 (bookcase,)
             )
 
@@ -92,7 +103,8 @@ class DatabaseRepo:
 
         try:
             self.cursor.execute(
-                "SELECT * FROM authors WHERE firstName = ? AND lastName = ?;",
+                "SELECT * FROM {authors} WHERE firstName = ? AND lastName = ?;"
+                .format(authors=self.table_config["authors"]),
                 (first_name, last_name,)
             )
 
@@ -109,7 +121,8 @@ class DatabaseRepo:
 
         try:
             self.cursor.execute(
-                "SELECT * FROM authors;",
+                "SELECT * FROM {authors};"
+                .format(authors=self.table_config["authors"]),
             )
 
             self.conn.commit()
@@ -124,7 +137,8 @@ class DatabaseRepo:
 
         try:
             self.cursor.execute(
-                    "DELETE FROM books WHERE id = ?;",
+                    "DELETE FROM {books} WHERE id = ?;"
+                    .format(books=self.table_config["books"]),
                     (book_id,)
             )
 
@@ -146,9 +160,10 @@ class DatabaseRepo:
             try:
                 self.cursor.execute(
                     """SELECT *
-                            FROM books
-                            INNER JOIN authors
-                            WHERE authors.id = ?;""",
+                            FROM {books}
+                            INNER JOIN {authors}
+                            WHERE authors.id = ?;"""
+                    .format(books=self.table_config["books"], authors=self.table_config["authors"]),
                     (author_id,)
                 )
 
@@ -166,7 +181,8 @@ class DatabaseRepo:
 
         try:
             self.cursor.execute(
-                "SELECT * FROM books;",
+                "SELECT * FROM {books};"
+                .format(books=self.table_config["books"]),
             )
 
             self.conn.commit()
@@ -181,7 +197,8 @@ class DatabaseRepo:
 
         try:
             self.cursor.execute(
-                "SELECT * FROM books WHERE title = ?;",
+                "SELECT * FROM {books} WHERE title = ?;"
+                .format(books=self.table_config["books"]),
                 (title,)
             )
 
@@ -197,7 +214,8 @@ class DatabaseRepo:
         try:
             loan_id = str(uuid.uuid4())
             self.cursor.execute(
-                "INSERT INTO possession (id) VALUES (?)",
+                "INSERT INTO {possessions} (id) VALUES (?)"
+                .format(possessions=self.table_config["possessions"]),
                     (loan_id,)
             )
 

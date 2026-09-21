@@ -1,7 +1,7 @@
-from util.database.database import Database
-from util.database.repo import DatabaseRepo as DbR
-import util.dataModels.DataModels as DataModels
-from util.dataModels.Descriptors import SortingMethod
+from src.util.database.database import Database
+from src.util.database.repo import DatabaseRepo as DbR
+import src.util.dataModels.DataModels as DataModels
+
 
 def __main__():
 
