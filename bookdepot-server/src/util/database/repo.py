@@ -4,8 +4,9 @@ from configparser import ConfigParser
 import os
 import logging
 
+
 class DatabaseRepo:
-    
+
     def __init__(self, conn: sqlite3.Connection):
         self.conn = conn
         self.cursor = self.conn.cursor()
@@ -85,7 +86,6 @@ class DatabaseRepo:
             print("Data delete failed.")
             raise e
 
-
     def get_shelves(self, bookcase):
 
         try:
@@ -144,9 +144,9 @@ class DatabaseRepo:
 
         try:
             self.cursor.execute(
-                    "DELETE FROM {books} WHERE id = ?;"
-                    .format(books=self.table_config["books"]),
-                    (book_id,)
+                "DELETE FROM {books} WHERE id = ?;"
+                .format(books=self.table_config["books"]),
+                (book_id,)
             )
 
             self.conn.commit()
@@ -227,7 +227,7 @@ class DatabaseRepo:
             self.cursor.execute(
                 "INSERT INTO {possessions} (id) VALUES (?)"
                 .format(possessions=self.table_config["possessions"]),
-                    (loan_id,)
+                (loan_id,)
             )
 
             self.conn.commit()
