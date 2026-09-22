@@ -3,6 +3,24 @@ import sqlite3
 from configparser import ConfigParser
 import os
 
+
+_PROJECT_ROOT_MARKER = "requirements.txt"
+
+
+def _find_project_root(start_path, marker=_PROJECT_ROOT_MARKER):
+    current = os.path.abspath(start_path)
+    while True:
+        if os.path.exists(os.path.join(current, marker)):
+            return current
+        parent = os.path.dirname(current)
+        if parent == current:
+            raise FileNotFoundError(
+                "Could not locate project root (missing marker file '{marker}') "
+                "starting from '{start_path}'.".format(marker=marker, start_path=start_path)
+            )
+        current = parent
+
+
 class Database:
 
     def __init__(self):
@@ -15,7 +33,16 @@ class Database:
         config.read(config_path)
 
         self.database_config = config["database"]
-        self.database_path = self.database_config["path"] + self.database_config["name"]
+
+        project_root = os.environ.get("BOOKDEPOT_PROJECT_ROOT") or _find_project_root(
+            os.path.dirname(os.path.abspath(__file__))
+        )
+        self.database_path = os.path.normpath(
+            os.path.join(project_root,
+                         self.database_config["path"],
+                         self.database_config["name"]
+                         )
+        )
         self.conn = sqlite3.connect(self.database_path)
 
         self.tables_config = config["tables"]

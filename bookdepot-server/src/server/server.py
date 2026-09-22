@@ -6,7 +6,6 @@ from src.util.database import database
 
 # TODO: in progress
 database = database.Database()
-# database.setup()
 repo = repo.DatabaseRepo(database.conn)
 
 app = FastAPI()
@@ -17,12 +16,12 @@ async def read_root():
 
 @app.get("/get-bookcases")
 async def get_bookcases():
-    bookcases = repo.fetch_all_bookcases()
+    bookcases = list(repo.fetch_all_bookcases())
     return {"bookcases": bookcases}
 
 @app.get("/get-books")
 async def get_books():
-    books = repo.fetch_all_books()
+    books = list(repo.fetch_all_books())
     return {"books": books}
 
 if __name__ == "__main__":
