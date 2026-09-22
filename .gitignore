@@ -216,7 +216,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
-/src/util/database/bookDepot_data.db
+/bookdepot-server/src/util/database/bookDepot_data.db
 /identifier.sqlite
 /bookDepot_data.db
 /data/bookDepot_data.db

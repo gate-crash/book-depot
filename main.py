@@ -7,7 +7,7 @@ def __main__():
 
     try:
         database = Database()
-        database.setup()
+        # database.setup()
         repo = DbR(database.conn)
 
     except Exception as error:
