@@ -1,26 +1,22 @@
-from util.database.database import Database
-from util.database.repo import DatabaseRepo as DbR
-import util.dataModels.DataModels as DataModels
-from util.dataModels.Descriptors import SortingMethod
+from src.util.database.database import Database
+from src.util.database.repo import DatabaseRepo as DbR
+import src.util.dataModels.DataModels as DataModels
+
 
 def __main__():
 
-    db = Database()
-    db.database_init()
-    repo = DbR(db.conn)
+    try:
+        database = Database()
+        database.setup()
+        repo = DbR(database.conn)
 
-    # try:
-        # database = Database()
-        # database.database_init()
-        # repo = DbR(database)
-
-    # except Exception as error:
-    #     print(error)
+    except Exception as error:
+        raise error
 
     def gather_book_data():
         print("Tell me about your book! ")
         title= input("What's its title? ")
-        author = input("What's its author? ")
+        author = input("Who's its author? ")
         isbn = input("What's its ISBN? ")
 
         first_name = author.split()[0]
@@ -29,17 +25,14 @@ def __main__():
         repo.insert_data('authors', author)
         print(author)
 
-        book = DataModels.Book(title = title, author = author, isbn = isbn).clean_dict()
-        print(book)
-
         bookcase = DataModels.Bookcase(number=1).clean_dict()
         repo.insert_data('bookcases', bookcase)
 
         shelf = DataModels.Shelf(bookcase=bookcase['id']).clean_dict()
         repo.insert_data('shelves', shelf)
 
-        book = DataModels.Book(title=title, author=author['id'], isbn=isbn, shelf=shelf['id']).clean_dict()
-        repo.insert_data('books', book)
+        book = DataModels.Book(title=title, author=author['id'], isbn=isbn, shelf=shelf['id'])
+        repo.insert_data('books', book.clean_dict())
 
         print("Success!")
         print(repo.find_book_by_title(title))

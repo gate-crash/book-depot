@@ -5,7 +5,7 @@ class Format(enum.Enum):
     #TODO: This is not comprehensive. Other formats to be added as needed/on request.
 
     hardcover = "Hardcover Book"
-    softcover = "Softcover Book"
+    paperback = "Paperback Book"
     binder_book = "Binder Book"
     album = "Album"
     comic_issue = "Comic Issue"
