@@ -4,6 +4,8 @@ from configparser import ConfigParser
 import os
 import logging
 
+from dataModels import Descriptors
+
 
 class DatabaseRepo:
 
@@ -195,6 +197,24 @@ class DatabaseRepo:
             self.cursor.execute(
                 "SELECT * FROM {books};"
                 .format(books=self.table_config["books"]),
+            )
+
+            self.conn.commit()
+            data = self.cursor.fetchall()
+
+        except sqlite3.IntegrityError as e:
+            print("Data error.")
+            raise e
+
+        return data
+
+    def fetch_books_by_single_field(self, field, search):
+        try:
+            self.cursor.execute(
+                "SELECT * FROM {books}"
+                "WHERE ? = ?;"
+                .format(books=self.table_config["books"]),
+                (field, search,)
             )
 
             self.conn.commit()

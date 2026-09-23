@@ -33,6 +33,11 @@ async def get_bookcases():
     bookcases = list(repo.fetch_all_bookcases())
     return {"bookcases": bookcases}
 
+@app.get("/get-shelves/{bookcase_id}")
+async def get_shelves(bookcase_id):
+    shelves = list(repo.get_shelves(bookcase_id))
+    return {"shelves": shelves}
+
 @app.get("/get-books")
 async def get_books():
     books = list(repo.fetch_all_books())
