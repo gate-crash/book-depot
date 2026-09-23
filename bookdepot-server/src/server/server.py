@@ -44,6 +44,35 @@ async def add_book(data: dict = Body(...)):
     except Exception as e:
         return {"message": "Data error.", "error": str(e)}
 
+@app.post("/add-bookcase")
+async def add_book(data: dict = Body(...)):
+
+    try:
+        data = DataModels.Bookcase(**data).clean_dict()
+
+        try:
+            repo.insert_data(table_name='bookcases', data=data)
+            return {"message": "Bookcase added successfully", "data": data}
+        except Exception as e:
+            return {"message": "Something went wrong.", "error": str(e)}
+
+    except Exception as e:
+        return {"message": "Data error.", "error": str(e)}
+
+@app.post("/add-shelf")
+async def add_book(data: dict = Body(...)):
+
+    try:
+        data = DataModels.Shelf(**data).clean_dict()
+
+        try:
+            repo.insert_data(table_name='shelves', data=data)
+            return {"message": "Shelf added successfully", "data": data}
+        except Exception as e:
+            return {"message": "Something went wrong.", "error": str(e)}
+
+    except Exception as e:
+        return {"message": "Data error.", "error": str(e)}
 
 if __name__ == "__main__":
     uvicorn.run(app, host=host, port=port)
