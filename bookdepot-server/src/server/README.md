@@ -27,3 +27,28 @@ Book:
     'shelved': Boolean (default=True)
 }
 ```
+
+e.g.
+
+Adds a single book
+```POST http://localhost:8000/add-book
+Content-Type: application/json
+
+{
+  "title": "The Great Gatsby",
+  "language": "English",
+  "author": "dd48f60b-bfef-4881-9c07-1fd91bd94701",
+  "shelf": "dd48f60b-bfef-4881-9c07-1fd91bd94701",
+  "isbn": "123456789"
+}
+```
+
+Gets all books
+```GET http://localhost:8000/get-books
+```
+
+Gets shelves in a bookcase
+```GET http://localhost:8000/get-shelves
+Content-Type: application/json
+
+{"bookcase":"7f7a8832-9ba9-4a9f-9e42-60c466bd06f1"}```

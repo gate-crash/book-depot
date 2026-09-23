@@ -17,7 +17,7 @@ class Bookcase(DataGeneric):
     number: int | None = None
     name: str | None = None
     sorting_method: str | None = None
-    genre: Genre | None = None
+    genre: str | None = None
     sequence_ordinal: int | None = None
 
 @dataclass
@@ -25,7 +25,7 @@ class Shelf(DataGeneric):
     number: int | None = None
     bookcase: Bookcase | None = None
     sorting_method: str | None = None
-    genre: Genre | None = None
+    genre: str | None = None
     sequence_ordinal: int | None = None
 
 @dataclass

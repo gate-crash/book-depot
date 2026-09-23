@@ -40,6 +40,7 @@ class Genre(enum.Enum):
     self_help = "Self-help"
     nonfiction_general = "Nonfiction (General)"
     fiction_general = "Fiction (General)"
+    miscellaneous = "Miscellaneous"
 
 class SortingMethod(enum.Enum):
     alphabetical_az = "Alphabetical A-Z"

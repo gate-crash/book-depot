@@ -1,3 +1,4 @@
+from dataModels import Descriptors
 from src.util.database.database import Database
 from src.util.database.repo import DatabaseRepo as DbR
 import src.util.dataModels.DataModels as DataModels
@@ -9,6 +10,27 @@ def __main__():
         database = Database()
         # database.setup()
         repo = DbR(database.conn)
+
+        '''
+        TODO: export this logic into an initialization
+        
+        unshelved_case = DataModels.Bookcase(
+            number=0,
+            name="Unshelved",
+            sorting_method=Descriptors.SortingMethod.manual.value,
+            genre=Descriptors.Genre.miscellaneous.value,
+            sequence_ordinal=0
+        ).clean_dict()
+        repo.insert_data('bookcases', unshelved_case )
+
+        unshelved_shelf = DataModels.Shelf(
+            number=0,
+            bookcase=unshelved_case['id'],
+            sorting_method=Descriptors.SortingMethod.manual.value,
+            genre=Descriptors.Genre.miscellaneous.value,
+            sequence_ordinal=0
+        ).clean_dict()
+        repo.insert_data('shelves', unshelved_shelf )'''
 
     except Exception as error:
         raise error
