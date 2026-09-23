@@ -69,7 +69,7 @@ async def add_book(data: dict = Body(...)):
         return {"message": "Data error.", "error": str(e)}
 
 @app.post("/add-shelf")
-async def add_book(data: dict = Body(...)):
+async def add_shelf(data: dict = Body(...)):
 
     try:
         data = DataModels.Shelf(**data).clean_dict()
