@@ -1,6 +1,8 @@
-import json
 import uvicorn
 from fastapi import FastAPI, Body
+from configparser import ConfigParser
+import os
+
 import src.util.database.repo as repo
 from src.util.database import database
 from src.util.dataModels import DataModels
@@ -10,8 +12,15 @@ from src.util.dataModels import DataModels
 database = database.Database()
 repo = repo.DatabaseRepo(database.conn)
 
-host = "localhost"
-port = 8000
+config = ConfigParser()
+
+config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../util/config.ini')
+config.read(config_path)
+server_config = config["server"]
+
+
+host = server_config["address"]
+port = int(server_config["port"])
 
 app = FastAPI()
 
@@ -74,5 +83,8 @@ async def add_book(data: dict = Body(...)):
     except Exception as e:
         return {"message": "Data error.", "error": str(e)}
 
-if __name__ == "__main__":
+def __main__():
     uvicorn.run(app, host=host, port=port)
+
+if __name__ == "__main__":
+    __main__()
