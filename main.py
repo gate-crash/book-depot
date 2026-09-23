@@ -1,7 +1,7 @@
-from dataModels import Descriptors
 from src.util.database.database import Database
 from src.util.database.repo import DatabaseRepo as DbR
 import src.util.dataModels.DataModels as DataModels
+from src.util.dataModels import Descriptors
 
 
 def __main__():

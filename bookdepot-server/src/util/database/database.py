@@ -147,7 +147,8 @@ class Database:
         if os.path.isfile(self.database_path):
             try:
                 cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-                print(cursor.fetchall())
+                tables = cursor.fetchall()
+                logging.log(msg=f"Tables found {tables}", level=logging.DEBUG)
                 logging.log(msg="Database at {database_path} found."
                             .format(database_path=self.database_path), level=logging.INFO)
                 return True
