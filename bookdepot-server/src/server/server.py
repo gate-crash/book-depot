@@ -33,7 +33,7 @@ async def get_books():
 async def add_book(data: dict = Body(...)):
 
     try:
-        data = DataModels.Book(data).clean_dict()
+        data = DataModels.Book(**data).clean_dict()
 
         try:
             repo.insert_data(table_name='books', data=data)
