@@ -2,11 +2,15 @@ import uvicorn
 from fastapi import FastAPI
 import src.util.database.repo as repo
 from src.util.database import database
+from configparser import ConfigParser
 
 
 # TODO: in progress
 database = database.Database()
 repo = repo.DatabaseRepo(database.conn)
+
+host = "localhost"
+port = 8000
 
 app = FastAPI()
 
@@ -24,5 +28,13 @@ async def get_books():
     books = list(repo.fetch_all_books())
     return {"books": books}
 
+@app.post("/add-book")
+async def add_book(data: dict):
+    try:
+        repo.insert_data(table_name='books', data=data)
+        return {"message": "Book added successfully", "data": data}
+    except Exception as e:
+        return {"message": "Something went wrong.", "error": str(e)}
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run(app, host=host, port=port)

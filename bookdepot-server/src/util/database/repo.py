@@ -37,6 +37,9 @@ class DatabaseRepo:
         self.cursor.execute(sql, values)
         self.conn.commit()
 
+        logging.log(level=logging.INFO,
+                    msg=f"Inserting data: {data} into table: {table_name}")
+
     def delete_bookcase(self, bookcase_id):
 
         try:
@@ -231,8 +234,8 @@ class DatabaseRepo:
             )
 
             self.conn.commit()
-            logging.log(msg="Data for possession {loan_id} saved successfully."
-                        .format(loan_id=loan_id), level=logging.DEBUG)
+            logging.log(msg=f"Data for possession {loan_id} saved successfully.",
+                        level=logging.INFO)
 
         except sqlite3.IntegrityError as e:
             print("Data error.")

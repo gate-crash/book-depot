@@ -32,6 +32,7 @@ def __main__():
         repo.insert_data('shelves', shelf)
 
         book = DataModels.Book(title=title, author=author['id'], isbn=isbn, shelf=shelf['id'])
+        # print(book.clean_dict())
         repo.insert_data('books', book.clean_dict())
 
         print("Success!")

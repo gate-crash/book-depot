@@ -120,10 +120,10 @@ class Database:
                 possessions=self.possessions_table,
                 books=self.books_table))
 
-            logging.log(msg="Table schema created.", level=logging.DEBUG)
+            logging.log(msg="Table schema created.", level=logging.INFO)
             cursor.executescript(table_schema)
             self.conn.commit()
-            logging.log(msg="Table schema committed.", level=logging.DEBUG)
+            logging.log(msg="Table schema committed.", level=logging.INFO)
 
             cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
             db_validation = cursor.fetchall()
@@ -149,7 +149,7 @@ class Database:
                 cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
                 print(cursor.fetchall())
                 logging.log(msg="Database at {database_path} found."
-                            .format(database_path=self.database_path), level=logging.DEBUG)
+                            .format(database_path=self.database_path), level=logging.INFO)
                 return True
             except sqlite3.OperationalError as e:
                 raise e
