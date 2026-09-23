@@ -1,8 +1,9 @@
+import json
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 import src.util.database.repo as repo
 from src.util.database import database
-from configparser import ConfigParser
+from src.util.dataModels import DataModels
 
 
 # TODO: in progress
@@ -29,12 +30,20 @@ async def get_books():
     return {"books": books}
 
 @app.post("/add-book")
-async def add_book(data: dict):
+async def add_book(data: dict = Body(...)):
+
     try:
-        repo.insert_data(table_name='books', data=data)
-        return {"message": "Book added successfully", "data": data}
+        data = DataModels.Book(data).clean_dict()
+
+        try:
+            repo.insert_data(table_name='books', data=data)
+            return {"message": "Book added successfully", "data": data}
+        except Exception as e:
+            return {"message": "Something went wrong.", "error": str(e)}
+
     except Exception as e:
-        return {"message": "Something went wrong.", "error": str(e)}
+        return {"message": "Data error.", "error": str(e)}
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host=host, port=port)

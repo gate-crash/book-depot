@@ -82,6 +82,3 @@ class Book(DataGeneric):
                 self.isbn = str(isbn)
             else:
                 raise(ValueError("ISBN must be 13 numbers long or shorter."))
-
-book = Book()
-print(asdict(book))
