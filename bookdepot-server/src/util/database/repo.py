@@ -4,9 +4,6 @@ from configparser import ConfigParser
 import os
 import logging
 
-from dataModels import Descriptors
-
-
 class DatabaseRepo:
 
     def __init__(self, conn: sqlite3.Connection):
