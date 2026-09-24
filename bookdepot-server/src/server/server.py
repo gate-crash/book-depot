@@ -1,5 +1,5 @@
 import uvicorn
-from fastapi import FastAPI, Body
+from fastapi import FastAPI, Body, APIRouter
 from configparser import ConfigParser
 import os
 
@@ -22,25 +22,35 @@ server_config = config["server"]
 host = server_config["address"]
 port = int(server_config["port"])
 
+app = FastAPI()
+
+
 class Server:
-    app = FastAPI()
 
     def __init__(self):
-        pass
+        self.router = APIRouter()
 
-    def run(self, app = app):
+        # Register bound methods so FastAPI doesn't see "self" as a param.
+        self.router.add_api_route("/get-message", self.read_root, methods=["GET"])
+        self.router.add_api_route("/get-bookcases", self.get_bookcases, methods=["GET"])
+        self.router.add_api_route("/get-shelves", self.get_shelves, methods=["GET"])
+        self.router.add_api_route("/get-books", self.get_books, methods=["GET"])
+        self.router.add_api_route("/add-book", self.add_book, methods=["POST"])
+        self.router.add_api_route("/add-bookcase", self.add_bookcase, methods=["POST"])
+        self.router.add_api_route("/add-shelf", self.add_shelf, methods=["POST"])
+
+        app.include_router(self.router)
+
+    def run(self):
         uvicorn.run(app, host=host, port=port)
 
-    @app.get("/get-message")
     async def read_root(self):
         return {"message": "Hello World"}
 
-    @app.get("/get-bookcases")
     async def get_bookcases(self):
         bookcases = list(repo.fetch_all_bookcases())
         return {"bookcases": bookcases}
 
-    @app.get("/get-shelves")
     async def get_shelves(self, data: dict = Body(...)):
 
         print(data)
@@ -49,13 +59,10 @@ class Server:
         shelves = list(repo.get_shelves(bookcase))
         return {"shelves": shelves}
 
-    @app.get("/get-books")
     async def get_books(self):
         books = list(repo.fetch_all_books())
         return {"books": books}
 
-
-    @app.post("/add-book")
     async def add_book(self, data: dict = Body(...)):
 
         try:
@@ -70,8 +77,7 @@ class Server:
         except Exception as e:
             return {"message": "Data error.", "error": str(e)}
 
-    @app.post("/add-bookcase")
-    async def add_book(self, data: dict = Body(...)):
+    async def add_bookcase(self, data: dict = Body(...)):
 
         try:
             data = DataModels.Bookcase(**data).clean_dict()
@@ -85,7 +91,6 @@ class Server:
         except Exception as e:
             return {"message": "Data error.", "error": str(e)}
 
-    @app.post("/add-shelf")
     async def add_shelf(self, data: dict = Body(...)):
 
         try:
