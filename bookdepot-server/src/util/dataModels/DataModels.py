@@ -7,15 +7,18 @@ from src.util.dataModels.Descriptors import Genre, Format, Language
 
 @dataclass
 class DataGeneric:
-    id: str | None = str(uuid.uuid4())
+    id: str | None = None
 
     def clean_dict(self):
         return asdict(self, dict_factory=lambda x: {k: v for k, v in x if v is not None})
 
+    def __post_init__(self):
+        self.id = str(uuid.uuid4())
+
 @dataclass
 class Bookcase(DataGeneric):
     number: int | None = None
-    name: str | None = None
+    case_name: str | None = None
     sorting_method: str | None = None
     genre: str | None = None
     sequence_ordinal: int | None = None

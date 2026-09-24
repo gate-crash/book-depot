@@ -40,8 +40,7 @@ class Database:
         self.database_path = os.path.normpath(
             os.path.join(project_root,
                          self.database_config["path"],
-                         self.database_config["name"]
-                         )
+                         self.database_config["name"])
         )
         self.conn = sqlite3.connect(self.database_path)
 
@@ -61,7 +60,7 @@ class Database:
                             CREATE TABLE IF NOT EXISTS {bookcases} (
                                 id TEXT PRIMARY KEY,
                                 number INTEGER,
-                                name TEXT,
+                                case_name TEXT,
                                 sorting_method TEXT,
                                 sequence_ordinal INCREMENT INTEGER,
                                 genre TEXT,
@@ -156,7 +155,11 @@ class Database:
                 logging.log(msg=f"Tables found {tables}", level=logging.DEBUG)
                 logging.log(msg="Database at {database_path} found."
                             .format(database_path=self.database_path), level=logging.INFO)
-                return True
+                if len(tables) == 5:
+                    return True
+                else:
+                    return False
+
             except sqlite3.OperationalError as e:
                 raise e
 

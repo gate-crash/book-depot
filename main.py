@@ -1,36 +1,21 @@
+import sqlite3
+
 from src.util.database.database import Database
 from src.util.database.repo import DatabaseRepo as DbR
 import src.util.dataModels.DataModels as DataModels
 from src.util.dataModels import Descriptors
+from src.util.startup import Startup
 
 
 def __main__():
 
     try:
         database = Database()
-        # database.setup()
+        if database.check():
+            pass
+        else:
+            database.setup()
         repo = DbR(database.conn)
-
-        '''
-        TODO: export this logic into an initialization
-        
-        unshelved_case = DataModels.Bookcase(
-            number=0,
-            name="Unshelved",
-            sorting_method=Descriptors.SortingMethod.manual.value,
-            genre=Descriptors.Genre.miscellaneous.value,
-            sequence_ordinal=0
-        ).clean_dict()
-        repo.insert_data('bookcases', unshelved_case )
-
-        unshelved_shelf = DataModels.Shelf(
-            number=0,
-            bookcase=unshelved_case['id'],
-            sorting_method=Descriptors.SortingMethod.manual.value,
-            genre=Descriptors.Genre.miscellaneous.value,
-            sequence_ordinal=0
-        ).clean_dict()
-        repo.insert_data('shelves', unshelved_shelf )'''
 
     except Exception as error:
         raise error
@@ -62,6 +47,19 @@ def __main__():
 
         repo.__close__()
 
-    gather_book_data()
+    def unshelved_check_setup():
+        try:
+            repo.check_unshelved()
+        except:
+            startup = Startup(repo)
+            startup.set_up_unshelved()
+
+
+    unshelved_check_setup()
+    # gather_book_data()
+
+    cases = repo.fetch_all_bookcases()
+    print(cases)
+    print(repo.get_shelves(cases[0][0]))
 
 __main__()

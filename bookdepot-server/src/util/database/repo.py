@@ -72,6 +72,37 @@ class DatabaseRepo:
             print("Data delete failed.")
             raise e
 
+    def check_unshelved(self):
+
+        try:
+            self.cursor.execute(
+                "SELECT id FROM {bookcases} WHERE case_name = ?;"
+                .format(bookcases=self.table_config["bookcases"]),
+                ('Unshelved',)
+            )
+
+            self.conn.commit()
+            id = self.cursor.fetchall()[0][0]
+
+            if id is not None:
+                self.cursor.execute(
+                    "SELECT * FROM {shelves} WHERE bookcase = ?;"
+                    .format(shelves=self.table_config["shelves"]),
+                    (id,)
+                )
+
+                self.conn.commit()
+                data = self.cursor.fetchall()
+
+                if len(data) == 1:
+                    return True
+                else:
+                    return False
+
+        except sqlite3.IntegrityError as e:
+            print("Data error.")
+            raise e
+
     def fetch_all_bookcases(self):
 
         try:
@@ -258,3 +289,4 @@ class DatabaseRepo:
         except sqlite3.IntegrityError as e:
             print("Data error.")
             raise e
+
