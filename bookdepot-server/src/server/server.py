@@ -48,7 +48,7 @@ class Server:
         return {"message": "Hello World"}
 
     async def get_bookcases(self):
-        bookcases = list(repo.fetch_all_bookcases())
+        bookcases = repo.fetch_all_bookcases()
         return {"bookcases": bookcases}
 
     async def get_shelves(self, data: dict = Body(...)):
@@ -56,17 +56,17 @@ class Server:
         print(data)
         bookcase = data["bookcase"]
 
-        shelves = list(repo.get_shelves(bookcase))
+        shelves = repo.get_shelves(bookcase)
         return {"shelves": shelves}
 
     async def get_all_books(self):
-        books = list(repo.fetch_all_books())
+        books = repo.fetch_all_books()
         return {"books": books}
 
     async def get_books_by_shelf(self, data: dict = Body(...)):
         shelf = data["shelf"]
 
-        books = list(repo.fetch_books_by_shelf(shelf))
+        books = repo.fetch_books_by_shelf(shelf)
 
         return {"books": books}
 
