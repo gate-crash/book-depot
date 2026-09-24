@@ -39,20 +39,37 @@ class DatabaseRepo:
         logging.log(level=logging.INFO,
                     msg=f"Inserting data: {data} into table: {table_name}")
 
-    def delete_bookcase(self, bookcase_id):
+    def remove_data_by_id(self, table, id):
+        ## This should only be used in the direst of scenarios.
+        ## Any user scenarios should use the set_data_to_deleted() method.
 
         try:
             self.cursor.execute(
-                "DELETE FROM {bookcases} WHERE id = ?;"
-                .format(bookcases=self.table_config["bookcases"]),
-                (bookcase_id,)
+                "DELETE FROM {table} WHERE id = ?;"
+                .format(table=table),
+                (id,)
             )
             self.conn.commit()
 
             print("Data deleted successfully.")
 
         except sqlite3.IntegrityError as e:
-            print("Delete failed.")
+            print("Data delete failed.")
+            raise e
+
+    def set_data_to_deleted(self, table, id):
+        try:
+            self.cursor.execute(
+                "UPDATE {table} SET deleted = True WHERE id = ?;"
+                .format(table=table),
+                (id,)
+            )
+            self.conn.commit()
+
+            print("Record set to deleted.")
+
+        except sqlite3.IntegrityError as e:
+            print("Data delete failed.")
             raise e
 
     def fetch_all_bookcases(self):
@@ -71,22 +88,6 @@ class DatabaseRepo:
             raise e
 
         return data
-
-    def delete_shelf(self, shelf_id):
-
-        try:
-            self.cursor.execute(
-                "DELETE FROM {shelves} WHERE id = ?;"
-                .format(shelves=self.table_config["shelves"]),
-                (shelf_id,)
-            )
-            self.conn.commit()
-
-            print("Data deleted successfully.")
-
-        except sqlite3.IntegrityError as e:
-            print("Data delete failed.")
-            raise e
 
     def get_shelves(self, bookcase):
 

@@ -64,7 +64,8 @@ class Database:
                                 name TEXT,
                                 sorting_method TEXT,
                                 sequence_ordinal INCREMENT INTEGER,
-                                genre TEXT
+                                genre TEXT,
+                                deleted BOOLEAN
                             );
                             CREATE TABLE IF NOT EXISTS {shelves} (
                                 id TEXT PRIMARY KEY,
@@ -73,18 +74,21 @@ class Database:
                                 sorting_method TEXT,
                                 genre TEXT,
                                 sequence_ordinal INCREMENT INTEGER,
+                                deleted BOOLEAN,
                                 FOREIGN KEY (bookcase) REFERENCES {bookcases} (id)
                             );
                             CREATE TABLE IF NOT EXISTS {authors} (
                                 id TEXT PRIMARY KEY,
                                 first_name TEXT NOT NULL,
-                                last_name TEXT
+                                last_name TEXT,
+                                deleted BOOLEAN
                             );
                             CREATE TABLE IF NOT EXISTS {possessions} (
                                 id TEXT PRIMARY KEY,
                                 lend_date DATE,
                                 holder TEXT CHECK (length(holder) <= 100),
-                                holder_contact CHECK (length(holder_contact) <= 100)
+                                holder_contact CHECK (length(holder_contact) <= 100),
+                                deleted BOOLEAN
                             );
                             CREATE TABLE IF NOT EXISTS {books} (
                                 id TEXT PRIMARY KEY,
@@ -108,6 +112,7 @@ class Database:
                                 description TEXT CHECK (length(description) <= 500),
                                 notes TEXT CHECK (length(notes) <= 500),
                                 sequence_ordinal FLOAT,
+                                deleted BOOLEAN,
                                 FOREIGN KEY (possession) REFERENCES {possessions} (id),
                                 FOREIGN KEY (shelf) REFERENCES {shelves} (id),
                                 FOREIGN KEY (author) REFERENCES {authors} (id)

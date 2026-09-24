@@ -19,6 +19,7 @@ class Bookcase(DataGeneric):
     sorting_method: str | None = None
     genre: str | None = None
     sequence_ordinal: int | None = None
+    deleted: bool=False
 
 @dataclass
 class Shelf(DataGeneric):
@@ -27,17 +28,20 @@ class Shelf(DataGeneric):
     sorting_method: str | None = None
     genre: str | None = None
     sequence_ordinal: int | None = None
+    deleted: bool=False
 
 @dataclass
 class Author(DataGeneric):
     first_name: str | None = None
     last_name: str | None = None
+    deleted: bool=False
 
 @dataclass
 class Possession(DataGeneric):
     lend_date: datetime | None = None
     holder: str | None = None
     holder_contact: str | None = None
+    deleted: bool=False
 
 @dataclass
 class Book(DataGeneric):
@@ -63,6 +67,7 @@ class Book(DataGeneric):
     fiction: bool=True
     read: bool=True
     shelved: bool=True
+    deleted: bool=False
 
     def update_shelf(self, shelf: Shelf):
         self.shelf = shelf
