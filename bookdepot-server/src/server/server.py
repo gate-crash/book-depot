@@ -34,11 +34,11 @@ class Server:
         self.router.add_api_route("/get-message", self.read_root, methods=["GET"])
         self.router.add_api_route("/get-bookcases", self.get_bookcases, methods=["GET"])
         self.router.add_api_route("/get-shelves", self.get_shelves, methods=["GET"])
-        self.router.add_api_route("/get-books", self.get_books, methods=["GET"])
+        self.router.add_api_route("/get-books", self.get_all_books, methods=["GET"])
         self.router.add_api_route("/add-book", self.add_book, methods=["POST"])
         self.router.add_api_route("/add-bookcase", self.add_bookcase, methods=["POST"])
         self.router.add_api_route("/add-shelf", self.add_shelf, methods=["POST"])
-
+        self.router.add_api_route("/get-books-by-shelf", self.get_books_by_shelf, methods=["GET"])
         app.include_router(self.router)
 
     def run(self):
@@ -59,8 +59,15 @@ class Server:
         shelves = list(repo.get_shelves(bookcase))
         return {"shelves": shelves}
 
-    async def get_books(self):
+    async def get_all_books(self):
         books = list(repo.fetch_all_books())
+        return {"books": books}
+
+    async def get_books_by_shelf(self, data: dict = Body(...)):
+        shelf = data["shelf"]
+
+        books = list(repo.fetch_books_by_shelf(shelf))
+
         return {"books": books}
 
     async def add_book(self, data: dict = Body(...)):

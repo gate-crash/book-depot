@@ -237,13 +237,12 @@ class DatabaseRepo:
 
         return data
 
-    def fetch_books_by_single_field(self, field, search):
+    def fetch_books_by_shelf(self, shelf: str):
         try:
             self.cursor.execute(
-                "SELECT * FROM {books}"
-                "WHERE ? = ?;"
+                "SELECT * FROM {books} WHERE shelf = ?;"
                 .format(books=self.table_config["books"]),
-                (field, search,)
+                (shelf,)
             )
 
             self.conn.commit()
