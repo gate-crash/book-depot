@@ -8,8 +8,8 @@ import os
 
 from src.util.database.database import Database
 from src.util.database.repo import DatabaseRepo as DbR
-import src.util.dataModels.DataModels as DataModels
-from src.util.dataModels import Descriptors
+from src.util.startup import Startup
+from src.server.server import Server
 
 def __init__():
     _PROJECT_ROOT_MARKER = "requirements.txt"
@@ -36,27 +36,17 @@ def __init__():
             database.setup()
         repo = DbR(database.conn)
 
-
-        # TODO: export this logic into its own method
-
-        unshelved_case = DataModels.Bookcase(
-            number=0,
-            name="Unshelved",
-            sorting_method=Descriptors.SortingMethod.manual.value,
-            genre=Descriptors.Genre.miscellaneous.value,
-            sequence_ordinal=0
-        ).clean_dict()
-        repo.insert_data('bookcases', unshelved_case )
-
-        unshelved_shelf = DataModels.Shelf(
-            number=0,
-            bookcase=unshelved_case['id'],
-            sorting_method=Descriptors.SortingMethod.manual.value,
-            genre=Descriptors.Genre.miscellaneous.value,
-            sequence_ordinal=0
-        ).clean_dict()
-        repo.insert_data('shelves', unshelved_shelf )
+        if repo.check_unshelved():
+            pass
+        else:
+            startup = Startup(repo)
+            startup.set_up_unshelved()
 
     except Exception as error:
         raise error
-    
+
+    server = Server()
+    server.run()
+
+if __name__ == "__main__":
+    __init__()

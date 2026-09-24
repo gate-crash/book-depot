@@ -1,4 +1,4 @@
-from dataModels import DataModels, Descriptors
+from src.util.dataModels import DataModels, Descriptors
 
 class Startup:
 

@@ -22,79 +22,80 @@ server_config = config["server"]
 host = server_config["address"]
 port = int(server_config["port"])
 
-app = FastAPI()
+class Server:
+    app = FastAPI()
 
-@app.get("/get-message")
-async def read_root():
-    return {"message": "Hello World"}
+    def __init__(self):
+        pass
 
-@app.get("/get-bookcases")
-async def get_bookcases():
-    bookcases = list(repo.fetch_all_bookcases())
-    return {"bookcases": bookcases}
+    def run(self, app = app):
+        uvicorn.run(app, host=host, port=port)
 
-@app.get("/get-shelves")
-async def get_shelves(data: dict = Body(...)):
+    @app.get("/get-message")
+    async def read_root(self):
+        return {"message": "Hello World"}
 
-    print(data)
-    bookcase = data["bookcase"]
+    @app.get("/get-bookcases")
+    async def get_bookcases(self):
+        bookcases = list(repo.fetch_all_bookcases())
+        return {"bookcases": bookcases}
 
-    shelves = list(repo.get_shelves(bookcase))
-    return {"shelves": shelves}
+    @app.get("/get-shelves")
+    async def get_shelves(self, data: dict = Body(...)):
 
-@app.get("/get-books")
-async def get_books():
-    books = list(repo.fetch_all_books())
-    return {"books": books}
+        print(data)
+        bookcase = data["bookcase"]
+
+        shelves = list(repo.get_shelves(bookcase))
+        return {"shelves": shelves}
+
+    @app.get("/get-books")
+    async def get_books(self):
+        books = list(repo.fetch_all_books())
+        return {"books": books}
 
 
-@app.post("/add-book")
-async def add_book(data: dict = Body(...)):
-
-    try:
-        data = DataModels.Book(**data).clean_dict()
-
-        try:
-            repo.insert_data(table_name='books', data=data)
-            return {"message": "Book added successfully", "data": data}
-        except Exception as e:
-            return {"message": "Something went wrong.", "error": str(e)}
-
-    except Exception as e:
-        return {"message": "Data error.", "error": str(e)}
-
-@app.post("/add-bookcase")
-async def add_book(data: dict = Body(...)):
-
-    try:
-        data = DataModels.Bookcase(**data).clean_dict()
+    @app.post("/add-book")
+    async def add_book(self, data: dict = Body(...)):
 
         try:
-            repo.insert_data(table_name='bookcases', data=data)
-            return {"message": "Bookcase added successfully", "data": data}
+            data = DataModels.Book(**data).clean_dict()
+
+            try:
+                repo.insert_data(table_name='books', data=data)
+                return {"message": "Book added successfully", "data": data}
+            except Exception as e:
+                return {"message": "Something went wrong.", "error": str(e)}
+
         except Exception as e:
-            return {"message": "Something went wrong.", "error": str(e)}
+            return {"message": "Data error.", "error": str(e)}
 
-    except Exception as e:
-        return {"message": "Data error.", "error": str(e)}
-
-@app.post("/add-shelf")
-async def add_shelf(data: dict = Body(...)):
-
-    try:
-        data = DataModels.Shelf(**data).clean_dict()
+    @app.post("/add-bookcase")
+    async def add_book(self, data: dict = Body(...)):
 
         try:
-            repo.insert_data(table_name='shelves', data=data)
-            return {"message": "Shelf added successfully", "data": data}
+            data = DataModels.Bookcase(**data).clean_dict()
+
+            try:
+                repo.insert_data(table_name='bookcases', data=data)
+                return {"message": "Bookcase added successfully", "data": data}
+            except Exception as e:
+                return {"message": "Something went wrong.", "error": str(e)}
+
         except Exception as e:
-            return {"message": "Something went wrong.", "error": str(e)}
+            return {"message": "Data error.", "error": str(e)}
 
-    except Exception as e:
-        return {"message": "Data error.", "error": str(e)}
+    @app.post("/add-shelf")
+    async def add_shelf(self, data: dict = Body(...)):
 
-def __main__():
-    uvicorn.run(app, host=host, port=port)
+        try:
+            data = DataModels.Shelf(**data).clean_dict()
 
-if __name__ == "__main__":
-    __main__()
+            try:
+                repo.insert_data(table_name='shelves', data=data)
+                return {"message": "Shelf added successfully", "data": data}
+            except Exception as e:
+                return {"message": "Something went wrong.", "error": str(e)}
+
+        except Exception as e:
+            return {"message": "Data error.", "error": str(e)}
