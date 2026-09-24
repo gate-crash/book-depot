@@ -43,6 +43,7 @@ class Database:
                          self.database_config["name"])
         )
         self.conn = sqlite3.connect(self.database_path)
+        self.conn.row_factory = sqlite3.Row
 
         self.tables_config = config["tables"]
         self.bookcases_table = self.tables_config["bookcases"]
