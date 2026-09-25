@@ -82,7 +82,7 @@ class DatabaseRepo:
             )
 
             self.conn.commit()
-            id = self.cursor.fetchall()[0][0]
+            id = self.cursor.fetchall()[0]["id"]
 
             if id is not None:
                 self.cursor.execute(
@@ -100,8 +100,12 @@ class DatabaseRepo:
                     return False
 
         except sqlite3.IntegrityError as e:
-            print("Data error.")
-            raise e
+            logging.log(msg=f"Data error. {e}", level=logging.DEBUG)
+            return False
+
+        except IndexError as e:
+            logging.log(msg=f"Data error. {e}", level=logging.DEBUG)
+            return False
 
     def fetch_all_bookcases(self):
 
