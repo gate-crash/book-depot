@@ -32,13 +32,16 @@ class Server:
 
         # Register bound methods so FastAPI doesn't see "self" as a param.
         self.router.add_api_route("/get-message", self.read_root, methods=["GET"])
-        self.router.add_api_route("/get-bookcases", self.get_bookcases, methods=["GET"])
+        self.router.add_api_route("/bookcases", self.get_bookcases, methods=["GET"])
         self.router.add_api_route("/get-shelves", self.get_shelves, methods=["GET"])
-        self.router.add_api_route("/get-books", self.get_all_books, methods=["GET"])
+        self.router.add_api_route("/books", self.get_all_books, methods=["GET"])
         self.router.add_api_route("/add-book", self.add_book, methods=["POST"])
         self.router.add_api_route("/add-bookcase", self.add_bookcase, methods=["POST"])
         self.router.add_api_route("/add-shelf", self.add_shelf, methods=["POST"])
         self.router.add_api_route("/get-books-by-shelf", self.get_books_by_shelf, methods=["GET"])
+        self.router.add_api_route("/loan", self.create_possession, methods=["GET"])
+        self.router.add_api_route('/get-loans', self.get_possessions, methods=["GET"])
+
         app.include_router(self.router)
 
     def run(self):
@@ -111,3 +114,22 @@ class Server:
 
         except Exception as e:
             return {"message": "Data error.", "error": str(e)}
+
+    async def create_possession(self, data: dict = Body(...)):
+
+        try:
+            data = DataModels.Possession(**data).clean_dict()
+
+            try:
+                repo.insert_data(table_name='possessions', data=data)
+                return {"message": "Possession added successfully", "data": data}
+            except Exception as e:
+                return {"message": "Something went wrong.", "error": str(e)}
+
+        except Exception as e:
+            return {"message": "Data error.", "error": str(e)}
+
+    async def get_possessions(self, data: dict = Body(...)):
+        books = repo.fetch_all_possessions()
+        return {"loans": books}
+

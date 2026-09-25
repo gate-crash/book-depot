@@ -293,3 +293,20 @@ class DatabaseRepo:
             print("Data error.")
             raise e
 
+    def fetch_all_possessions(self):
+
+        try:
+            self.cursor.execute(
+                "SELECT * FROM {possessions};"
+                .format(possessions=self.table_config["possessions"]),
+            )
+
+            self.conn.commit()
+            data = self.cursor.fetchall()
+
+        except sqlite3.IntegrityError as e:
+            print("Data error.")
+            raise e
+
+        return data
+
