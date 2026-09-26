@@ -51,4 +51,5 @@ Gets shelves in a bookcase
 ```GET http://localhost:8000/get-shelves
 Content-Type: application/json
 
-{"bookcase":"7f7a8832-9ba9-4a9f-9e42-60c466bd06f1"}```
+{"bookcase":"7f7a8832-9ba9-4a9f-9e42-60c466bd06f1"}
+```

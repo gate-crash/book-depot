@@ -13,7 +13,8 @@ class DataGeneric:
         return asdict(self, dict_factory=lambda x: {k: v for k, v in x if v is not None})
 
     def __post_init__(self):
-        self.id = str(uuid.uuid4())
+        if self.id is None:
+            self.id = str(uuid.uuid4())
 
 @dataclass
 class Bookcase(DataGeneric):
