@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:bookdepot_client/bookcases.dart';
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -28,30 +29,39 @@ Widget build(BuildContext context) {
                 dragDevices: {...PointerDeviceKind.values},
               ),
               child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: [
-                  for (final bookcase in bookcases)
-                    Container(
-                      width: 400,
-                      margin: const EdgeInsets.all(10),
-                      color: Colors.blue,
-                      child: Image.asset(
-                      'assets/images/bookcase.png',
-                      width: 180,
-                      height: 200,
-                      fit: BoxFit.cover,
-                    ),
-                    ),
-                    
-                ],
-              ),
+  scrollDirection: Axis.horizontal,
+  children: [
+    for (final bookcase in bookcases)
+      GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => BookcaseLandingPage(bookcase: bookcase),
             ),
+          );
+        },
+        child: Container(
+          width: 400,
+          margin: const EdgeInsets.all(10),
+          color: Colors.blue,
+          child: Image.asset(
+            'assets/images/bookcase.png',
+            width: 180,
+            height: 200,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+  ],
+),    ),
           ),
           const Padding(
             padding: EdgeInsets.all(16.0),
             child: Text(
               'Widget below the horizontal list',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
             ),
           ),
         ],
