@@ -501,7 +501,6 @@ components:
           maxLength: 500
         thumbnail_filename:
           type: string
-          description: Accepted by the data model; not represented in the current database schema.
         sequence_ordinal:
           type: number
           format: float

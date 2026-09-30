@@ -112,6 +112,7 @@ class Database:
                                 description TEXT CHECK (length(description) <= 500),
                                 notes TEXT CHECK (length(notes) <= 500),
                                 sequence_ordinal FLOAT,
+                                thumbnail_filename TEXT,
                                 deleted BOOLEAN,
                                 FOREIGN KEY (possession) REFERENCES {possessions} (id),
                                 FOREIGN KEY (shelf) REFERENCES {shelves} (id),
