@@ -9,7 +9,6 @@ import os
 from src.util.database.database import Database
 from src.util.database.repo import DatabaseRepo as DbR
 from src.util.startup import Startup
-from src.server.server import Server
 
 def __init__():
     _PROJECT_ROOT_MARKER = "requirements.txt"
@@ -45,6 +44,7 @@ def __init__():
     except Exception as error:
         raise error
 
+    from src.server.server import Server
     server = Server()
     server.run()
 
