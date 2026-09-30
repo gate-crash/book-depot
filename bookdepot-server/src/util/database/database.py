@@ -51,6 +51,7 @@ class Database:
         self.authors_table = self.tables_config["authors"]
         self.possessions_table = self.tables_config["possessions"]
         self.books_table = self.tables_config["books"]
+        self.book_search_table = self.tables_config["book_search"]
 
     def setup(self):
 
@@ -131,6 +132,58 @@ class Database:
             self.conn.commit()
             logging.log(msg="Table schema committed.", level=logging.INFO)
 
+            # Full-text search index over books + author names, kept in sync via triggers.
+            search_values = """
+                                {{row}}.id, {{row}}.title, {{row}}.series, {{row}}.genre,
+                                {{row}}.isbn, {{row}}.issn, {{row}}.description, {{row}}.notes,
+                                (SELECT first_name FROM {authors} WHERE id = {{row}}.author),
+                                (SELECT last_name FROM {authors} WHERE id = {{row}}.author)
+                            """.format(authors=self.authors_table)
+            search_columns = ("book_id, title, series, genre, isbn, issn, description, notes, "
+                              "author_first, author_last")
+
+            search_schema = ("""
+                            CREATE VIRTUAL TABLE IF NOT EXISTS {book_search} USING fts5(
+                                book_id UNINDEXED,
+                                title, series, genre, isbn, issn, description, notes,
+                                author_first, author_last,
+                                tokenize = 'unicode61 remove_diacritics 2'
+                            );
+                            CREATE TRIGGER IF NOT EXISTS {book_search}_books_ai AFTER INSERT ON {books} BEGIN
+                                INSERT INTO {book_search} ({columns}) VALUES ({new_values});
+                            END;
+                            CREATE TRIGGER IF NOT EXISTS {book_search}_books_ad AFTER DELETE ON {books} BEGIN
+                                DELETE FROM {book_search} WHERE book_id = old.id;
+                            END;
+                            CREATE TRIGGER IF NOT EXISTS {book_search}_books_au AFTER UPDATE ON {books} BEGIN
+                                DELETE FROM {book_search} WHERE book_id = old.id;
+                                INSERT INTO {book_search} ({columns}) VALUES ({new_values});
+                            END;
+                            CREATE TRIGGER IF NOT EXISTS {book_search}_authors_au
+                            AFTER UPDATE OF first_name, last_name ON {authors} BEGIN
+                                UPDATE {book_search}
+                                SET author_first = new.first_name, author_last = new.last_name
+                                WHERE book_id IN (SELECT id FROM {books} WHERE author = new.id);
+                            END;
+                            CREATE TRIGGER IF NOT EXISTS {book_search}_authors_ad AFTER DELETE ON {authors} BEGIN
+                                UPDATE {book_search} SET author_first = NULL, author_last = NULL
+                                WHERE book_id IN (SELECT id FROM {books} WHERE author = old.id);
+                            END;
+                            DELETE FROM {book_search};
+                            INSERT INTO {book_search} ({columns}) SELECT {b_values} FROM {books} b;
+                           """
+                            .format(
+                book_search=self.book_search_table,
+                books=self.books_table,
+                authors=self.authors_table,
+                columns=search_columns,
+                new_values=search_values.format(row="new"),
+                b_values=search_values.format(row="b")))
+
+            cursor.executescript(search_schema)
+            self.conn.commit()
+            logging.log(msg="Search index created.", level=logging.INFO)
+
             cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
             db_validation = cursor.fetchall()
             logging.log(
@@ -157,10 +210,10 @@ class Database:
                 logging.log(msg=f"Tables found {tables}", level=logging.DEBUG)
                 logging.log(msg="Database at {database_path} found."
                             .format(database_path=self.database_path), level=logging.INFO)
-                if len(tables) == 5:
-                    return True
-                else:
-                    return False
+                table_names = {table[0] for table in tables}
+                required = {self.bookcases_table, self.shelves_table, self.authors_table,
+                            self.possessions_table, self.books_table, self.book_search_table}
+                return required.issubset(table_names)
 
             except sqlite3.OperationalError as e:
                 raise e

@@ -3,6 +3,8 @@ import uuid
 from configparser import ConfigParser
 import os
 import logging
+from functools import lru_cache
+
 
 class DatabaseRepo:
 
@@ -107,6 +109,7 @@ class DatabaseRepo:
             logging.log(msg=f"Data error. {e}", level=logging.DEBUG)
             return False
 
+    @lru_cache
     def fetch_all_bookcases(self):
 
         try:
@@ -124,6 +127,7 @@ class DatabaseRepo:
 
         return data
 
+    @lru_cache
     def get_shelves(self, bookcase):
 
         try:
@@ -143,6 +147,7 @@ class DatabaseRepo:
 
         return data
 
+    @lru_cache
     def check_author_by_name(self, first_name, last_name):
 
         try:
@@ -161,6 +166,7 @@ class DatabaseRepo:
 
         return data
 
+    @lru_cache
     def fetch_all_authors(self):
 
         try:
@@ -194,7 +200,8 @@ class DatabaseRepo:
             print("Data error.")
             raise e
 
-    def check_books_by_author(self, first_name, last_name):
+    @lru_cache
+    def fetch_books_by_author(self, first_name, last_name):
         #Still working on this
         author_search = self.check_author_by_name(first_name, last_name)
 
@@ -224,6 +231,7 @@ class DatabaseRepo:
 
         return data
 
+    @lru_cache
     def fetch_all_books(self):
 
         try:
@@ -241,6 +249,7 @@ class DatabaseRepo:
 
         return data
 
+    @lru_cache
     def fetch_books_by_shelf(self, shelf: str):
         try:
             self.cursor.execute(
@@ -258,6 +267,7 @@ class DatabaseRepo:
 
         return data
 
+    @lru_cache
     def find_book_by_title(self, title):
 
         try:
@@ -293,6 +303,7 @@ class DatabaseRepo:
             print("Data error.")
             raise e
 
+    @lru_cache
     def fetch_all_possessions(self):
 
         try:
@@ -310,3 +321,29 @@ class DatabaseRepo:
 
         return data
 
+    def broad_book_search(self, search_term):
+        # Quote each word so FTS5 operators/punctuation in user input are treated literally;
+        # trailing * enables prefix matching (e.g. "tolk" -> "Tolkien").
+        terms = ['"{}"*'.format(word.replace('"', '""')) for word in str(search_term).split()]
+        if not terms:
+            return []
+
+        try:
+            self.cursor.execute(
+                """SELECT b.*
+                        FROM {book_search} s
+                        JOIN {books} b ON b.id = s.book_id
+                        WHERE {book_search} MATCH ?
+                        AND COALESCE(b.deleted, 0) = 0
+                        ORDER BY bm25({book_search}, 0.0, 10.0, 5.0, 2.0, 5.0, 5.0, 1.0, 1.0, 8.0, 8.0);"""
+                .format(books=self.table_config["books"], book_search=self.table_config["book_search"]),
+                (" ".join(terms),),
+            )
+
+            data = self.cursor.fetchall()
+
+        except Exception as e:
+            print("Data error.")
+            raise e
+
+        return data

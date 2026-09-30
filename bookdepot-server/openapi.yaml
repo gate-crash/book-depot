@@ -192,6 +192,64 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Book'
+  /books/find_by_title:
+    get:
+      operationId: findBooksByTitle
+      summary: Find books by exact title
+      description: Requires a JSON body even though this is a GET request.
+      tags: [Books]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [search]
+              properties:
+                search:
+                  type: string
+                  description: Exact title to search for.
+      responses:
+        '200':
+          description: Books with the matching title
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  books:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+  /books/search:
+    get:
+      operationId: searchBooks
+      summary: Search books
+      description: Requires a JSON body even though this is a GET request. Search terms support prefix matching.
+      tags: [Books]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [search]
+              properties:
+                search:
+                  type: string
+                  description: Search terms used to find matching books.
+      responses:
+        '200':
+          description: Books matching the search terms, ordered by relevance
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  books:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
   /book/add:
     post:
       operationId: addBook
