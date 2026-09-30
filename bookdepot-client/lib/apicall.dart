@@ -33,8 +33,8 @@ class _LocalDataScreenState extends State<LocalDataScreen> {
   }
 
   Future<Map<String, dynamic>> fetchLocalJson() async {
-    // Note: Use 'http://192.168.1.41:8000/get-bookcases' for Android Emulator
-    final url = Uri.parse('http://192.168.1.41:8000/get-bookcases');
+    // Note: Use 'http://localhost:8000/bookcases' for Android Emulator
+    final url = Uri.parse('http://localhost:8000/bookcases');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
