@@ -16,6 +16,7 @@ class DataGeneric:
         if self.id is None:
             self.id = str(uuid.uuid4())
 
+
 @dataclass
 class Bookcase(DataGeneric):
     number: int | None = None
