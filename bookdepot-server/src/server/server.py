@@ -45,6 +45,8 @@ class Server:
         self.router.add_api_route("/books", self.fetch_all_books, methods=["GET"])
         self.router.add_api_route("/book/add", self.add_book, methods=["POST"])
         self.router.add_api_route("/book/delete", self.delete_book, methods=["POST"])
+        self.router.add_api_route("/books/find_by_title", self.find_book_by_title, methods=["GET"])
+        self.router.add_api_route("/books/search", self.broad_book_search, methods=["GET"])
 
         self.router.add_api_route("/loan/add", self.create_possession, methods=["POST"])
         self.router.add_api_route("/loans", self.fetch_possessions, methods=["GET"])
@@ -68,7 +70,6 @@ class Server:
 
     async def fetch_shelves(self, data: dict = Body(...)):
 
-        print(data)
         bookcase = data["bookcase"]
 
         shelves = repo.get_shelves(bookcase)
@@ -88,9 +89,7 @@ class Server:
     async def add_book(self, data: dict = Body(...)):
 
         try:
-            data = DataModels.Book(**data)
-            data = data.clean_dict()
-            print(data)
+            data = DataModels.Book(**data).clean_dict()
 
             try:
                 repo.insert_data(table_name='books', data=data)
@@ -119,7 +118,6 @@ class Server:
 
         try:
             data = DataModels.Shelf(**data).clean_dict()
-            print(data)
 
             try:
                 repo.insert_data(table_name='shelves', data=data)
@@ -199,3 +197,23 @@ class Server:
         data = repo.set_data_to_deleted(table='authors', id=author)
 
         return {"author": data}
+
+    async def find_book_by_title(self, data: dict = Body(...)):
+        try:
+            data["search"] = str(data["search"])
+        except Exception as e:
+            return {"message": "Titles must be strings.", "error": str(e)}
+
+        books = repo.find_book_by_title(data['search'])
+
+        return {"books": books}
+
+    async def broad_book_search(self, data: dict = Body(...)):
+        try:
+            data["search"] = str(data["search"])
+        except Exception as e:
+            return {"message": "Search must be string.", "error": str(e)}
+
+        books = repo.broad_book_search(data['search'])
+
+        return {"books": books}

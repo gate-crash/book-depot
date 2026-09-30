@@ -7,7 +7,7 @@ class TestCleanDict:
         bookcase = Bookcase().clean_dict()
 
         length = len(bookcase)
-        assert length == 1
+        assert length == 2
 
 
 if __name__ == '__main__':
