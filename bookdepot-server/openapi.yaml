@@ -1,0 +1,566 @@
+openapi: 3.0.3
+info:
+  title: Book Depot API
+  description: API for managing bookcases, shelves, books, loans, and authors.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+paths:
+  /get-message:
+    get:
+      operationId: getMessage
+      summary: Check that the service is running
+      tags: [Service]
+      responses:
+        '200':
+          description: Service status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Book Depot is up and running.
+  /bookcases:
+    get:
+      operationId: getBookcases
+      summary: List bookcases
+      tags: [Bookcases]
+      responses:
+        '200':
+          description: Bookcases
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bookcases:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Bookcase'
+  /bookcase/add:
+    post:
+      operationId: addBookcase
+      summary: Add a bookcase
+      tags: [Bookcases]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookcaseInput'
+      responses:
+        '200':
+          description: Result of the add operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MutationResult'
+  /bookcase/delete:
+    post:
+      operationId: deleteBookcase
+      summary: Mark a bookcase as deleted
+      tags: [Bookcases]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteInput'
+      responses:
+        '200':
+          description: Updated bookcase
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bookcase:
+                    $ref: '#/components/schemas/Record'
+  /shelves:
+    get:
+      operationId: getShelves
+      summary: List shelves in a bookcase
+      description: Requires a JSON body even though this is a GET request.
+      tags: [Shelves]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [bookcase]
+              properties:
+                bookcase:
+                  type: string
+                  description: ID of the bookcase.
+      responses:
+        '200':
+          description: Shelves in the requested bookcase
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shelves:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Shelf'
+  /shelf/add:
+    post:
+      operationId: addShelf
+      summary: Add a shelf
+      tags: [Shelves]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShelfInput'
+      responses:
+        '200':
+          description: Result of the add operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MutationResult'
+  /shelf/get-books:
+    get:
+      operationId: getBooksByShelf
+      summary: List books on a shelf
+      description: Requires a JSON body even though this is a GET request.
+      tags: [Books]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [shelf]
+              properties:
+                shelf:
+                  type: string
+                  description: ID of the shelf.
+      responses:
+        '200':
+          description: Books on the requested shelf
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  books:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+  /shelf/delete:
+    post:
+      operationId: deleteShelf
+      summary: Mark a shelf as deleted
+      tags: [Shelves]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteInput'
+      responses:
+        '200':
+          description: Updated shelf
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shelf:
+                    $ref: '#/components/schemas/Record'
+  /books:
+    get:
+      operationId: getBooks
+      summary: List books
+      tags: [Books]
+      responses:
+        '200':
+          description: Books
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  books:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+  /book/add:
+    post:
+      operationId: addBook
+      summary: Add a book
+      tags: [Books]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookInput'
+      responses:
+        '200':
+          description: Result of the add operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MutationResult'
+  /book/delete:
+    post:
+      operationId: deleteBook
+      summary: Mark a book as deleted
+      tags: [Books]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteInput'
+      responses:
+        '200':
+          description: Updated book
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  book:
+                    $ref: '#/components/schemas/Record'
+  /loan/add:
+    post:
+      operationId: addLoan
+      summary: Add a loan
+      tags: [Loans]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PossessionInput'
+      responses:
+        '200':
+          description: Result of the add operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MutationResult'
+  /loans:
+    get:
+      operationId: getLoans
+      summary: List loans
+      description: Requires a JSON body, although the body is not used.
+      tags: [Loans]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Loans
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  loans:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Possession'
+  /loan/delete:
+    post:
+      operationId: deleteLoan
+      summary: Mark a loan as deleted
+      tags: [Loans]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteInput'
+      responses:
+        '200':
+          description: Updated loan (returned under the bookcase key)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bookcase:
+                    $ref: '#/components/schemas/Record'
+  /authors:
+    get:
+      operationId: getAuthors
+      summary: List authors
+      tags: [Authors]
+      responses:
+        '200':
+          description: Authors
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  authors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Author'
+  /author/add:
+    post:
+      operationId: addAuthor
+      summary: Add an author
+      tags: [Authors]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorInput'
+      responses:
+        '200':
+          description: Result of the add operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MutationResult'
+  /author/delete:
+    post:
+      operationId: deleteAuthor
+      summary: Mark an author as deleted
+      tags: [Authors]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteInput'
+      responses:
+        '200':
+          description: Updated author
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  author:
+                    $ref: '#/components/schemas/Record'
+components:
+  schemas:
+    Record:
+      type: object
+      description: Database record; fields are returned as stored by SQLite.
+      additionalProperties: true
+    Bookcase:
+      allOf:
+        - $ref: '#/components/schemas/BookcaseInput'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            deleted:
+              type: boolean
+    Shelf:
+      allOf:
+        - $ref: '#/components/schemas/ShelfInput'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            deleted:
+              type: boolean
+    Book:
+      allOf:
+        - $ref: '#/components/schemas/BookInput'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            deleted:
+              type: boolean
+    Author:
+      allOf:
+        - $ref: '#/components/schemas/AuthorInput'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            deleted:
+              type: boolean
+    Possession:
+      allOf:
+        - $ref: '#/components/schemas/PossessionInput'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            deleted:
+              type: boolean
+    BookcaseInput:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Optional; generated by the server when omitted.
+        number:
+          type: integer
+        case_name:
+          type: string
+        sorting_method:
+          type: string
+        genre:
+          type: string
+        sequence_ordinal:
+          type: integer
+        deleted:
+          type: boolean
+    ShelfInput:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Optional; generated by the server when omitted.
+        bookcase:
+          type: string
+          description: ID of the parent bookcase.
+        number:
+          type: integer
+        sorting_method:
+          type: string
+        genre:
+          type: string
+        sequence_ordinal:
+          type: integer
+        deleted:
+          type: boolean
+    BookInput:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Optional; generated by the server when omitted.
+        title:
+          type: string
+          maxLength: 100
+        isbn:
+          type: string
+          maxLength: 13
+          description: Hyphens are removed before insertion.
+        issn:
+          type: string
+          maxLength: 8
+        shelf:
+          type: string
+          description: ID of the shelf.
+        author:
+          type: string
+          description: ID of the author.
+        genre:
+          type: string
+          maxLength: 20
+        language:
+          type: string
+          default: English
+        publish_date:
+          type: string
+          format: date
+        printing_date:
+          type: string
+          format: date
+        series:
+          type: string
+          maxLength: 20
+        volume_number:
+          type: integer
+        format:
+          type: string
+          default: Paperback Book
+        possession:
+          type: string
+          description: Optional ID of the possession/loan.
+        edition:
+          type: integer
+        description:
+          type: string
+          maxLength: 500
+        notes:
+          type: string
+          maxLength: 500
+        thumbnail_filename:
+          type: string
+          description: Accepted by the data model; not represented in the current database schema.
+        sequence_ordinal:
+          type: number
+          format: float
+        fiction:
+          type: boolean
+          default: true
+        read:
+          type: boolean
+          default: true
+        shelved:
+          type: boolean
+          default: true
+        deleted:
+          type: boolean
+    AuthorInput:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Optional; generated by the server when omitted.
+        first_name:
+          type: string
+        last_name:
+          type: string
+        deleted:
+          type: boolean
+    PossessionInput:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Optional; generated by the server when omitted.
+        lend_date:
+          type: string
+          format: date-time
+        holder:
+          type: string
+          maxLength: 100
+        holder_contact:
+          type: string
+          maxLength: 100
+        deleted:
+          type: boolean
+    DeleteInput:
+      type: object
+      required: [id]
+      properties:
+        id:
+          type: string
+          description: ID of the record to mark as deleted.
+    MutationResult:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+        error:
+          type: string
