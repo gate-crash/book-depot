@@ -1,21 +1,21 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/bookcases.dart';
-void main() => runApp(const MyApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+void main() {
+  runApp(const MaterialApp(title: 'Navigation Basics', home: BookDepot()));
+}
 
+class BookDepot extends StatelessWidget {
+  const BookDepot({super.key});
 
 dynamic get bookcases => ['Bookcase 1', 'Bookcase 2', 'Bookcase 3', 'Bookcase 4', 'Bookcase 5', 'Bookcase 6', 'Bookcase 7', 'Bookcase 8', 'Bookcase 9', 'Bookcase 10'];
 
-  @override
+@override
 Widget build(BuildContext context) {
   const title = 'Bookcases';
 
-  return MaterialApp(
-    title: title,
-    home: Scaffold(
+  return Scaffold(
       appBar: AppBar(title: const Text(title)),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,7 +37,7 @@ Widget build(BuildContext context) {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
+            MaterialPageRoute<void>(
               builder: (context) => BookcaseLandingPage(bookcase: bookcase),
             ),
           );
@@ -66,7 +66,6 @@ Widget build(BuildContext context) {
           ),
         ],
       ),
-    ),
   );
 }
 }

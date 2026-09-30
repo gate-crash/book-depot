@@ -8,9 +8,7 @@ class BookcaseLandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
   const title = 'Bookcases';
 
-  return MaterialApp(
-    title: title,
-    home: Scaffold(
+  return Scaffold(
       appBar: AppBar(title: const Text(title)),
       body: Column(
         children: [
@@ -20,7 +18,6 @@ class BookcaseLandingPage extends StatelessWidget {
           ),
         ],
       ),
-    ),
   );
   }
 }
