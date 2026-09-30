@@ -54,7 +54,9 @@ class _LocalDataScreenState extends State<LocalDataScreen> {
           builder: (context, snapshot) {
             // 1. Loading State
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
+              return const CircularProgressIndicator(
+                color: Colors.blue
+              );
             }            // 3. Success State
             if (snapshot.hasData) {
               final response = snapshot.data;
@@ -62,10 +64,13 @@ class _LocalDataScreenState extends State<LocalDataScreen> {
                 return Text('Bookcases: ${response['bookcases']}');
               }
             }
-            else{
-              return const Text('No data found');
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
             }
-            return const Text('Error fetching data');
+            else{
+              return Text('No data found');
+            }
+
           },
         ),
       ),
