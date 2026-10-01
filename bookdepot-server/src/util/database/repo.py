@@ -41,6 +41,20 @@ class DatabaseRepo:
         logging.log(level=logging.INFO,
                     msg=f"Inserting data: {data} into table: {table_name}")
 
+    def update_record(self, table_name, id, data: dict):
+        columns = list(data.keys())
+        values = list(data.values())
+
+        set_clause = ", ".join(f"{column} = ?" for column in columns)
+
+        sql = f"UPDATE {table_name} SET {set_clause} WHERE id = ?"
+
+        self.cursor.execute(sql, values + [id])
+        self.conn.commit()
+
+        logging.log(level=logging.INFO,
+                    msg=f"Inserting data: {data} into table: {table_name}")
+
     def remove_data_by_id(self, table, id):
         ## This should only be used in the direst of scenarios.
         ## Any user scenarios should use the set_data_to_deleted() method.

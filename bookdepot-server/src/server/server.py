@@ -3,6 +3,8 @@ from fastapi import FastAPI, Body, APIRouter
 from configparser import ConfigParser
 import os
 
+from pygments.lexers import data
+
 import src.util.database.repo as repo
 from src.util.database import database
 from src.util.dataModels import DataModels
@@ -30,31 +32,35 @@ class Server:
     def __init__(self):
         self.router = APIRouter()
 
-        # Register bound methods so FastAPI doesn't see "self" as a param.
         self.router.add_api_route("/get-message", self.read_root, methods=["GET"])
 
         self.router.add_api_route("/bookcases", self.fetch_bookcases, methods=["GET"])
         self.router.add_api_route("/bookcase/add", self.add_bookcase, methods=["POST"])
         self.router.add_api_route('/bookcase/delete', self.delete_bookcase, methods=["POST"])
+        self.router.add_api_route("/bookcase/update", self.update_bookcase, methods=["POST"])
 
         self.router.add_api_route("/shelves", self.fetch_shelves, methods=["GET"])
         self.router.add_api_route("/shelf/add", self.add_shelf, methods=["POST"])
         self.router.add_api_route("/shelf/get-books", self.get_books_by_shelf, methods=["GET"])
         self.router.add_api_route("/shelf/delete", self.delete_shelf, methods=["POST"])
+        self.router.add_api_route("/shelf/update", self.update_shelf, methods=["POST"])
 
         self.router.add_api_route("/books", self.fetch_all_books, methods=["GET"])
         self.router.add_api_route("/book/add", self.add_book, methods=["POST"])
         self.router.add_api_route("/book/delete", self.delete_book, methods=["POST"])
         self.router.add_api_route("/books/find_by_title", self.find_book_by_title, methods=["GET"])
         self.router.add_api_route("/books/search", self.broad_book_search, methods=["GET"])
+        self.router.add_api_route("/book/update", self.update_book, methods=["POST"])
 
         self.router.add_api_route("/loan/add", self.create_possession, methods=["POST"])
         self.router.add_api_route("/loans", self.fetch_possessions, methods=["GET"])
         self.router.add_api_route("/loan/delete", self.delete_possession, methods=["POST"])
+        self.router.add_api_route("/loan/update", self.update_possession, methods=["POST"])
 
         self.router.add_api_route("/author/add", self.add_author, methods=["POST"])
         self.router.add_api_route("/authors", self.fetch_authors, methods=["GET"])
         self.router.add_api_route("/author/delete", self.delete_author, methods=["POST"])
+        self.router.add_api_route("/author/update", self.update_author, methods=["POST"])
 
         app.include_router(self.router)
 
@@ -217,3 +223,78 @@ class Server:
         books = repo.broad_book_search(data['search'])
 
         return {"books": books}
+
+    async def update_book(self, data: dict = Body(...)):
+        try:
+            data["id"] = str(data["id"])
+        except Exception as e:
+            return {"message": "Data error.", "error": str(e)}
+
+        book_data = DataModels.Book(**data).clean_dict()
+        repo.update_record(
+            'books',
+            data["id"],
+            book_data
+        )
+
+        return {"book": book_data}
+
+    async def update_shelf(self, data: dict = Body(...)):
+        try:
+            data["id"] = str(data["id"])
+        except Exception as e:
+            return {"message": "Data error.", "error": str(e)}
+
+        book_data = DataModels.Shelf(**data).clean_dict()
+        repo.update_record(
+            'shelves',
+            data["id"],
+            book_data
+        )
+
+        return {"shelf": book_data}
+
+    async def update_bookcase(self, data: dict = Body(...)):
+        try:
+            data["id"] = str(data["id"])
+        except Exception as e:
+            return {"message": "Data error.", "error": str(e)}
+
+        book_data = DataModels.Bookcase(**data).clean_dict()
+        repo.update_record(
+            'bookcases',
+            data["id"],
+            book_data
+        )
+
+        return {"bookcase": book_data}
+
+    async def update_possession(self, data: dict = Body(...)):
+        try:
+            data["id"] = str(data["id"])
+        except Exception as e:
+            return {"message": "Data error.", "error": str(e)}
+
+        book_data = DataModels.Possession(**data).clean_dict()
+        repo.update_record(
+            'possessions',
+            data["id"],
+            book_data
+        )
+
+        return {"loan": book_data}
+
+    async def update_author(self, data: dict = Body(...)):
+        try:
+            data["id"] = str(data["id"])
+        except Exception as e:
+            return {"message": "Data error.", "error": str(e)}
+
+        book_data = DataModels.Author(**data).clean_dict()
+        repo.update_record(
+            'authors',
+            data["id"],
+            book_data
+        )
+
+        return {"author": book_data}
