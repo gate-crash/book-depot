@@ -222,7 +222,7 @@ class Server:
         try:
             data["id"] = str(data["id"])
         except Exception as e:
-            return {"message": "Search must be string.", "error": str(e)}
+            return {"message": "Data error.", "error": str(e)}
 
         book_data = DataModels.Book(**data).clean_dict()
         repo.update_record(
@@ -237,7 +237,7 @@ class Server:
         try:
             data["id"] = str(data["id"])
         except Exception as e:
-            return {"message": "Search must be string.", "error": str(e)}
+            return {"message": "Data error.", "error": str(e)}
 
         book_data = DataModels.Shelf(**data).clean_dict()
         repo.update_record(
@@ -252,7 +252,7 @@ class Server:
         try:
             data["id"] = str(data["id"])
         except Exception as e:
-            return {"message": "Search must be string.", "error": str(e)}
+            return {"message": "Data error.", "error": str(e)}
 
         book_data = DataModels.Bookcase(**data).clean_dict()
         repo.update_record(
@@ -267,7 +267,7 @@ class Server:
         try:
             data["id"] = str(data["id"])
         except Exception as e:
-            return {"message": "Search must be string.", "error": str(e)}
+            return {"message": "Data error.", "error": str(e)}
 
         book_data = DataModels.Possession(**data).clean_dict()
         repo.update_record(
@@ -282,7 +282,7 @@ class Server:
         try:
             data["id"] = str(data["id"])
         except Exception as e:
-            return {"message": "Search must be string.", "error": str(e)}
+            return {"message": "Data error.", "error": str(e)}
 
         book_data = DataModels.Author(**data).clean_dict()
         repo.update_record(
