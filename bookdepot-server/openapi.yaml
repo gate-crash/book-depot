@@ -78,6 +78,30 @@ paths:
                 properties:
                   bookcase:
                     $ref: '#/components/schemas/Record'
+  /bookcase/update:
+    post:
+      operationId: updateBookcase
+      summary: Update a bookcase
+      tags: [Bookcases]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/BookcaseInput'
+                - type: object
+                  required: [id]
+      responses:
+        '200':
+          description: Updated bookcase
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bookcase:
+                    $ref: '#/components/schemas/BookcaseInput'
   /shelves:
     get:
       operationId: getShelves
@@ -125,6 +149,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MutationResult'
+  /shelf/update:
+    post:
+      operationId: updateShelf
+      summary: Update a shelf
+      tags: [Shelves]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/ShelfInput'
+                - type: object
+                  required: [id]
+      responses:
+        '200':
+          description: Updated shelf
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shelf:
+                    $ref: '#/components/schemas/ShelfInput'
   /shelf/get-books:
     get:
       operationId: getBooksByShelf
@@ -289,6 +337,30 @@ paths:
                 properties:
                   book:
                     $ref: '#/components/schemas/Record'
+  /book/update:
+    post:
+      operationId: updateBook
+      summary: Update a book
+      tags: [Books]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/BookInput'
+                - type: object
+                  required: [id]
+      responses:
+        '200':
+          description: Updated book
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  book:
+                    $ref: '#/components/schemas/BookInput'
   /loan/add:
     post:
       operationId: addLoan
@@ -352,6 +424,30 @@ paths:
                 properties:
                   bookcase:
                     $ref: '#/components/schemas/Record'
+  /loan/update:
+    post:
+      operationId: updateLoan
+      summary: Update a loan
+      tags: [Loans]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/PossessionInput'
+                - type: object
+                  required: [id]
+      responses:
+        '200':
+          description: Updated loan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  loan:
+                    $ref: '#/components/schemas/PossessionInput'
   /authors:
     get:
       operationId: getAuthors
@@ -408,6 +504,30 @@ paths:
                 properties:
                   author:
                     $ref: '#/components/schemas/Record'
+  /author/update:
+    post:
+      operationId: updateAuthor
+      summary: Update an author
+      tags: [Authors]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/AuthorInput'
+                - type: object
+                  required: [id]
+      responses:
+        '200':
+          description: Updated author
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  author:
+                    $ref: '#/components/schemas/AuthorInput'
 components:
   schemas:
     Record:
