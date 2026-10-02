@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:bookdepot_client/bookcases.dart';
-import 'package:bookdepot_client/apicall.dart';
+import 'package:bookdepot-client/bookcases.dart';
 
 void main() {
   runApp(const MaterialApp(title: 'Navigation Basics', home: BookDepot()));
