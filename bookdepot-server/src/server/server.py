@@ -3,14 +3,10 @@ from fastapi import FastAPI, Body, APIRouter
 from configparser import ConfigParser
 import os
 
-from pygments.lexers import data
-
 import src.util.database.repo as repo
 from src.util.database import database
 from src.util.dataModels import DataModels
 
-
-# TODO: in progress
 database = database.Database()
 repo = repo.DatabaseRepo(database.conn)
 
@@ -20,12 +16,10 @@ config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../util/
 config.read(config_path)
 server_config = config["server"]
 
-
 host = server_config["address"]
 port = int(server_config["port"])
 
 app = FastAPI()
-
 
 class Server:
 
