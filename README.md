@@ -1,6 +1,8 @@
 # book-depot
 A library management tool for home book aficionados. 
 
+Install dependencies by running `pip install -r requirements.txt` in the root.
+
 Run from root of `book-depot` by using `python bookdepot-server`
 
 > [!Note]
