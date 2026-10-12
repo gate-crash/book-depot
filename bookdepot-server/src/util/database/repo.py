@@ -3,10 +3,6 @@ import uuid
 from configparser import ConfigParser
 import os
 import logging
-from functools import lru_cache
-
-from src.util.database.database import Database
-
 
 class DatabaseRepo:
 
@@ -212,7 +208,6 @@ class DatabaseRepo:
             print("Data error.")
             raise e
 
-    @lru_cache
     def fetch_books_by_author(self, first_name, last_name):
         #Still working on this
         author_search = self.check_author_by_name(first_name, last_name)
@@ -243,7 +238,6 @@ class DatabaseRepo:
 
         return data
 
-    @lru_cache
     def fetch_all_books(self):
 
         try:
@@ -261,7 +255,6 @@ class DatabaseRepo:
 
         return data
 
-    @lru_cache
     def fetch_books_by_shelf(self, shelf: str):
         try:
             self.cursor.execute(
@@ -279,7 +272,6 @@ class DatabaseRepo:
 
         return data
 
-    @lru_cache
     def find_book_by_title(self, title):
 
         try:
