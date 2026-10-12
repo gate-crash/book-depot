@@ -5,6 +5,8 @@ import os
 import logging
 from functools import lru_cache
 
+from src.util.database.database import Database
+
 
 class DatabaseRepo:
 
@@ -123,7 +125,6 @@ class DatabaseRepo:
             logging.log(msg=f"Data error. {e}", level=logging.DEBUG)
             return False
 
-    @lru_cache
     def fetch_all_bookcases(self):
 
         try:
@@ -141,7 +142,6 @@ class DatabaseRepo:
 
         return data
 
-    @lru_cache
     def get_shelves(self, bookcase):
 
         try:
@@ -161,7 +161,6 @@ class DatabaseRepo:
 
         return data
 
-    @lru_cache
     def check_author_by_name(self, first_name, last_name):
 
         try:
@@ -180,7 +179,6 @@ class DatabaseRepo:
 
         return data
 
-    @lru_cache
     def fetch_all_authors(self):
 
         try:
@@ -317,7 +315,6 @@ class DatabaseRepo:
             print("Data error.")
             raise e
 
-    @lru_cache
     def fetch_all_possessions(self):
 
         try:
