@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI, Body, APIRouter
+from fastapi.middleware.cors import CORSMiddleware
 from configparser import ConfigParser
 import os
 
@@ -20,6 +21,19 @@ host = server_config["address"]
 port = int(server_config["port"])
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:8000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],  # Explicitly sets the allowed methods
+    allow_headers=["*"],  # Allows all headers; customize this list if needed
+)
+
 
 class Server:
 
