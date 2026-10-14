@@ -12,7 +12,7 @@ class BookcasesGet extends StatefulWidget {
 
 class _BookcasesGetState extends State<BookcasesGet> {
   // Store the future in a state variable so it doesn't refetch on every rebuild
-  late final Future<Map<String, dynamic>> _dataFuture;
+  late Future<Map<String, dynamic>> _dataFuture;
 
   @override
   void initState() {
@@ -21,9 +21,9 @@ class _BookcasesGetState extends State<BookcasesGet> {
   }
 
   Future<Map<String, dynamic>> fetchLocalJson() async {
-    // Note: Use 'http://localhost:8000/get-bookcases' for Android Emulator
-    final url = Uri.parse('http://192.168.1.41:8000/bookcases');
-    final response = await http.get(url);
+    // Note: Use 'http://localhost:8000/bookcases' for Android Emulator
+    final url = Uri.parse('http://localhost:8000/bookcases');
+    var response = await http.get(url);
 
     if (response.statusCode == 200) {
       return jsonDecode(response.body) as Map<String, dynamic>;
@@ -32,12 +32,12 @@ class _BookcasesGetState extends State<BookcasesGet> {
     }
   }
 Future<void> bookcasesPost() async {
-  final url = Uri.parse('http://192.168.1.41:8000/bookcase/add');
-  final Map<String, dynamic> payload = {
+  final url = Uri.parse('http://localhost:8000/bookcase/add');
+  Map<String, dynamic> payload = {
     'case_name': 'New Case',
   };
 
-  final response = await http.put(
+  var response = await http.put(
     url,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
@@ -49,7 +49,7 @@ Future<void> bookcasesPost() async {
     print('Successfully updated item.');
     
     if (response.body.isNotEmpty) {
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      Map<String, dynamic> responseData = jsonDecode(response.body);
       print('Response data: $responseData');
     }
   } else {
@@ -72,7 +72,7 @@ Future<void> bookcasesPost() async {
               );
             }            // 3. Success State
             if (snapshot.hasData) {
-              final response = snapshot.data;
+              var response = snapshot.data;
               if (response != null){
                 return Text('Bookcases: ${response['bookcases']}');
               }

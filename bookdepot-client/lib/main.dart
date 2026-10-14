@@ -1,15 +1,19 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+
 import 'package:bookdepot_client/bookcases.dart';
+import 'package:bookdepot_client/api/bookcasesget.dart';
 
 void main() {
-  runApp(const MaterialApp(title: 'Navigation Basics', home: BookDepot()));
+  runApp(const MaterialApp(title: 'Book Depot', home: BookDepot()));
 }
 
 class BookDepot extends StatelessWidget {
   const BookDepot({super.key});
 
-dynamic get bookcases => ['Bookcase 1', 'Bookcase 2', 'Bookcase 3', 'Bookcase 4', 'Bookcase 5', 'Bookcase 6', 'Bookcase 7', 'Bookcase 8', 'Bookcase 9', 'Bookcase 10'];
+// dynamic get bookcases => ['Bookcase 1', 'Bookcase 2', 'Bookcase 3', 'Bookcase 4', 'Bookcase 5', 'Bookcase 6', 'Bookcase 7', 'Bookcase 8', 'Bookcase 9', 'Bookcase 10'];
+dynamic get response => BookcasesGet();
+dynamic get bookcases => response['bookcases'].entries;
 
 @override
 Widget build(BuildContext context) {
