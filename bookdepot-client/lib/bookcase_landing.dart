@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(const BookcaseLandingPage());
+
 class BookcaseLandingPage extends StatelessWidget {
   const BookcaseLandingPage({super.key, bookcase});
 

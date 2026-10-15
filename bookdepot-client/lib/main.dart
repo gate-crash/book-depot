@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:bookdepot_client/api/bookcases_get.dart';
+import 'package:bookdepot_client/dataModels/bookcase_widget.dart';
 
 void main() {
   runApp(const MaterialApp(title: 'Book Depot', home: BookDepot()));

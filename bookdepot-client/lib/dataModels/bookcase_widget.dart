@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:bookdepot_client/bookcases.dart';
-
+import 'package:bookdepot_client/bookcase_landing.dart';
+import 'package:bookdepot_client/api/server_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,23 +19,13 @@ class _BookcasesGetState extends State<BookcasesGet> {
   // Store the future in a state variable so it doesn't refetch on every rebuild
   late Future<Map<String, dynamic>> _dataFuture;
 
+  final ServerApiService _serverApiService = ServerApiService();
+  
   @override
   void initState() {
     super.initState();
-    _dataFuture = fetchLocalJson();
-  }
-
-  Future<Map<String, dynamic>> fetchLocalJson() async {
-    // Note: Use 'http://localhost:8000/bookcases' for Android Emulator
-    final url = Uri.parse('http://localhost:8000/bookcases');
-    var response = await http.get(url);
-    print(response.toString());
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body) as Map<String, dynamic>;
-    } else {
-      throw Exception('Failed to load data (${response.statusCode})');
-    }
+    // 2. Call the service instead of a local function
+    _dataFuture = _serverApiService.fetchBookcases();
   }
 
   @override
