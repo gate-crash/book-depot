@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-final String api_host = 'localhost:8000';
+final String api_host = '192.168.1.41:8000';
 final String api_endpoint = 'bookcases';
 class ServerApiGet {
   // Moved the function here and renamed it to be more descriptive
