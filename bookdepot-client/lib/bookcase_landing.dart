@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 
 class BookcaseLandingPage extends StatelessWidget {
-  const BookcaseLandingPage({super.key, bookcase});
+  const BookcaseLandingPage({super.key, required this.bookcase});
+
+  final Map<String, dynamic> bookcase;
 
   @override
   Widget build(BuildContext context) {
