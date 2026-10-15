@@ -24,7 +24,7 @@ class _BookcasesGetState extends State<BookcasesGet> {
   @override
   void initState() {
     super.initState();
-    _dataFuture = _serverApiService.fetchBookcases();
+    _dataFuture = _serverApiService.fetchServerData('bookcases', {});
   }
 
   @override

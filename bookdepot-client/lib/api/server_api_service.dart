@@ -1,16 +1,24 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-final String api_host = '192.168.1.41:8000';
-final String api_endpoint = 'bookcases';
+final String api_host = 'http://192.168.1.41:8000';
 class ServerApiGet {
-  // Moved the function here and renamed it to be more descriptive
-  Future<Map<String, dynamic>> fetchBookcases() async {
-    final url = Uri.parse('http://$api_host/$api_endpoint');
+  Future<Map<String, dynamic>> fetchServerData(String endpoint, Map<String, dynamic> data) async {
+    final url = Uri.parse('$api_host/$endpoint');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       return jsonDecode(response.body) as Map<String, dynamic>;
     } else {
       throw Exception('Failed to load data (${response.statusCode})');
     }
+  }
+}
+
+class ServerApiPost {
+  Future<http.Response> call(String endpoint, Map<String, dynamic> data) async {
+    return await http.post(
+      Uri.parse('$api_host/$endpoint'),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: jsonEncode(data),
+    );
   }
 }
