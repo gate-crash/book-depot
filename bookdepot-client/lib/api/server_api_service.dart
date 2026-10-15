@@ -7,10 +7,6 @@ class ServerApiGet {
   Future<Map<String, dynamic>> fetchBookcases() async {
     final url = Uri.parse('http://$api_host/$api_endpoint');
     var response = await http.get(url);
-    
-    // Optional: Keep or remove the print statement
-    // print(response.toString());
-
     if (response.statusCode == 200) {
       return jsonDecode(response.body) as Map<String, dynamic>;
     } else {
