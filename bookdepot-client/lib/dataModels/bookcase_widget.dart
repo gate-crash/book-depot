@@ -1,10 +1,7 @@
-import 'dart:convert';
 import 'dart:ui';
-
 import 'package:bookdepot_client/bookcase_landing.dart';
 import 'package:bookdepot_client/api/server_api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class BookcasesGet extends StatefulWidget {
   const BookcasesGet({super.key});
