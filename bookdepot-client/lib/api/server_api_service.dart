@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 final String api_host = 'localhost:8000';
 final String api_endpoint = 'bookcases';
-class ServerApiService {
+class ServerApiGet {
   // Moved the function here and renamed it to be more descriptive
   Future<Map<String, dynamic>> fetchBookcases() async {
     final url = Uri.parse('http://$api_host/$api_endpoint');

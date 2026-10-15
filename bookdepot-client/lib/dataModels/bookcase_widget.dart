@@ -19,7 +19,7 @@ class _BookcasesGetState extends State<BookcasesGet> {
   // Store the future in a state variable so it doesn't refetch on every rebuild
   late Future<Map<String, dynamic>> _dataFuture;
 
-  final ServerApiService _serverApiService = ServerApiService();
+  final ServerApiGet _serverApiService = ServerApiGet();
   
   @override
   void initState() {
