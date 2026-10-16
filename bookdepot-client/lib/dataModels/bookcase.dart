@@ -1,11 +1,31 @@
 class Bookcase {
-  final String caseName;
+  String? id;
+  String? caseName;
+  int? number;
+  String? sortingMethod;
+  String? genre;
+  int? sequenceOrdinal;
+  int deleted;
 
-  Bookcase({required this.caseName});
+  Bookcase({
+    required this.id,
+    this.number,
+    this.caseName,
+    this.sortingMethod,
+    this.genre,
+    this.sequenceOrdinal,
+    required this.deleted,
+  });
 
   factory Bookcase.fromJson(Map<String, dynamic> json) {
     return Bookcase(
-      caseName: json['case_name'] ?? 'Unnamed Case',
+      id: json['id'],
+      caseName: json['case_name'],
+      number: json['number'],
+      sortingMethod: json['sorting_method'],
+      genre: json['genre'],
+      sequenceOrdinal: json['sequence_ordinal'],
+      deleted: json['deleted'],
     );
   }
 }

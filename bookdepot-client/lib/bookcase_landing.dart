@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 
+import 'package:bookdepot_client/dataModels/bookcase.dart';
 
 class BookcaseLandingPage extends StatelessWidget {
-  const BookcaseLandingPage({super.key, required this.bookcase});
+  const BookcaseLandingPage({super.key, required Bookcase bookcase}) : this.bookcase = bookcase;
 
-  final Map<String, dynamic> bookcase;
+  final Bookcase bookcase;
 
   @override
   Widget build(BuildContext context) {
-  const title = 'Bookcases';
+    String title;
+    if (bookcase.caseName != null && bookcase.caseName!.isNotEmpty) {
+      title = bookcase.caseName!;
+    } else {
+      title = 'Bookcase ${bookcase.sequenceOrdinal ?? ''}';
+    }
 
   return Scaffold(
-      appBar: AppBar(title: const Text(title)),
+      appBar: AppBar(title: Text(title)),
       body: Column(
         children: [
           const Padding(
