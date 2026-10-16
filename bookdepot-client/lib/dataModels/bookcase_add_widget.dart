@@ -50,8 +50,6 @@ class _BookcaseAddState extends State<BookcaseAdd> {
                 icon: const Icon(Icons.add),
                 onPressed: () async {
                   final caseName = _bookCaseNameInput.text.trim();
-                  if (caseName.isEmpty) return; // Prevent empty submissions
-                  
                   final api = ServerApiPost();
                   final response1 = await api('/bookcase/add', {'case_name': caseName});
                   _bookCaseNameInput.clear();
