@@ -1,7 +1,10 @@
 import 'dart:ui';
+
 import 'package:bookdepot_client/bookcase_landing.dart';
 import 'package:bookdepot_client/api/server_api_service.dart';
 import 'package:flutter/material.dart';
+
+import 'package:bookdepot_client/dataModels/bookcase.dart';
 
 class BookcasesGet extends StatefulWidget {
   const BookcasesGet({super.key});
@@ -17,7 +20,7 @@ class _BookcasesGetState extends State<BookcasesGet> {
   late Future<Map<String, dynamic>> _dataFuture;
 
   final ServerApiGet _serverApiService = ServerApiGet();
-  
+
   @override
   void initState() {
     super.initState();
@@ -53,8 +56,9 @@ class _BookcasesGetState extends State<BookcasesGet> {
                     Navigator.push(
                       context,
                       MaterialPageRoute<void>(
-                        builder: (context) =>
-                            BookcaseLandingPage(bookcase: bookcase),
+                        builder: (context) => BookcaseLandingPage(
+                          bookcase: Bookcase.fromJson(bookcase),
+                        ),
                       ),
                     );
                   },
@@ -62,11 +66,19 @@ class _BookcasesGetState extends State<BookcasesGet> {
                     width: 400,
                     margin: const EdgeInsets.all(10),
                     color: Colors.blue,
-                    child: Image.asset(
-                      'assets/images/bookcase.png',
-                      width: 180,
-                      height: 200,
-                      fit: BoxFit.cover,
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/images/bookcase.png',
+                          width: 180,
+                          height: 200,
+                          fit: BoxFit.cover,
+                        ),
+                        Text(
+                          bookcase['case_name'] ??
+                              'Bookcase ${bookcase['sequence_ordinal'] ?? ''}',
+                        ),
+                      ],
                     ),
                   ),
                 ),
