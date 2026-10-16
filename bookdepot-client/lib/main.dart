@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'package:bookdepot_client/dataModels/bookcase_widget.dart';
+import 'package:bookdepot_client/dataModels/bookcase_add_widget.dart';
+import 'package:bookdepot_client/dataModels/bookcases_widget.dart';
 
 
 void main() {
@@ -27,10 +27,7 @@ class BookDepot extends StatelessWidget {
           ),
           const Padding(
             padding: EdgeInsets.all(16.0),
-            child: Text(
-              'Widget below the horizontal list',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.normal),
-            ),
+            child: BookcaseAdd(),
           ),
         ],
       ),
