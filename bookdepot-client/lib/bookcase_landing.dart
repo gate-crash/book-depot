@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:bookdepot_client/dataModels/bookcase.dart';
+import 'package:bookdepot_client/dataModels/shelf_add_widget.dart';
 
 class BookcaseLandingPage extends StatelessWidget {
   const BookcaseLandingPage({super.key, required Bookcase bookcase}) : this.bookcase = bookcase;
@@ -19,13 +20,14 @@ class BookcaseLandingPage extends StatelessWidget {
   return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Text('Welcome to the Bookcase Landing Page!')
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ShelfAdd(bookcaseId: bookcase.id!),
           ),
         ],
       ),
-  );
+    );
   }
 }
