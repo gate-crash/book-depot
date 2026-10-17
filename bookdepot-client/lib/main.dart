@@ -20,11 +20,10 @@ class BookDepot extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 1. Your existing horizontal list
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 20),
-            height: 400,
+          Expanded(
             child: BookcasesGet(),
           ),
+          
           const Padding(
             padding: EdgeInsets.all(16.0),
             child: BookcaseAdd(),

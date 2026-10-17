@@ -46,6 +46,11 @@ class _ShelfAddState extends State<ShelfAdd> {
                   final api = ServerApiPost();
                   final response1 = await api('/shelf/add', {'case_id': widget.bookcaseId,
                   });
+                  if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Added shelf successfully!')),
+                  );
+                  }
                 },
               ),
             ],
