@@ -47,11 +47,12 @@ class _BookcasesGetState extends State<BookcasesGet> {
             dragDevices: {...PointerDeviceKind.values},
           ),
           child: GridView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0), 
             itemCount: bookcases.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, 
               crossAxisSpacing: 10.0,
-              mainAxisExtent: 499,
+              mainAxisExtent: 200.0, // Set a fixed height for each grid item
               mainAxisSpacing: 10.0,
             ),
             itemBuilder: (context, index) {
@@ -71,10 +72,7 @@ class _BookcasesGetState extends State<BookcasesGet> {
                 },
                 child: Container(
                   color: Colors.blue,
-                  padding: const EdgeInsets.all(1.0),
                   child: Column(
-                    // Stretches the children to fill the full width of the container
-                    crossAxisAlignment: CrossAxisAlignment.stretch, 
                     children: [
                       Expanded(
                         child: Image.asset(
