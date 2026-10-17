@@ -17,7 +17,9 @@ class BookDepot extends StatelessWidget {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: const Color.fromARGB(255, 110, 160, 248),
+            title: const Text('Book Depot'),
+            centerTitle: true,
+            backgroundColor: const Color.fromARGB(255, 16, 99, 30),
             foregroundColor: Colors.white,
             bottom: const TabBar(
               labelColor: Colors.white,

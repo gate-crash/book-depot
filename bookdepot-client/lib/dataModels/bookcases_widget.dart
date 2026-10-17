@@ -49,11 +49,11 @@ class _BookcasesGetState extends State<BookcasesGet> {
           child: GridView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 10.0), 
             itemCount: bookcases.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, 
-              crossAxisSpacing: 10.0,
-              mainAxisExtent: 200.0, // Set a fixed height for each grid item
-              mainAxisSpacing: 10.0,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 375.0,
+              crossAxisSpacing: 5.0,
+              childAspectRatio: 0.7,// Set a fixed height for each grid item
+              mainAxisSpacing: 5.0,
             ),
             itemBuilder: (context, index) {
               final bookcase = bookcases[index];
@@ -71,13 +71,14 @@ class _BookcasesGetState extends State<BookcasesGet> {
                   );
                 },
                 child: Container(
-                  color: Colors.blue,
+                  color: const Color.fromARGB(255, 69, 140, 199),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Expanded(
                         child: Image.asset(
                           'assets/images/bookcase.png',
-                          fit: BoxFit.contain,
+                          fit: BoxFit.fill,
                         ),
                       ),
                       Padding(

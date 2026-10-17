@@ -26,7 +26,7 @@ class _ShelvesGetState extends State<ShelvesGet> {
   @override
   void initState() {
     super.initState();
-    _dataFuture = _serverApiService.serverDataGet('/shelves', {"id": widget.bookcaseId});
+    _dataFuture = _serverApiService.serverDataGet('/shelves', {"bookcase": widget.bookcaseId});
   }
 
   @override
