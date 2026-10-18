@@ -29,7 +29,7 @@ class _ShelvesGetState extends State<ShelvesGet> {
     _dataFuture = _serverApiService.serverDataGet('/shelves', {"bookcase": widget.bookcaseId});
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>>(
       future: _dataFuture,
@@ -48,44 +48,55 @@ class _ShelvesGetState extends State<ShelvesGet> {
           behavior: const MaterialScrollBehavior().copyWith(
             dragDevices: {...PointerDeviceKind.values},
           ),
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              for (final shelf in shelves)
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (context) => BookcaseLandingPage(
-                          bookcase: Bookcase.fromJson(shelf),
+          child: GridView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0), 
+            itemCount: shelves.length,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 375.0,
+              crossAxisSpacing: 5.0,
+              childAspectRatio: 0.7,// Set a fixed height for each grid item
+              mainAxisSpacing: 5.0,
+            ),
+            itemBuilder: (context, index) {
+              final shelf = shelves[index];
+
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (context) => BookcaseLandingPage(
+                        bookcase: Bookcase.fromJson(shelf),
+                      ),
+                    ),
+                  );
+                },
+                child: Container(
+                  color: const Color.fromARGB(255, 69, 140, 199),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: Image.asset(
+                          'assets/images/bookcase.png',
+                          fit: BoxFit.fill,
                         ),
                       ),
-                    );
-                  },
-                  child: Container(
-                    width: 400,
-                    margin: const EdgeInsets.all(10),
-                    color: Colors.blue,
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          'assets/images/bookcase.png',
-                          width: 180,
-                          height: 200,
-                          fit: BoxFit.cover,
-                        ),
-                        Text(
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
                           shelf['case_name'] ??
                               'Shelf ${shelf['sequence_ordinal'] ?? ''}',
+                          textAlign: TextAlign.center,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ),
-            ],
-          ),
+                )
+                              );
+            },
+          )
         );
       },
     );

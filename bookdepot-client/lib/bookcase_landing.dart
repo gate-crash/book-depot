@@ -27,8 +27,7 @@ class BookcaseLandingPage extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: ShelfAdd(bookcaseId: bookcase.id!),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          Expanded(
             child: ShelvesGet(bookcaseId: bookcase.id!),
           ),
         ],

@@ -39,7 +39,7 @@ class _ShelfAddState extends State<ShelfAdd> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
             children: [
-              const SizedBox(width: 10),
+              const SizedBox(width: 10, height: 10),
               IconButton.filled(
                 icon: const Icon(Icons.add),
                 onPressed: () async {
