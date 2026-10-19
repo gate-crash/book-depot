@@ -106,19 +106,14 @@ paths:
     get:
       operationId: getShelves
       summary: List shelves in a bookcase
-      description: Requires a JSON body even though this is a GET request.
       tags: [Shelves]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [bookcase]
-              properties:
-                bookcase:
-                  type: string
-                  description: ID of the bookcase.
+      parameters:
+        - name: bookcase
+          in: query
+          required: true
+          schema:
+            type: string
+          description: ID of the bookcase.
       responses:
         '200':
           description: Shelves in the requested bookcase
@@ -177,19 +172,14 @@ paths:
     get:
       operationId: getBooksByShelf
       summary: List books on a shelf
-      description: Requires a JSON body even though this is a GET request.
       tags: [Books]
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required: [shelf]
-              properties:
-                shelf:
-                  type: string
-                  description: ID of the shelf.
+      parameters:
+        - name: shelf
+          in: query
+          required: true
+          schema:
+            type: string
+          description: ID of the shelf.
       responses:
         '200':
           description: Books on the requested shelf
@@ -241,10 +231,9 @@ paths:
                     items:
                       $ref: '#/components/schemas/Book'
   /books/find_by_title:
-    get:
+    post:
       operationId: findBooksByTitle
       summary: Find books by exact title
-      description: Requires a JSON body even though this is a GET request.
       tags: [Books]
       requestBody:
         required: true
@@ -270,10 +259,10 @@ paths:
                     items:
                       $ref: '#/components/schemas/Book'
   /books/search:
-    get:
+    post:
       operationId: searchBooks
       summary: Search books
-      description: Requires a JSON body even though this is a GET request. Search terms support prefix matching.
+      description: Search terms support prefix matching.
       tags: [Books]
       requestBody:
         required: true

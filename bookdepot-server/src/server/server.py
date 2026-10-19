@@ -1,8 +1,9 @@
 import uvicorn
-from fastapi import FastAPI, Body, APIRouter
+from fastapi import FastAPI, Body, APIRouter, Query
 from fastapi.middleware.cors import CORSMiddleware
 from configparser import ConfigParser
 import os
+from typing import Annotated
 
 import src.util.database.repo as repo
 from src.util.database import database
@@ -56,8 +57,8 @@ class Server:
         self.router.add_api_route("/books", self.fetch_all_books, methods=["GET"])
         self.router.add_api_route("/book/add", self.add_book, methods=["POST"])
         self.router.add_api_route("/book/delete", self.delete_book, methods=["POST"])
-        self.router.add_api_route("/books/find_by_title", self.find_book_by_title, methods=["GET"])
-        self.router.add_api_route("/books/search", self.broad_book_search, methods=["GET"])
+        self.router.add_api_route("/books/find_by_title", self.find_book_by_title, methods=["POST"])
+        self.router.add_api_route("/books/search", self.broad_book_search, methods=["POST"])
         self.router.add_api_route("/book/update", self.update_book, methods=["POST"])
 
         self.router.add_api_route("/loan/add", self.create_possession, methods=["POST"])
@@ -82,9 +83,9 @@ class Server:
         bookcases = repo.fetch_all_bookcases()
         return {"bookcases": bookcases}
 
-    async def fetch_shelves(self, data: dict = Body(...)):
+    async def fetch_shelves(self, bookcase: Annotated[list[str] | None, Query()] = None):
 
-        bookcase = data["bookcase"]
+        bookcase = bookcase[0]
 
         shelves = repo.get_shelves(bookcase)
         return {"shelves": shelves}
@@ -93,8 +94,9 @@ class Server:
         books = repo.fetch_all_books()
         return {"books": books}
 
-    async def get_books_by_shelf(self, data: dict = Body(...)):
-        shelf = data["shelf"]
+    async def get_books_by_shelf(self, shelf: Annotated[list[str] | None, Query()] = None):
+        print(shelf)
+        shelf = shelf[0]
 
         books = repo.fetch_books_by_shelf(shelf)
 

@@ -220,3 +220,5 @@ __marimo__/
 /identifier.sqlite
 /bookDepot_data.db
 /data/bookDepot_data.db
+
+.vscode
