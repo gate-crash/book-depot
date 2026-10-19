@@ -1,7 +1,10 @@
 import 'dart:ui';
+
 import 'package:bookdepot_client/bookcase_landing.dart';
 import 'package:bookdepot_client/api/server_api_service.dart';
 import 'package:flutter/material.dart';
+
+import 'package:bookdepot_client/dataModels/bookcase.dart';
 
 class BookcasesGet extends StatefulWidget {
   const BookcasesGet({super.key});
@@ -43,35 +46,55 @@ class _BookcasesGetState extends State<BookcasesGet> {
           behavior: const MaterialScrollBehavior().copyWith(
             dragDevices: {...PointerDeviceKind.values},
           ),
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              for (final bookcase in bookcases)
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<void>(
-                        builder: (context) =>
-                            BookcaseLandingPage(bookcase: bookcase),
+          child: GridView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0), 
+            itemCount: bookcases.length,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 375.0,
+              crossAxisSpacing: 5.0,
+              childAspectRatio: 0.7,// Set a fixed height for each grid item
+              mainAxisSpacing: 5.0,
+            ),
+            itemBuilder: (context, index) {
+              final bookcase = bookcases[index];
+              
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (context) => BookcaseLandingPage(
+                        bookcase: Shelf.fromJson(bookcase),
                       ),
-                    );
-                  },
-                  child: Container(
-                    width: 400,
-                    margin: const EdgeInsets.all(10),
-                    color: Colors.blue,
-                    child: Image.asset(
-                      'assets/images/bookcase.png',
-                      width: 180,
-                      height: 200,
-                      fit: BoxFit.cover,
                     ),
+                  );
+                },
+                child: Container(
+                  color: const Color.fromARGB(255, 69, 140, 199),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        child: Image.asset(
+                          'assets/images/bookcase.png',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          bookcase['case_name'] ??
+                              'Bookcase ${bookcase['sequence_ordinal'] ?? ''}',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-            ],
-          ),
+                )
+                              );
+            },
+          )
         );
       },
     );

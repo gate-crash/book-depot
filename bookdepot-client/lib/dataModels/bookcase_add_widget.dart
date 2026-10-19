@@ -50,14 +50,19 @@ class _BookcaseAddState extends State<BookcaseAdd> {
                 icon: const Icon(Icons.add),
                 onPressed: () async {
                   final caseName = _bookCaseNameInput.text.trim();
-                  if (caseName.isEmpty) return; // Prevent empty submissions
-                  
                   final api = ServerApiPost();
+                  // ignore: unused_local_variable
                   final response1 = await api('/bookcase/add', {'case_name': caseName});
+                  if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Added "$caseName" - successfully!')),
+                  );
                   _bookCaseNameInput.clear();
+                }
                 },
               ),
             ],
+
           ),
         ),
       ],

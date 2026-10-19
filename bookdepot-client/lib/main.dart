@@ -12,24 +12,33 @@ class BookDepot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const title = 'Bookcases';
-
-    return Scaffold(
-      appBar: AppBar(title: const Text(title)),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 1. Your existing horizontal list
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 20),
-            height: 400,
-            child: BookcasesGet(),
+    return MaterialApp(
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Book Depot'),
+            centerTitle: true,
+            backgroundColor: const Color.fromARGB(255, 16, 99, 30),
+            foregroundColor: Colors.white,
+            bottom: const TabBar(
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.white70,
+              indicatorColor: Colors.white,
+              tabs: [
+                Tab(icon: Icon(Icons.book), text: 'Bookcases'),
+                Tab(icon: Icon(Icons.add_box_outlined), text: 'Add Bookcase'),
+              ],
+            ),
           ),
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: BookcaseAdd(),
+          // 3. Place the TabBarView in the body of the Scaffold
+          body: const TabBarView(
+            children: [
+              Center(child: BookcasesGet(),),
+              Center(child: BookcaseAdd(),),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
