@@ -30,6 +30,7 @@ class Bookcase(DataGeneric):
 class Shelf(DataGeneric):
     number: int | None = None
     bookcase: Bookcase | None = None
+    shelf_name: str | None = None
     sorting_method: str | None = None
     genre: str | None = None
     sequence_ordinal: int | None = None
