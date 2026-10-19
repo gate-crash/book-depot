@@ -13,9 +13,9 @@ class ShelfLandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     String title;
     if (shelf.caseName != null && shelf.caseName!.isNotEmpty) {
-      title = shelf.caseName!;
+      title = shelf.id!;
     } else {
-      title = 'Shelf ${shelf.sequenceOrdinal ?? ''}';
+      title = 'Shelf ${shelf.id ?? ''}';
     }
 
   return Scaffold(
@@ -23,14 +23,7 @@ class ShelfLandingPage extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          shelf['caseName'] ??
-                              'Shelf ${shelf['sequence_ordinal'] ?? ''}',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
+
           Expanded(
             child: BooksGet(shelfId: shelf.id!),
           ),

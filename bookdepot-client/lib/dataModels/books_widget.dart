@@ -78,17 +78,17 @@ class _BooksGetState extends State<BooksGet> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Expanded(
-                        child: Image.asset(
-                          'assets/images/bookcase.png',
-                          fit: BoxFit.fill,
-                        ),
+                        child: Icon(
+                          Icons.book,
+                          size: 200,
+                          color: const Color.fromARGB(255, 74, 243, 102),
+                        )
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          book['case_name'] ??
-                              'Shelf ${book['sequence_ordinal'] ?? ''}',
-                          textAlign: TextAlign.center,
+                          book['title'] ??
+                              'Bookcase ${book['sequence_ordinal'] ?? ''}',
                         ),
                       ),
                     ],

@@ -78,17 +78,17 @@ class _ShelvesGetState extends State<ShelvesGet> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Expanded(
-                        child: Image.asset(
-                          'assets/images/bookcase.png',
-                          fit: BoxFit.fill,
-                        ),
+                        child: Icon(
+                          Icons.collections_bookmark,
+                          size: 200,
+                          color: const Color.fromARGB(255, 74, 243, 102),
+                        )
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          shelf['case_name'] ??
+                          shelf['id'] ??
                               'Shelf ${shelf['sequence_ordinal'] ?? ''}',
-                          textAlign: TextAlign.center,
                         ),
                       ),
                     ],

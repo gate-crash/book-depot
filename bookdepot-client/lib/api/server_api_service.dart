@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-final String api_host = 'http://localhost:8000';
+final String api_host = 'http://192.168.1.41:8000';
 class ServerApiGet {
   Future<Map<String, dynamic>> serverDataGet(String endpoint, Map<String, dynamic> data) async {
     final Map<String, String> queryBody = data.map((key, value) => MapEntry(key, value.toString()));
