@@ -1,4 +1,4 @@
-class Bookcase {
+class Shelf {
   String? id;
   String? caseName;
   int? number;
@@ -7,7 +7,7 @@ class Bookcase {
   int? sequenceOrdinal;
   int deleted;
 
-  Bookcase({
+  Shelf({
     required this.id,
     this.number,
     this.caseName,
@@ -17,8 +17,8 @@ class Bookcase {
     required this.deleted,
   });
 
-  factory Bookcase.fromJson(Map<String, dynamic> json) {
-    return Bookcase(
+  factory Shelf.fromJson(Map<String, dynamic> json) {
+    return Shelf(
       id: json['id'],
       caseName: json['case_name'],
       number: json['number'],
@@ -28,4 +28,6 @@ class Bookcase {
       deleted: json['deleted'],
     );
   }
+
+  String? operator [](String other) {}
 }

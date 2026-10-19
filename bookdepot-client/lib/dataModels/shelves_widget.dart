@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:bookdepot_client/bookcase_landing.dart';
 import 'package:bookdepot_client/api/server_api_service.dart';
 import 'package:flutter/material.dart';
-
+import 'package:bookdepot_client/shelf_landing.dart';
 import 'package:bookdepot_client/dataModels/bookcase.dart';
 
 class ShelvesGet extends StatefulWidget {
@@ -66,8 +66,8 @@ class _ShelvesGetState extends State<ShelvesGet> {
                   Navigator.push(
                     context,
                     MaterialPageRoute<void>(
-                      builder: (context) => BookcaseLandingPage(
-                        bookcase: Bookcase.fromJson(shelf),
+                      builder: (context) => ShelfLandingPage(
+                        shelf: Shelf.fromJson(shelf),
                       ),
                     ),
                   );

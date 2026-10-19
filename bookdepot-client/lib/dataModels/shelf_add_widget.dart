@@ -44,6 +44,7 @@ class _ShelfAddState extends State<ShelfAdd> {
                 icon: const Icon(Icons.add),
                 onPressed: () async {
                   final api = ServerApiPost();
+                  // ignore: unused_local_variable
                   final response1 = await api('/shelf/add', {'bookcase': widget.bookcaseId,
                   });
                   if (context.mounted) {
