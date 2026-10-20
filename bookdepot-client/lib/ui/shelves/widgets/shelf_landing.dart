@@ -7,7 +7,7 @@ import 'package:bookdepot_client/ui/shelves/widgets/shelf_add_widget.dart';
 class ShelfLandingPage extends StatelessWidget {
   const ShelfLandingPage({super.key, required this.shelf});
 
-  final Shelf shelf;
+  final BookCase shelf;
 
   @override
   Widget build(BuildContext context) {

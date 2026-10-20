@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_landing.dart';
 import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/shelves/widgets/shelf_landing.dart';
@@ -67,7 +66,7 @@ class _ShelvesGetState extends State<ShelvesGet> {
                     context,
                     MaterialPageRoute<void>(
                       builder: (context) => ShelfLandingPage(
-                        shelf: Shelf.fromJson(shelf),
+                        shelf: BookCase.fromJson(shelf),
                       ),
                     ),
                   );

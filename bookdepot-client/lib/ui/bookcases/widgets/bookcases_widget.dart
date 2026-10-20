@@ -65,7 +65,7 @@ class _BookcasesGetState extends State<BookcasesGet> {
                     context,
                     MaterialPageRoute<void>(
                       builder: (context) => BookcaseLandingPage(
-                        bookcase: Shelf.fromJson(bookcase),
+                        bookcase: BookCase.fromJson(bookcase),
                       ),
                     ),
                   );

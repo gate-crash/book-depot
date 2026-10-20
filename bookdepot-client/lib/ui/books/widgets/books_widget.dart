@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_landing.dart';
 import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/shelves/widgets/shelf_landing.dart';
@@ -67,7 +66,7 @@ class _BooksGetState extends State<BooksGet> {
                     context,
                     MaterialPageRoute<void>(
                       builder: (context) => ShelfLandingPage(
-                        shelf: Shelf.fromJson(book),
+                        shelf: BookCase.fromJson(book),
                       ),
                     ),
                   );
@@ -89,6 +88,12 @@ class _BooksGetState extends State<BooksGet> {
                         child: Text(
                           book['title'] ??
                               'Bookcase ${book['sequence_ordinal'] ?? ''}',
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          book['Author'],
                         ),
                       ),
                     ],
