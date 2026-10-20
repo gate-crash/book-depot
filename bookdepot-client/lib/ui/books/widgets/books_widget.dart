@@ -6,9 +6,14 @@ import 'package:bookdepot_client/ui/shelves/widgets/shelf_landing.dart';
 import 'package:bookdepot_client/ui/bookcases/models/bookcase.dart';
 
 class BooksGet extends StatefulWidget {
-  const BooksGet({super.key, required this.shelfId});
+  const BooksGet({
+    super.key,
+    required this.endpoint,
+    required this.payload,
+  });
 
-  final String shelfId;
+  final String endpoint;
+  final Map<String, dynamic> payload;
 
   @override
   State<BooksGet> createState() {
@@ -25,7 +30,10 @@ class _BooksGetState extends State<BooksGet> {
   @override
   void initState() {
     super.initState();
-    _dataFuture = _serverApiService.serverDataGet('/shelf/get-books', {"shelf": widget.shelfId});
+    _dataFuture = _serverApiService.serverDataGet(
+      widget.endpoint,
+      widget.payload,
+    );
   }
 
 @override

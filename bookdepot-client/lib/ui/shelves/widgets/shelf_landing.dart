@@ -25,7 +25,10 @@ class ShelfLandingPage extends StatelessWidget {
         children: [
 
           Expanded(
-            child: BooksGet(shelfId: shelf.id!),
+            child: BooksGet(
+              endpoint: '/shelf/get-books',
+              payload: {'shelf': shelf.id!},
+            ),
           ),
         ],
       ),
