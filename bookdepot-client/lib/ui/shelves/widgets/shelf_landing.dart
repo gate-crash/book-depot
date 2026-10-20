@@ -1,8 +1,6 @@
-import 'package:bookdepot_client/ui/shelves/widgets/shelves_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/books/widgets/books_widget.dart';
 import 'package:bookdepot_client/ui/bookcases/models/bookcase.dart';
-import 'package:bookdepot_client/ui/shelves/widgets/shelf_add_widget.dart';
 
 class ShelfLandingPage extends StatelessWidget {
   const ShelfLandingPage({super.key, required this.shelf});

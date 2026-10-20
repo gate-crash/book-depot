@@ -29,5 +29,7 @@ class BookCase {
     );
   }
 
-  String? operator [](String other) {}
+  String? operator [](String other) {
+    return null;
+  }
 }
