@@ -1,8 +1,8 @@
-import 'package:bookdepot_client/dataModels/shelves_widget.dart';
+import 'package:bookdepot_client/ui/shelves/widgets/shelves_widget.dart';
 import 'package:flutter/material.dart';
-
-import 'package:bookdepot_client/dataModels/bookcase.dart';
-import 'package:bookdepot_client/dataModels/shelf_add_widget.dart';
+import 'package:bookdepot_client/ui/books/widgets/books_widget_all.dart';
+import 'package:bookdepot_client/ui/bookcases/models/bookcase.dart';
+import 'package:bookdepot_client/ui/shelves/widgets/shelf_add_widget.dart';
 
 
 class BookcaseLandingPage extends StatelessWidget {
@@ -12,9 +12,8 @@ class BookcaseLandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DefaultTabController(
-        length: 2,
+    return DefaultTabController(
+        length: 3,
         child: Scaffold(
           appBar: AppBar(
             leading: IconButton(
@@ -33,6 +32,7 @@ class BookcaseLandingPage extends StatelessWidget {
               indicatorColor: Colors.white,
               tabs: [
                 Tab(icon: Icon(Icons.book), text: 'Shelves'),
+                Tab(icon: Icon(Icons.book), text: 'All Books'),
                 Tab(icon: Icon(Icons.add_box_outlined), text: 'Add Shelf'),
               ],
             ),
@@ -41,11 +41,11 @@ class BookcaseLandingPage extends StatelessWidget {
           body: TabBarView(
             children: [
               Center(child: ShelvesGet(bookcaseId: bookcase.id!),),
+              Center(child: BooksGetAll(),),
               Center(child: ShelfAdd(bookcaseId: bookcase.id!),),
             ],
           ),
         ),
-      ),
     );
   }
 }

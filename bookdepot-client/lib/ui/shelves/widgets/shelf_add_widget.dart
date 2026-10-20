@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bookdepot_client/api/server_api_service.dart';
+import 'package:bookdepot_client/data/models/server_api_model.dart';
 
 class ShelfAdd extends StatefulWidget {
   // Removed the unused 'bookcase' map parameter for cleaner embedding

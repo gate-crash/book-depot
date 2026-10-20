@@ -1,10 +1,10 @@
 import 'dart:ui';
 
-import 'package:bookdepot_client/bookcase_landing.dart';
-import 'package:bookdepot_client/api/server_api_service.dart';
+import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_landing.dart';
+import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:flutter/material.dart';
-import 'package:bookdepot_client/shelf_landing.dart';
-import 'package:bookdepot_client/dataModels/bookcase.dart';
+import 'package:bookdepot_client/ui/shelves/widgets/shelf_landing.dart';
+import 'package:bookdepot_client/ui/bookcases/models/bookcase.dart';
 
 class ShelvesGet extends StatefulWidget {
   const ShelvesGet({super.key, required this.bookcaseId});
