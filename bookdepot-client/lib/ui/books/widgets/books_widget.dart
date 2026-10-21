@@ -4,6 +4,8 @@ import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/books/widgets/book_landing.dart';
 import 'package:bookdepot_client/ui/books/models/book.dart';
+import 'package:bookdepot_client/ui/books/widgets/book_add_widget.dart';
+import 'package:bookdepot_client/data/models/floating_action_button.dart';
 
 class BooksGet extends StatefulWidget {
   const BooksGet({
@@ -38,7 +40,17 @@ class _BooksGetState extends State<BooksGet> {
 
 @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>>(
+    return Scaffold(
+      floatingActionButton: FloatingActionButton.large(
+        onPressed: ()
+        {Navigator.push(
+            context,
+              MaterialPageRoute<void>(
+                builder: (context) => BookAdd(shelfId: '',
+                ),
+              ),
+            );}),
+      body: FutureBuilder<Map<String, dynamic>>(
       future: _dataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -48,7 +60,6 @@ class _BooksGetState extends State<BooksGet> {
         } else if (!snapshot.hasData || snapshot.data!['books'] == null) {
           return const Center(child: Text('No data available'));
         }
-
         final books = snapshot.data!['books'] as List<dynamic>;
 
         return ScrollConfiguration(
@@ -104,6 +115,7 @@ class _BooksGetState extends State<BooksGet> {
           )
         );
       },
+      ),
     );
   }
 }

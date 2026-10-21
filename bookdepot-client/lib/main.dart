@@ -15,7 +15,7 @@ class BookDepot extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
-        length: 4,
+        length: 3,
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Book Depot'),
@@ -30,7 +30,6 @@ class BookDepot extends StatelessWidget {
                 Tab(icon: Icon(Icons.shelves), text: 'Bookcases'),
                 Tab(icon: Icon(Icons.book), text: 'Books'),
                 Tab(icon: Icon(Icons.book), text: 'Authors'),
-                Tab(icon: Icon(Icons.add_box_outlined), text: 'Add Bookcase'),
               ],
             ),
           ),
@@ -43,7 +42,6 @@ class BookDepot extends StatelessWidget {
               payload: {},
             ),),
               Center(child: AuthorsGet()),
-              Center(child: BookcaseAdd(),),
             ],
           ),
         ),

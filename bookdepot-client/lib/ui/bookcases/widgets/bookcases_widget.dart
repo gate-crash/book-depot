@@ -3,6 +3,7 @@ import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_landing.dart';
 import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/bookcases/models/bookcase.dart';
+import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_add_widget.dart';
 
 class BookcasesGet extends StatefulWidget {
   const BookcasesGet({super.key});
@@ -27,7 +28,17 @@ class _BookcasesGetState extends State<BookcasesGet> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>>(
+    return Scaffold(
+      floatingActionButton: FloatingActionButton.large(onPressed: () {Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (context) => BookcaseAdd(
+                      ),
+                    ),
+                  );},
+                  child: const Icon(Icons.add)
+                  ),
+      body: FutureBuilder<Map<String, dynamic>>(
       future: _dataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -95,6 +106,7 @@ class _BookcasesGetState extends State<BookcasesGet> {
           )
         );
       },
+      )
     );
   }
 }
