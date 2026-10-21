@@ -46,19 +46,17 @@ class _BookcaseAddState extends State<BookcaseAdd> {
                 ),
               ),
               const SizedBox(width: 10),
-              IconButton.filled(
-                icon: const Icon(Icons.add),
-                onPressed: () async {
-                  final caseName = _bookCaseNameInput.text.trim();
-                  final api = ServerApiPost();
-                  // ignore: unused_local_variable
-                  final response1 = await api('/bookcase/add', {'case_name': caseName});
-                  if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Added "$caseName" - successfully!')),
-                  );
-                  _bookCaseNameInput.clear();
-                }
+              ApiPostIconButton(
+                endpoint: '/book/add',
+                getPayload: () => {
+                  'title': _bookNameInput.text.trim(),
+                  'author': _bookAuthorInput.text.trim(),
+                  'shelf': widget.shelfId,
+                },
+                getSuccessMessage: (payload) => 'Added "${payload['title']}" successfully!',
+                onSuccess: () {
+                  _bookNameInput.clear();
+                  _bookAuthorInput.clear(); 
                 },
               ),
             ],
