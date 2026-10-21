@@ -28,9 +28,6 @@ class Book {
     this.shelf,
     this.title,
     this.author,
-    this.genre,
-    this.sequenceOrdinal,
-    required this.deleted,
   });
 
   factory Book.fromJson(Map<String, dynamic> json) {
@@ -39,9 +36,6 @@ class Book {
       shelf: json['shelf'],
       title: json['title'],
       author: json['author'],
-      genre: json['genre'],
-      sequenceOrdinal: json['sequence_ordinal'],
-      deleted: json['deleted'],
     );
   }
 
