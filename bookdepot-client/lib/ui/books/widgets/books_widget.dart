@@ -2,8 +2,8 @@ import 'dart:ui';
 
 import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:flutter/material.dart';
-import 'package:bookdepot_client/ui/shelves/widgets/shelf_landing.dart';
-import 'package:bookdepot_client/ui/bookcases/models/bookcase.dart';
+import 'package:bookdepot_client/ui/books/widgets/book_landing.dart';
+import 'package:bookdepot_client/ui/books/models/book.dart';
 
 class BooksGet extends StatefulWidget {
   const BooksGet({
@@ -73,8 +73,8 @@ class _BooksGetState extends State<BooksGet> {
                   Navigator.push(
                     context,
                     MaterialPageRoute<void>(
-                      builder: (context) => ShelfLandingPage(
-                        shelf: BookCase.fromJson(book),
+                      builder: (context) => BookLandingPage(
+                        book: Book.fromJson(book),
                       ),
                     ),
                   );
@@ -85,23 +85,15 @@ class _BooksGetState extends State<BooksGet> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Expanded(
-                        child: Icon(
-                          Icons.book,
-                          size: 200,
-                          color: const Color.fromARGB(255, 74, 243, 102),
-                        )
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          book['title'] ??
-                              'Bookcase ${book['sequence_ordinal'] ?? ''}',
+                        child: Image.asset(
+                          'assets/images/odyssey.jpg',
+                          fit: BoxFit.fill,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          book['Author'],
+                          book['title'],
                         ),
                       ),
                     ],

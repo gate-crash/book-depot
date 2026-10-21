@@ -14,11 +14,11 @@ class ShelfAdd extends StatefulWidget {
 }
 
 class _ShelfAddState extends State<ShelfAdd> {
-  final TextEditingController _bookCaseNameInput = TextEditingController();
+  final TextEditingController _ShelfNameInput = TextEditingController();
   
   @override
   void dispose() {
-    _bookCaseNameInput.dispose();
+    _ShelfNameInput.dispose();
     super.dispose();
   }
   

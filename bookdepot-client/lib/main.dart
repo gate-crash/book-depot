@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_add_widget.dart';
 import 'package:bookdepot_client/ui/bookcases/widgets/bookcases_widget.dart';
-import 'package:bookdepot_client/ui/books/widgets/books_widget_all.dart';
+import 'package:bookdepot_client/ui/books/widgets/books_widget.dart';
 
 void main() {
   runApp(const MaterialApp(title: 'Book Depot', home: BookDepot()));
@@ -36,7 +36,10 @@ class BookDepot extends StatelessWidget {
           body: TabBarView(
             children: [
               Center(child: BookcasesGet(),),
-              Center(child: BooksGetAll(),),
+              Center(child: BooksGet(
+              endpoint: '/books',
+              payload: {},
+            ),),
               Center(child: BookcaseAdd(),),
             ],
           ),
