@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/books/widgets/book_landing.dart';
 import 'package:bookdepot_client/ui/books/models/book.dart';
 import 'package:bookdepot_client/ui/books/widgets/book_add_widget.dart';
-import 'package:bookdepot_client/data/models/floating_action_button.dart';
 
 class BooksGet extends StatefulWidget {
   const BooksGet({

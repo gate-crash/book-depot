@@ -1,9 +1,7 @@
 import 'dart:ui';
 import 'package:bookdepot_client/data/models/server_api_model.dart';
-import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_landing.dart';
 import 'package:flutter/material.dart';
 
-import 'package:bookdepot_client/ui/authors/models/authors.dart';
 
 class AuthorsGet extends StatefulWidget {
   const AuthorsGet({super.key});
