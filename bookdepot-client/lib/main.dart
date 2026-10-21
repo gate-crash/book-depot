@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_add_widget.dart';
 import 'package:bookdepot_client/ui/bookcases/widgets/bookcases_widget.dart';
 import 'package:bookdepot_client/ui/books/widgets/books_widget.dart';
+import 'package:bookdepot_client/ui/authors/widgets/authors_widget.dart';
 
 void main() {
   runApp(const MaterialApp(title: 'Book Depot', home: BookDepot()));
@@ -14,7 +15,7 @@ class BookDepot extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
-        length: 3,
+        length: 4,
         child: Scaffold(
           appBar: AppBar(
             title: const Text('Book Depot'),
@@ -27,7 +28,8 @@ class BookDepot extends StatelessWidget {
               indicatorColor: Colors.white,
               tabs: [
                 Tab(icon: Icon(Icons.shelves), text: 'Bookcases'),
-                Tab(icon: Icon(Icons.book), text: 'All Books'),
+                Tab(icon: Icon(Icons.book), text: 'Books'),
+                Tab(icon: Icon(Icons.book), text: 'Authors'),
                 Tab(icon: Icon(Icons.add_box_outlined), text: 'Add Bookcase'),
               ],
             ),
@@ -40,6 +42,7 @@ class BookDepot extends StatelessWidget {
               endpoint: '/books',
               payload: {},
             ),),
+              Center(child: AuthorsGet()),
               Center(child: BookcaseAdd(),),
             ],
           ),

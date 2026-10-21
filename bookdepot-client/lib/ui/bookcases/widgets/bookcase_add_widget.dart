@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:bookdepot_client/data/models/server_api_model.dart';
 
 class BookcaseAdd extends StatefulWidget {
-  // Removed the unused 'bookcase' map parameter for cleaner embedding
   const BookcaseAdd({super.key});
 
   @override
@@ -20,8 +19,11 @@ class _BookcaseAddState extends State<BookcaseAdd> {
   
   @override
   Widget build(BuildContext context) {
-    // Return a Column directly, omitting the Scaffold and AppBar
-    return Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add Bookcase'),
+      ),
+    body: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
@@ -59,13 +61,13 @@ class _BookcaseAddState extends State<BookcaseAdd> {
                   );
                   _bookCaseNameInput.clear();
                 }
-                },
-              ),
-            ],
-
+                  },
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

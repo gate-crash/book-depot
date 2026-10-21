@@ -19,7 +19,6 @@ class Author {
     return Author(
       id: json['id'],
       sortingMethod: json['sorting_method'],
-      firstName: json['first_name'],
       sequenceOrdinal: json['sequence_ordinal'],
     );
   }
