@@ -1,7 +1,7 @@
-import 'package:bookdepot_client/ui/books/widgets/book_add_widget.dart';
+import 'package:bookdepot_client/ui/authors/widgets/authors_widget.dart';
+import 'package:bookdepot_client/ui/shelves/models/shelf.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/books/widgets/books_widget.dart';
-import 'package:bookdepot_client/ui/shelves/models/shelf.dart';
 
 class ShelfLandingPage extends StatelessWidget {
   const ShelfLandingPage({super.key, required this.shelf});
@@ -39,7 +39,7 @@ class ShelfLandingPage extends StatelessWidget {
               tabs: [
                 Tab(icon: Icon(Icons.book), text: 'Books'),
                 Tab(icon: Icon(Icons.book), text: 'All Books'),
-                Tab(icon: Icon(Icons.plus_one), text: 'Add Book'),
+                Tab(icon: Icon(Icons.plus_one), text: 'Authors'),
               ],
             ),
           ),
@@ -54,8 +54,7 @@ class ShelfLandingPage extends StatelessWidget {
               endpoint: '/books',
               payload: {},
             ),),
-            Center(child: BookAdd(
-              shelfId: shelf.id!,
+            Center(child: AuthorsGet(
               ),
               )
             ],

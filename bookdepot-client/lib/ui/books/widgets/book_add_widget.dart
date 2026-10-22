@@ -25,7 +25,8 @@ class _BookAddState extends State<BookAdd> {
   @override
   Widget build(BuildContext context) {
     // Return a Column directly, omitting the Scaffold and AppBar
-    return Column(
+    return Scaffold(
+      body:Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
@@ -81,6 +82,7 @@ class _BookAddState extends State<BookAdd> {
           ),
         ),
       ],
+      )
     );
   }
 }

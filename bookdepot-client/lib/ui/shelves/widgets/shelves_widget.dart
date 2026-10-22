@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:bookdepot_client/data/models/server_api_model.dart';
+import 'package:bookdepot_client/ui/shelves/widgets/shelf_add_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/shelves/widgets/shelf_landing.dart';
 import 'package:bookdepot_client/ui/shelves/models/shelf.dart';
@@ -30,7 +31,17 @@ class _ShelvesGetState extends State<ShelvesGet> {
 
 @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>>(
+    return Scaffold(
+      floatingActionButton: FloatingActionButton.large(onPressed: () {Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                        builder: (context) =>
+                          ShelfAdd(bookcaseId: widget.bookcaseId),
+                    ),
+                  );},
+                  child: const Icon(Icons.add)
+                  ),
+      body:FutureBuilder<Map<String, dynamic>>(
       future: _dataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -98,6 +109,7 @@ class _ShelvesGetState extends State<ShelvesGet> {
           )
         );
       },
+      )
     );
   }
 }

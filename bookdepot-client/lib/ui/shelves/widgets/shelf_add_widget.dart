@@ -25,7 +25,11 @@ class _ShelfAddState extends State<ShelfAdd> {
   @override
   Widget build(BuildContext context) {
     // Return a Column directly, omitting the Scaffold and AppBar
-    return Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add Shelf'),
+      ),
+      body:Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
@@ -58,6 +62,7 @@ class _ShelfAddState extends State<ShelfAdd> {
           ),
         ),
       ],
+      )
     );
   }
 }
