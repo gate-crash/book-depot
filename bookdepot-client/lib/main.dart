@@ -35,16 +35,20 @@ class BookDepot extends StatelessWidget {
           ),
           bottomNavigationBar: const Material(
               color: Color.fromARGB(255, 84, 47, 126),
-              child: TabBar(
+              child: SafeArea(
+                bottom: true,
+                child: TabBar(
               labelColor: Color.fromARGB(255, 170, 255, 66),
               unselectedLabelColor: Color.fromARGB(255, 236, 241, 237),
-              indicatorColor: Color.fromARGB(255, 99, 16, 17),
+              indicatorColor: Colors.transparent,
+              dividerColor: Colors.transparent,
               tabs: [
                 Tab(icon: Icon(Icons.shelves), text: 'Bookcases'),
                 Tab(icon: Icon(Icons.book), text: 'Books'),
                 Tab(icon: Icon(Icons.book), text: 'Authors'),
               ],
             ),
+             )  
         ),
       ),
       )
