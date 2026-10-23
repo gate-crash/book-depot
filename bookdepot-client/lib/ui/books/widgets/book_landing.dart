@@ -9,20 +9,41 @@ class BookLandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child:  Card(
-            clipBehavior: Clip.antiAlias,
-            child: Column(
+    return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context); // Navigate back to the previous screen
+              },
+            ),
+            title: GestureDetector(
+              onTap: () {
+                // Pops all screens off the stack until it reaches the root screen
+                Navigator.popUntil(context, (route) => route.isFirst);
+              },
+              child: const Text('Book Depot'),
+            ),
+            centerTitle: true,
+            backgroundColor: const Color.fromARGB(255, 84, 47, 126),
+            foregroundColor: Colors.white,
+          ),
+          // 3. Place the TabBarView in the body of the Scaffold
+          body: Column(
+              mainAxisSize: .min,
               children: [
                 ListTile(
                   leading: Icon(Icons.book),
-                  title: Text(book.title!),
+                  title: Text(book.title!,),
                   subtitle: Text(book.author!),
                 ),
-                Image.asset('assets/images/odyssey.jpg'),
+                Flexible(
+                child: Image.asset('assets/images/odyssey.jpg',
+                fit: BoxFit.contain,
+                ),
+                )
               ],
-            ),
-          ),
+          )
     );
-  }
+      }
 }

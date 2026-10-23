@@ -1,7 +1,7 @@
 import 'package:bookdepot_client/ui/authors/widgets/authors_widget.dart';
+import 'package:bookdepot_client/ui/books/widgets/books_widget.dart';
 import 'package:bookdepot_client/ui/shelves/models/shelf.dart';
 import 'package:flutter/material.dart';
-import 'package:bookdepot_client/ui/books/widgets/books_widget.dart';
 
 class ShelfLandingPage extends StatelessWidget {
   const ShelfLandingPage({super.key, required this.shelf});
@@ -18,9 +18,7 @@ class ShelfLandingPage extends StatelessWidget {
     }
 
  
-    return DefaultTabController(
-        length: 3,
-        child: Scaffold(
+    return Scaffold(
           appBar: AppBar(
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
@@ -28,38 +26,21 @@ class ShelfLandingPage extends StatelessWidget {
                 Navigator.pop(context); // Navigate back to the previous screen
               },
             ),
-            title: const Text('Book Depot'),
-            centerTitle: true,
-            backgroundColor: const Color.fromARGB(255, 16, 99, 30),
-            foregroundColor: Colors.white,
-            bottom: const TabBar(
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.white70,
-              indicatorColor: Colors.white,
-              tabs: [
-                Tab(icon: Icon(Icons.book), text: 'Books'),
-                Tab(icon: Icon(Icons.book), text: 'All Books'),
-                Tab(icon: Icon(Icons.plus_one), text: 'Authors'),
-              ],
+            title: GestureDetector(
+              onTap: () {
+                // Pops all screens off the stack until it reaches the root screen
+                Navigator.popUntil(context, (route) => route.isFirst);
+              },
+              child: const Text('Book Depot'),
             ),
+            centerTitle: true,
+            backgroundColor: const Color.fromARGB(255, 84, 47, 126),
+            foregroundColor: Colors.white,
           ),
           // 3. Place the TabBarView in the body of the Scaffold
-          body: TabBarView(
-            children: [
-              Center(child: BooksGet(
-              endpoint: '/shelf/get-books',
-              payload: {'shelf': shelf.id!},
-            ),),
-              Center(child: BooksGet(
-              endpoint: '/books',
-              payload: {},
-            ),),
-            Center(child: AuthorsGet(
+          body: Center(child: BooksGet(endpoint: '/books', payload: {'id': shelf},
               ),
-              )
-            ],
           ),
-        ),
     );
   }
 }

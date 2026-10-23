@@ -19,18 +19,8 @@ class BookDepot extends StatelessWidget {
           appBar: AppBar(
             title: const Text('Book Depot'),
             centerTitle: true,
-            backgroundColor: const Color.fromARGB(255, 16, 99, 30),
+            backgroundColor: const Color.fromARGB(255, 84, 47, 126),
             foregroundColor: Colors.white,
-            bottom: const TabBar(
-              labelColor: Colors.white,
-              unselectedLabelColor: Colors.white70,
-              indicatorColor: Colors.white,
-              tabs: [
-                Tab(icon: Icon(Icons.shelves), text: 'Bookcases'),
-                Tab(icon: Icon(Icons.book), text: 'Books'),
-                Tab(icon: Icon(Icons.book), text: 'Authors'),
-              ],
-            ),
           ),
           // 3. Place the TabBarView in the body of the Scaffold
           body: TabBarView(
@@ -43,8 +33,21 @@ class BookDepot extends StatelessWidget {
               Center(child: AuthorsGet()),
             ],
           ),
+          bottomNavigationBar: const Material(
+              color: Color.fromARGB(255, 84, 47, 126),
+              child: TabBar(
+              labelColor: Color.fromARGB(255, 170, 255, 66),
+              unselectedLabelColor: Color.fromARGB(255, 236, 241, 237),
+              indicatorColor: Color.fromARGB(255, 99, 16, 17),
+              tabs: [
+                Tab(icon: Icon(Icons.shelves), text: 'Bookcases'),
+                Tab(icon: Icon(Icons.book), text: 'Books'),
+                Tab(icon: Icon(Icons.book), text: 'Authors'),
+              ],
+            ),
         ),
       ),
+      )
     );
   }
 }
