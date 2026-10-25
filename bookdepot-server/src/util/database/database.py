@@ -68,12 +68,14 @@ class Database:
             "title": "TEXT",
             "shelf": "TEXT",
             "author": "TEXT",
+            "translator": "TEXT",
             "isbn": "TEXT",
             "issn": "TEXT",
             "genre": "TEXT",
             "series": "TEXT",
             "volume_number": "INTEGER",
             "language": "TEXT",
+            "translated_from": "TEXT",
             "edition": "INTEGER",
             "format": "TEXT",
             "fiction": "BOOLEAN",
@@ -164,12 +166,14 @@ class Database:
                                 title TEXT NOT NULL CHECK (length(title) <= 100),
                                 shelf TEXT NOT NULL,
                                 author TEXT,
+                                translator TEXT,
                                 isbn TEXT CHECK (length(isbn) <= 13),
                                 issn TEXT CHECK (length(issn) <= 8),
                                 genre TEXT CHECK (length(genre) <= 20),
                                 series TEXT CHECK (length(series) <= 20),
                                 volume_number INTEGER,
                                 language TEXT CHECK (length(language) <= 20),
+                                translated_from TEXT CHECK (length(language) <= 20),
                                 edition INTEGER,
                                 format TEXT CHECK (length(format) <= 20),
                                 fiction BOOLEAN,
@@ -185,7 +189,8 @@ class Database:
                                 deleted BOOLEAN,
                                 FOREIGN KEY (possession) REFERENCES {possessions} (id),
                                 FOREIGN KEY (shelf) REFERENCES {shelves} (id),
-                                FOREIGN KEY (author) REFERENCES {authors} (id)
+                                FOREIGN KEY (author) REFERENCES {authors} (id),
+                                FOREIGN KEY (translator) REFERENCES {authors} (id),
                             );
                            """
                             .format(
@@ -205,16 +210,18 @@ class Database:
                                 {{row}}.id, {{row}}.title, {{row}}.series, {{row}}.genre,
                                 {{row}}.isbn, {{row}}.issn, {{row}}.description, {{row}}.notes,
                                 (SELECT first_name FROM {authors} WHERE id = {{row}}.author),
-                                (SELECT last_name FROM {authors} WHERE id = {{row}}.author)
+                                (SELECT last_name FROM {authors} WHERE id = {{row}}.author),
+                                (SELECT first_name FROM {authors} WHERE id = {{row}}.translator),
+                                (SELECT last_name FROM {authors} WHERE id = {{row}}.translator)
                             """.format(authors=self.authors_table)
             search_columns = ("book_id, title, series, genre, isbn, issn, description, notes, "
-                              "author_first, author_last")
+                              "author_first, author_last, translator_first, translator_last")
 
             search_schema = ("""
                             CREATE VIRTUAL TABLE IF NOT EXISTS {book_search} USING fts5(
                                 book_id UNINDEXED,
                                 title, series, genre, isbn, issn, description, notes,
-                                author_first, author_last,
+                                author_first, author_last, translator_first, translator_last,
                                 tokenize = 'unicode61 remove_diacritics 2'
                             );
                             CREATE TRIGGER IF NOT EXISTS {book_search}_books_ai AFTER INSERT ON {books} BEGIN
