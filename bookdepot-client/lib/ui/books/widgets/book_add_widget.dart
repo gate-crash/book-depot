@@ -1,5 +1,7 @@
+import 'package:bookdepot_client/data/models/mobile_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/data/models/server_api_model.dart';
+import 'package:bookdepot_client/data/models/floating_action_button.dart';
 
 class BookAdd extends StatefulWidget {
   // Removed the unused 'bookcase' map parameter for cleaner embedding
@@ -76,6 +78,35 @@ class _BookAddState extends State<BookAdd> {
                 }
                 },
               ),
+            ],
+
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text('Or lookup book by ISBN',
+                style: TextStyle(fontSize: 20),
+                )
+              ),
+              const SizedBox(width: 10),
+              IconButton.filled(
+                icon: const Icon(Icons.add),
+                onPressed: () async {
+                // Open the scanner screen and wait for a result
+                final result = await Navigator.push<String>(
+                  context,
+                 MaterialPageRoute(
+                    builder: (context) => const QRScannerScreen(),
+                  ),
+                );
+                }
+              ),
+              Spacer(
+                flex: 7
+              )
             ],
 
           ),

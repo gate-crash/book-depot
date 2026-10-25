@@ -23,7 +23,6 @@ class BooksGet extends StatefulWidget {
 }
 
 class _BooksGetState extends State<BooksGet> {
-  // Store the future in a state variable so it doesn't refetch on every rebuild
   late Future<Map<String, dynamic>> _dataFuture;
 
   final ServerApiGet _serverApiService = ServerApiGet();
@@ -48,7 +47,10 @@ class _BooksGetState extends State<BooksGet> {
                 builder: (context) => BookAdd(shelfId: '',
                 ),
               ),
-            );}),
+                  );
+                  },
+                  child: const Icon(Icons.add)
+                  ),
       body: FutureBuilder<Map<String, dynamic>>(
       future: _dataFuture,
       builder: (context, snapshot) {
@@ -71,7 +73,7 @@ class _BooksGetState extends State<BooksGet> {
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 375.0,
               crossAxisSpacing: 5.0,
-              childAspectRatio: 0.7,// Set a fixed height for each grid item
+              childAspectRatio: 0.7,
               mainAxisSpacing: 5.0,
             ),
             itemBuilder: (context, index) {
