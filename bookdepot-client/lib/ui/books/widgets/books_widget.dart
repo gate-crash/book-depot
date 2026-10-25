@@ -1,21 +1,28 @@
 import 'dart:ui';
 
-import 'package:bookdepot_client/bookcase_landing.dart';
-import 'package:bookdepot_client/api/server_api_service.dart';
+import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:flutter/material.dart';
+import 'package:bookdepot_client/ui/books/widgets/book_landing.dart';
+import 'package:bookdepot_client/ui/books/models/book.dart';
+import 'package:bookdepot_client/ui/books/widgets/book_add_widget.dart';
 
-import 'package:bookdepot_client/dataModels/bookcase.dart';
+class BooksGet extends StatefulWidget {
+  const BooksGet({
+    super.key,
+    required this.endpoint,
+    required this.payload,
+  });
 
-class BookcasesGet extends StatefulWidget {
-  const BookcasesGet({super.key});
+  final String endpoint;
+  final Map<String, dynamic> payload;
 
   @override
-  State<BookcasesGet> createState() {
-    return _BookcasesGetState();
+  State<BooksGet> createState() {
+    return _BooksGetState();
   }
 }
 
-class _BookcasesGetState extends State<BookcasesGet> {
+class _BooksGetState extends State<BooksGet> {
   // Store the future in a state variable so it doesn't refetch on every rebuild
   late Future<Map<String, dynamic>> _dataFuture;
 
@@ -24,23 +31,35 @@ class _BookcasesGetState extends State<BookcasesGet> {
   @override
   void initState() {
     super.initState();
-    _dataFuture = _serverApiService.serverDataGet('/bookcases', {});
+    _dataFuture = _serverApiService.serverDataGet(
+      widget.endpoint,
+      widget.payload,
+    );
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>>(
+    return Scaffold(
+      floatingActionButton: FloatingActionButton.large(
+        onPressed: ()
+        {Navigator.push(
+            context,
+              MaterialPageRoute<void>(
+                builder: (context) => BookAdd(shelfId: '',
+                ),
+              ),
+            );}),
+      body: FutureBuilder<Map<String, dynamic>>(
       future: _dataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!['bookcases'] == null) {
+        } else if (!snapshot.hasData || snapshot.data!['books'] == null) {
           return const Center(child: Text('No data available'));
         }
-
-        final bookcases = snapshot.data!['bookcases'] as List<dynamic>;
+        final books = snapshot.data!['books'] as List<dynamic>;
 
         return ScrollConfiguration(
           behavior: const MaterialScrollBehavior().copyWith(
@@ -48,7 +67,7 @@ class _BookcasesGetState extends State<BookcasesGet> {
           ),
           child: GridView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 10.0), 
-            itemCount: bookcases.length,
+            itemCount: books.length,
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 375.0,
               crossAxisSpacing: 5.0,
@@ -56,16 +75,16 @@ class _BookcasesGetState extends State<BookcasesGet> {
               mainAxisSpacing: 5.0,
             ),
             itemBuilder: (context, index) {
-              final bookcase = bookcases[index];
-              
+              final book = books[index];
+
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute<void>(
-                      builder: (context) => BookcaseLandingPage(
-                        bookcase: Shelf.fromJson(bookcase),
+                      builder: (context) => BookLandingPage(
+                        book: Book.fromJson(book),
                       ),
                     ),
                   );
@@ -77,16 +96,14 @@ class _BookcasesGetState extends State<BookcasesGet> {
                     children: [
                       Expanded(
                         child: Image.asset(
-                          'assets/images/bookcase.png',
+                          'assets/images/odyssey.jpg',
                           fit: BoxFit.fill,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          bookcase['case_name'] ??
-                              'Bookcase ${bookcase['sequence_ordinal'] ?? ''}',
-                          textAlign: TextAlign.center,
+                          book['title'],
                         ),
                       ),
                     ],
@@ -97,6 +114,7 @@ class _BookcasesGetState extends State<BookcasesGet> {
           )
         );
       },
+      ),
     );
   }
 }
