@@ -17,23 +17,73 @@ class BookAdd extends StatefulWidget {
 class _BookAddState extends State<BookAdd> {
   final TextEditingController _bookNameInput = TextEditingController();
   final TextEditingController _bookAuthorInput = TextEditingController();
+  final TextEditingController _isbnInput = TextEditingController();
   
   @override
   void dispose() {
     _bookNameInput.dispose();
+    _bookAuthorInput.dispose();
+    _isbnInput.dispose();
     super.dispose();
   }
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add Book'),
+      ),
       body:Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  controller: _isbnInput,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter ISBN...',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              FloatingActionButton.extended(
+                onPressed: () async {
+                final result = await Navigator.push<String>(
+                  context,
+                 MaterialPageRoute(
+                    builder: (context) => const QRScannerScreen(),
+                  ),
+                );
+
+                if (result != null) {
+          if (!context.mounted) return; 
+          _isbnInput.text= result;
+                  if (!context.mounted) return; 
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Scanned: $result'),
+                      duration: const Duration(seconds: 5), 
+                      behavior: SnackBarBehavior.floating,
+                    ),
+                  );
+                }
+                },
+                label: Text('Scan QR Code'),
+                icon: const Icon(Icons.qr_code_scanner_outlined),
+              ),
+            ],
+
+          ),
+        ),
         const Padding(
           padding: EdgeInsets.all(16.0),
           child: Text(
-            'Add a new book',
+            'Or add a book manually',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ),
@@ -78,35 +128,6 @@ class _BookAddState extends State<BookAdd> {
                 }
                 },
               ),
-            ],
-
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: Text('Or lookup book by ISBN',
-                style: TextStyle(fontSize: 20),
-                )
-              ),
-              const SizedBox(width: 10),
-              IconButton.filled(
-                icon: const Icon(Icons.add),
-                onPressed: () async {
-                // Open the scanner screen and wait for a result
-                final result = await Navigator.push<String>(
-                  context,
-                 MaterialPageRoute(
-                    builder: (context) => const QRScannerScreen(),
-                  ),
-                );
-                }
-              ),
-              Spacer(
-                flex: 7
-              )
             ],
 
           ),

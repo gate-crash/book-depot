@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/bookcases/widgets/bookcases_widget.dart';
 import 'package:bookdepot_client/ui/books/widgets/books_widget.dart';
+import 'package:bookdepot_client/ui/books/widgets/all_books_widget.dart';
 import 'package:bookdepot_client/ui/authors/widgets/authors_widget.dart';
 
 void main() {
@@ -26,10 +27,7 @@ class BookDepot extends StatelessWidget {
           body: TabBarView(
             children: [
               Center(child: BookcasesGet(),),
-              Center(child: BooksGet(
-              endpoint: '/books',
-              payload: {},
-            ),),
+              Center(child: AllBooksGet(),),
               Center(child: AuthorsGet()),
             ],
           ),

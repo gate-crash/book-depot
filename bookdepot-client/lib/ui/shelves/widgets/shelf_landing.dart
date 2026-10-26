@@ -17,30 +17,29 @@ class ShelfLandingPage extends StatelessWidget {
       title = 'Shelf ${shelf.id ?? ''}';
     }
 
- 
     return Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: () {
-                Navigator.pop(context); // Navigate back to the previous screen
-              },
-            ),
-            title: GestureDetector(
-              onTap: () {
-                // Pops all screens off the stack until it reaches the root screen
-                Navigator.popUntil(context, (route) => route.isFirst);
-              },
-              child: const Text('Book Depot'),
-            ),
-            centerTitle: true,
-            backgroundColor: const Color.fromARGB(255, 84, 47, 126),
-            foregroundColor: Colors.white,
-          ),
-          // 3. Place the TabBarView in the body of the Scaffold
-          body: Center(child: BooksGet(endpoint: '/books', payload: {'id': shelf},
-              ),
-          ),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous screen
+          },
+        ),
+        title: GestureDetector(
+          onTap: () {
+            // Pops all screens off the stack until it reaches the root screen
+            Navigator.popUntil(context, (route) => route.isFirst);
+          },
+          child: const Text('Book Depot'),
+        ),
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 84, 47, 126),
+        foregroundColor: Colors.white,
+      ),
+      // 3. Place the TabBarView in the body of the Scaffold
+      body: Center(
+        child: BooksGet(shelfId: shelf.id!),
+      ),
     );
   }
 }

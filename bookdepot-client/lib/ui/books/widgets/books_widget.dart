@@ -7,14 +7,9 @@ import 'package:bookdepot_client/ui/books/models/book.dart';
 import 'package:bookdepot_client/ui/books/widgets/book_add_widget.dart';
 
 class BooksGet extends StatefulWidget {
-  const BooksGet({
-    super.key,
-    required this.endpoint,
-    required this.payload,
-  });
+  const BooksGet({super.key, required this.shelfId});
 
-  final String endpoint;
-  final Map<String, dynamic> payload;
+  final String shelfId;
 
   @override
   State<BooksGet> createState() {
@@ -23,6 +18,7 @@ class BooksGet extends StatefulWidget {
 }
 
 class _BooksGetState extends State<BooksGet> {
+  // Store the future in a state variable so it doesn't refetch on every rebuild
   late Future<Map<String, dynamic>> _dataFuture;
 
   final ServerApiGet _serverApiService = ServerApiGet();
@@ -30,10 +26,7 @@ class _BooksGetState extends State<BooksGet> {
   @override
   void initState() {
     super.initState();
-    _dataFuture = _serverApiService.serverDataGet(
-      widget.endpoint,
-      widget.payload,
-    );
+    _dataFuture = _serverApiService.serverDataGet('/shelf/get-books', {"shelf": widget.shelfId});
   }
 
 @override
@@ -44,7 +37,7 @@ class _BooksGetState extends State<BooksGet> {
         {Navigator.push(
             context,
               MaterialPageRoute<void>(
-                builder: (context) => BookAdd(shelfId: '',
+                builder: (context) => BookAdd(shelfId: widget.shelfId,
                 ),
               ),
                   );
