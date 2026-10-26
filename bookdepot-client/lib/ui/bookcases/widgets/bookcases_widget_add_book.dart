@@ -47,7 +47,7 @@ class _BookcasesGetAddFlowState extends State<BookcasesGetAddFlow> {
           child: const Text('Book Depot'),
         ),
         Text(
-        'Select a bookshelf',
+        'Select a bookcase',
         style: TextStyle(fontSize: 14, color: Colors.white70),
       ),
         ]
