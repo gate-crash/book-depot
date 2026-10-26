@@ -27,7 +27,10 @@ class BookDepot extends StatelessWidget {
           body: TabBarView(
             children: [
               Center(child: BookcasesGet(),),
-              Center(child: AllBooksGet(),),
+              Center(child: AllBooksGet(
+                  endpoint: '/books', 
+                  payload: {},
+                ),),
               Center(child: AuthorsGet()),
             ],
           ),

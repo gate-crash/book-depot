@@ -8,8 +8,9 @@ import 'package:bookdepot_client/ui/books/models/book.dart';
 import 'package:bookdepot_client/ui/bookcases/widgets/bookcases_widget_add_book.dart';
 
 class AllBooksGet extends StatefulWidget {
-  const AllBooksGet({super.key});
-
+  final String? endpoint;
+  final Map<String, dynamic>? payload;
+  const AllBooksGet({super.key, this.endpoint, this.payload,});
 
   @override
   State<AllBooksGet> createState() {
@@ -26,7 +27,7 @@ class _AllBooksGetState extends State<AllBooksGet> {
   @override
   void initState() {
     super.initState();
-    _dataFuture = _serverApiService.serverDataGet('/books', {});
+    _dataFuture = _serverApiService.serverDataGet(widget.endpoint!, widget.payload!);
   }
 
 @override
