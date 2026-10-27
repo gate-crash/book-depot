@@ -1,7 +1,9 @@
 import 'dart:ui';
 import 'package:bookdepot_client/data/models/server_api_model.dart';
+import 'package:bookdepot_client/ui/authors/models/authors.dart';
 import 'package:bookdepot_client/ui/authors/widgets/author_add_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:bookdepot_client/ui/authors/widgets/author_landing.dart';
 
 
 class AuthorsGet extends StatefulWidget {
@@ -65,12 +67,22 @@ class _AuthorsGetState extends State<AuthorsGet> {
             ),
             itemBuilder: (context, index) {
               final author = authors[index];
+              final authorId = author['id'];
               final firstName = author['first_name']?.toString() ?? '';
               final lastName = author['last_name']?.toString() ?? '';
               final fullName = '$firstName $lastName'.trim();
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
-                onTap: () => AuthorsGet(),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (context) => AuthorLandingPage(
+                        author: Author.fromJson(author),
+                      ),
+                    ),
+                  );
+                },
                 child: Container(
                   color: const Color.fromARGB(255, 69, 140, 199),
                   child: Column(
