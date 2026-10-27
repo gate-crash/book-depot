@@ -34,7 +34,8 @@ class AuthorLandingPage extends StatelessWidget {
               children: [
                 ListTile(
                   leading: Icon(Icons.person_3_outlined),
-                  title: Text(author.id!,),
+                  title: Text(author.fullName!,),
+                  subtitle: Text(author.id!),
                 ),
                 Flexible(
                 child: Image.asset('assets/images/odyssey.jpg',

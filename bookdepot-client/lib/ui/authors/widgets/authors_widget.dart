@@ -100,6 +100,12 @@ class _AuthorsGetState extends State<AuthorsGet> {
                         textAlign: TextAlign.center,
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(authorId,
+                        textAlign: TextAlign.center,
+                        ),
+                      ),
                     ],
                   ),
                 )
