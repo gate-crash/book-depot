@@ -1,10 +1,11 @@
+import 'package:bookdepot_client/ui/books/widgets/books_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/authors/models/authors.dart';
-
+import 'package:bookdepot_client/ui/books/widgets/filtered_books_widget.dart';
 
 class AuthorLandingPage extends StatelessWidget {
-  const AuthorLandingPage({super.key, required this.author});
-
+  const AuthorLandingPage({super.key, required this.author, required this.authorId});
+  final String? authorId;
   final Author author;
 
   @override
@@ -30,18 +31,14 @@ class AuthorLandingPage extends StatelessWidget {
           ),
           // 3. Place the TabBarView in the body of the Scaffold
           body: Column(
-              mainAxisSize: .min,
+              mainAxisSize: .max,
               children: [
                 ListTile(
                   leading: Icon(Icons.person_3_outlined),
                   title: Text(author.fullName!,),
-                  subtitle: Text(author.id!),
+                  subtitle: Text(authorId!),
                 ),
-                Flexible(
-                child: Image.asset('assets/images/odyssey.jpg',
-                fit: BoxFit.contain,
-                ),
-                )
+                Expanded(child: FilteredBooksGet(endpoint: '/books', authorId: authorId,),)
               ],
           )
     );

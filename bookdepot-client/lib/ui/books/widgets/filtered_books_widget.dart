@@ -9,8 +9,8 @@ import 'package:bookdepot_client/ui/bookcases/widgets/bookcases_widget_add_book.
 
 class FilteredBooksGet extends StatefulWidget {
   final String? endpoint;
-  final Map<String, dynamic>? payload;
-  const FilteredBooksGet({super.key, this.endpoint, this.payload,});
+  final String? authorId;
+  const FilteredBooksGet({super.key, this.endpoint, this.authorId,});
 
   @override
   State<FilteredBooksGet> createState() {
@@ -27,7 +27,7 @@ class _FilteredBooksGetState extends State<FilteredBooksGet> {
   @override
   void initState() {
     super.initState();
-    _dataFuture = _serverApiService.serverDataGet(widget.endpoint!, widget.payload!);
+    _dataFuture = _serverApiService.serverDataGet(widget.endpoint!, {});
   }
 
 @override
@@ -56,9 +56,10 @@ class _FilteredBooksGetState extends State<FilteredBooksGet> {
           return const Center(child: Text('No data available'));
         }
         final books = snapshot.data!['books'] as List<dynamic>;
+        final authorId = widget.authorId;
         final filteredBooks = books.where((book) {
   final filteredBookMap = book as Map<String, dynamic>;
-  return filteredBookMap['title'] == 'Grey';
+  return filteredBookMap['author'] == authorId;
 }).toList();
 
         return ScrollConfiguration(
@@ -106,6 +107,7 @@ class _FilteredBooksGetState extends State<FilteredBooksGet> {
                           book['title'],
                         ),
                       ),
+                      
                     ],
                   ),
                 )

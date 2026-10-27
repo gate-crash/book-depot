@@ -79,6 +79,7 @@ class _AuthorsGetState extends State<AuthorsGet> {
                     MaterialPageRoute<void>(
                       builder: (context) => AuthorLandingPage(
                         author: Author.fromJson(author),
+                        authorId: authorId,
                       ),
                     ),
                   );
