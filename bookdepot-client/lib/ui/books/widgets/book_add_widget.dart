@@ -16,13 +16,13 @@ class BookAdd extends StatefulWidget {
 
 class _BookAddState extends State<BookAdd> {
   final TextEditingController _bookNameInput = TextEditingController();
-  final TextEditingController _bookAuthorInput = TextEditingController();
+  final TextEditingController _bookAuthorIdInput = TextEditingController();
   final TextEditingController _isbnInput = TextEditingController();
   
   @override
   void dispose() {
     _bookNameInput.dispose();
-    _bookAuthorInput.dispose();
+    _bookAuthorIdInput.dispose();
     _isbnInput.dispose();
     super.dispose();
   }
@@ -103,9 +103,9 @@ class _BookAddState extends State<BookAdd> {
               ),
               Expanded(
                 child: TextField(
-                  controller: _bookAuthorInput,
+                  controller: _bookAuthorIdInput,
                   decoration: const InputDecoration(
-                    hintText: 'Enter Author Name...',
+                    hintText: 'Enter Author UUID...',
                     border: OutlineInputBorder(),
                     contentPadding: EdgeInsets.symmetric(horizontal: 16),
                   ),
@@ -116,7 +116,7 @@ class _BookAddState extends State<BookAdd> {
                 icon: const Icon(Icons.add),
                 onPressed: () async {
                   final bookName = _bookNameInput.text.trim();
-                  final bookAuthor = _bookAuthorInput.text.trim();
+                  final bookAuthor = _bookAuthorIdInput.text.trim();
                   final api = ServerApiPost();
                   // ignore: unused_local_variable
                   final response1 = await api('/book/add', {'title': bookName, 'author': bookAuthor, 'shelf': widget.shelfId});
