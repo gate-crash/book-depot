@@ -38,7 +38,7 @@ class BookLandingPage extends StatelessWidget {
                   subtitle: Text(book.author!),
                 ),
                 Flexible(
-                child: Image.asset('assets/images/odyssey.jpg',
+                child: Image.asset('assets/images/bookcase.png',
                 fit: BoxFit.contain,
                 ),
                 )

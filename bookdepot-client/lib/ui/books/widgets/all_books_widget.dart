@@ -92,7 +92,7 @@ class _AllBooksGetState extends State<AllBooksGet> {
                     children: [
                       Expanded(
                         child: Image.asset(
-                          'assets/images/odyssey.jpg',
+                          'assets/images/bookcase.png',
                           fit: BoxFit.fill,
                         ),
                       ),
