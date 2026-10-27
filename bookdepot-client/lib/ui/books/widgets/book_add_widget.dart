@@ -1,7 +1,6 @@
 import 'package:bookdepot_client/data/models/mobile_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/data/models/server_api_model.dart';
-import 'package:bookdepot_client/data/models/floating_action_button.dart';
 
 class BookAdd extends StatefulWidget {
   // Removed the unused 'bookcase' map parameter for cleaner embedding
@@ -73,7 +72,7 @@ class _BookAddState extends State<BookAdd> {
                   );
                 }
                 },
-                label: Text('Scan QR Code'),
+                label: Text('Scan Bar Code'),
                 icon: const Icon(Icons.qr_code_scanner_outlined),
               ),
             ],
