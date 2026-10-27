@@ -7,14 +7,9 @@ import 'package:bookdepot_client/ui/books/models/book.dart';
 import 'package:bookdepot_client/ui/books/widgets/book_add_widget.dart';
 
 class BooksGet extends StatefulWidget {
-  const BooksGet({
-    super.key,
-    required this.endpoint,
-    required this.payload,
-  });
+  const BooksGet({super.key, required this.shelfId});
 
-  final String endpoint;
-  final Map<String, dynamic> payload;
+  final String shelfId;
 
   @override
   State<BooksGet> createState() {
@@ -31,10 +26,7 @@ class _BooksGetState extends State<BooksGet> {
   @override
   void initState() {
     super.initState();
-    _dataFuture = _serverApiService.serverDataGet(
-      widget.endpoint,
-      widget.payload,
-    );
+    _dataFuture = _serverApiService.serverDataGet('/shelf/get-books', {"shelf": widget.shelfId});
   }
 
 @override
@@ -45,10 +37,13 @@ class _BooksGetState extends State<BooksGet> {
         {Navigator.push(
             context,
               MaterialPageRoute<void>(
-                builder: (context) => BookAdd(shelfId: '',
+                builder: (context) => BookAdd(shelfId: widget.shelfId,
                 ),
               ),
-            );}),
+                  );
+                  },
+                  child: const Icon(Icons.add)
+                  ),
       body: FutureBuilder<Map<String, dynamic>>(
       future: _dataFuture,
       builder: (context, snapshot) {
@@ -71,7 +66,7 @@ class _BooksGetState extends State<BooksGet> {
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 375.0,
               crossAxisSpacing: 5.0,
-              childAspectRatio: 0.7,// Set a fixed height for each grid item
+              childAspectRatio: 0.7,
               mainAxisSpacing: 5.0,
             ),
             itemBuilder: (context, index) {
@@ -96,7 +91,7 @@ class _BooksGetState extends State<BooksGet> {
                     children: [
                       Expanded(
                         child: Image.asset(
-                          'assets/images/odyssey.jpg',
+                          'assets/images/bookcase.png',
                           fit: BoxFit.fill,
                         ),
                       ),
