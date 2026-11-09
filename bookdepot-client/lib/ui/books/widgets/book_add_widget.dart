@@ -1,8 +1,9 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:bookdepot_client/data/models/mobile_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:bookdepot_client/ui/books/models/isbn_lookup_model.dart';
-import 'package:bookdepot_client/ui/authors/widgets/author_add_widget.dart';
 import 'package:bookdepot_client/ui/authors/models/author_lookup_model.dart';
 
 class BookAdd extends StatefulWidget {

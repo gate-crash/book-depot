@@ -23,5 +23,7 @@ class ServerApiPost {
     );
   }
 
-  Future<Object?> serverDataGet(String bookAuthor) async {}
+  Future<Object?> serverDataGet(String bookAuthor) async {
+    return null;
+  }
 }

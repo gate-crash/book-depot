@@ -1,4 +1,3 @@
-import 'package:bookdepot_client/ui/authors/widgets/authors_widget.dart';
 import 'package:bookdepot_client/ui/books/widgets/books_widget.dart';
 import 'package:bookdepot_client/ui/shelves/models/shelf.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,7 @@ class ShelfLandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     String title;
     if (shelf.caseName != null && shelf.caseName!.isNotEmpty) {
       title = shelf.id!;

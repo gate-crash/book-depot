@@ -1,4 +1,3 @@
-import 'package:bookdepot_client/ui/books/widgets/books_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/authors/models/authors.dart';
 import 'package:bookdepot_client/ui/books/widgets/filtered_books_widget.dart';
