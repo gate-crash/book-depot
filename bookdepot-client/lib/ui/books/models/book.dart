@@ -28,6 +28,7 @@ class Book {
     this.shelf,
     this.title,
     this.author,
+    this.thumbnailFilename,
   });
 
   factory Book.fromJson(Map<String, dynamic> json) {
@@ -36,6 +37,7 @@ class Book {
       shelf: json['shelf'],
       title: json['title'],
       author: json['author'],
+      thumbnailFilename: json['thumbnail_filename'],
     );
   }
 
