@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class IsbnLookupModel {
-  final String apiHost = 'https://openlibrary.org/isbn/';
-  Future<Map<String, dynamic>> serverDataGet(String isbn, ) async {
-    final url = Uri.parse('$apiHost$isbn.json');
+class AuthorLookupModel {
+  final String apiHost = 'https://openlibrary.org/authors/';
+  Future<Map<String, dynamic>> serverDataGet(String authorId, ) async {
+    final url = Uri.parse('$apiHost$authorId.json');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       return jsonDecode(response.body) as Map<String, dynamic>;
@@ -13,5 +13,4 @@ class IsbnLookupModel {
     }
   }
 }
-
 
