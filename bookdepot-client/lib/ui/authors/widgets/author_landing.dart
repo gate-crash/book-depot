@@ -34,7 +34,7 @@ class AuthorLandingPage extends StatelessWidget {
               children: [
                 ListTile(
                   leading: Icon(Icons.person_3_outlined),
-                  title: Text(author.fullName!,),
+                  title: Text(author.firstName!,),
                   subtitle: Text(authorId!),
                 ),
                 Expanded(child: FilteredBooksGet(endpoint: '/books', authorId: authorId,),)

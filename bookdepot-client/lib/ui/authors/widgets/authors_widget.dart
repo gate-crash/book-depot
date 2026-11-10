@@ -97,7 +97,7 @@ class _AuthorsGetState extends State<AuthorsGet> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(fullName.isEmpty ? 'Unknown Author': fullName,
+                        child: Text(firstName.isEmpty ? 'Unknown Author': firstName,
                         textAlign: TextAlign.center,
                         ),
                       ),

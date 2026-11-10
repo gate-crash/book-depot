@@ -163,9 +163,8 @@ class _BookAddState extends State<BookAdd> {
                   final response1 = await api('/book/add', {'title': bookName, 'author': bookAuthor, 'shelf': widget.shelfId, 'isbn': isbn_13, 'publish_date': _publishDate, 'format': _physicalFormat});
                   final author_api = AuthorLookupModel();
                   final authorData = await author_api.serverDataGet(bookAuthor);
-                  final authorFirstName = authorData['name'] ?? '';
-                  final authorLastName = authorData['name'] ?? '';
-                  final response2 = await api('/author/add', {'first_name': authorFirstName, 'last_name': authorLastName, 'id': bookAuthor});
+                  final authorName = authorData['name'] ?? '';
+                  final response2 = await api('/author/add', {'first_name': authorName, 'id': bookAuthor});
                   if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Added "$bookName" - successfully!')),
