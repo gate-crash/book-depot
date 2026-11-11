@@ -5,7 +5,7 @@ class Author {
   String? sortingMethod;
   String? genre;
   int? sequenceOrdinal;
-  String? fullName;
+  String? name;
 
   Author({
     required this.id,
@@ -13,7 +13,7 @@ class Author {
     this.firstName,
     this.lastName,
     this.genre,
-    this.fullName,
+    this.name,
     this.sequenceOrdinal,
   });
 
@@ -24,7 +24,7 @@ class Author {
       sequenceOrdinal: json['sequence_ordinal'],
       firstName: json['first_name'],
       lastName: json['last_name'],
-      fullName: '${json['first_name']} ${json['last_name']}',
+      name: '${json['first_name']} ${json['last_name']}',
     );
   }
 

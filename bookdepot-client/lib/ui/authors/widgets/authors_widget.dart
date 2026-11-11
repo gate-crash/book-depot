@@ -70,7 +70,7 @@ class _AuthorsGetState extends State<AuthorsGet> {
               final authorId = author['id'];
               final firstName = author['first_name']?.toString() ?? '';
               final lastName = author['last_name']?.toString() ?? '';
-              final fullName = '$firstName $lastName'.trim();
+              final name = '$firstName $lastName'.trim();
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
@@ -97,7 +97,7 @@ class _AuthorsGetState extends State<AuthorsGet> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(firstName.isEmpty ? 'Unknown Author': firstName,
+                        child: Text(name,
                         textAlign: TextAlign.center,
                         ),
                       ),
