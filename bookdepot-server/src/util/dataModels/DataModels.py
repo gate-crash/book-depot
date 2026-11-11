@@ -38,8 +38,8 @@ class Shelf(DataGeneric):
 
 @dataclass
 class Author(DataGeneric):
-    first_name: str | None = None
-    last_name: str | None = None
+    name: str | None = None
+    thumbnail_filename: str | None = None
     deleted: bool=False
 
 @dataclass
@@ -56,6 +56,7 @@ class Book(DataGeneric):
     issn: str | None = None
     shelf: Shelf | None = None
     author: Author | None = None
+    contributors: str | None = None
     genre: str | None = None
     language: str | None = Descriptors.Language.en.value
     publish_date: str | None = None

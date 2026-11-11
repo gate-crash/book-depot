@@ -52,8 +52,8 @@ class Database:
         },
         "authors": {
             "id": "TEXT",
-            "first_name": "TEXT",
-            "last_name": "TEXT",
+            "name": "TEXT",
+            "thumbnail_filename": "TEXT",
             "deleted": "BOOLEAN",
         },
         "possessions": {
@@ -68,6 +68,7 @@ class Database:
             "title": "TEXT",
             "shelf": "TEXT",
             "author": "TEXT",
+            "contributors": "TEXT",
             "translator": "TEXT",
             "isbn": "TEXT",
             "issn": "TEXT",
@@ -150,8 +151,8 @@ class Database:
                             );
                             CREATE TABLE IF NOT EXISTS {authors} (
                                 id TEXT PRIMARY KEY,
-                                first_name TEXT NOT NULL,
-                                last_name TEXT,
+                                name TEXT NOT NULL,
+                                thumbnail_filename TEXT, 
                                 deleted BOOLEAN
                             );
                             CREATE TABLE IF NOT EXISTS {possessions} (
@@ -166,6 +167,7 @@ class Database:
                                 title TEXT NOT NULL CHECK (length(title) <= 100),
                                 shelf TEXT NOT NULL,
                                 author TEXT,
+                                contributors TEXT,
                                 translator TEXT,
                                 isbn TEXT CHECK (length(isbn) <= 13),
                                 issn TEXT CHECK (length(issn) <= 8),
@@ -209,19 +211,17 @@ class Database:
             search_values = """
                                 {{row}}.id, {{row}}.title, {{row}}.series, {{row}}.genre,
                                 {{row}}.isbn, {{row}}.issn, {{row}}.description, {{row}}.notes,
-                                (SELECT first_name FROM {authors} WHERE id = {{row}}.author),
-                                (SELECT last_name FROM {authors} WHERE id = {{row}}.author),
-                                (SELECT first_name FROM {authors} WHERE id = {{row}}.translator),
-                                (SELECT last_name FROM {authors} WHERE id = {{row}}.translator)
+                                (SELECT name FROM {authors} WHERE id = {{row}}.author),
+                                (SELECT name FROM {authors} WHERE id = {{row}}.translator)
                             """.format(authors=self.authors_table)
             search_columns = ("book_id, title, series, genre, isbn, issn, description, notes, "
-                              "author_first, author_last, translator_first, translator_last")
+                              "author_name, translator_name")
 
             search_schema = ("""
                             CREATE VIRTUAL TABLE IF NOT EXISTS {book_search} USING fts5(
                                 book_id UNINDEXED,
                                 title, series, genre, isbn, issn, description, notes,
-                                author_first, author_last, translator_first, translator_last,
+                                author_name, translator_name,
                                 tokenize = 'unicode61 remove_diacritics 2'
                             );
                             CREATE TRIGGER IF NOT EXISTS {book_search}_books_ai AFTER INSERT ON {books} BEGIN
@@ -235,13 +235,13 @@ class Database:
                                 INSERT INTO {book_search} ({columns}) VALUES ({new_values});
                             END;
                             CREATE TRIGGER IF NOT EXISTS {book_search}_authors_au
-                            AFTER UPDATE OF first_name, last_name ON {authors} BEGIN
+                            AFTER UPDATE OF name ON {authors} BEGIN
                                 UPDATE {book_search}
-                                SET author_first = new.first_name, author_last = new.last_name
+                                SET author_name = new.name
                                 WHERE book_id IN (SELECT id FROM {books} WHERE author = new.id);
                             END;
                             CREATE TRIGGER IF NOT EXISTS {book_search}_authors_ad AFTER DELETE ON {authors} BEGIN
-                                UPDATE {book_search} SET author_first = NULL, author_last = NULL
+                                UPDATE {book_search} SET author_name = NULL
                                 WHERE book_id IN (SELECT id FROM {books} WHERE author = old.id);
                             END;
                             DELETE FROM {book_search};
