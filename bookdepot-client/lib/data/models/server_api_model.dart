@@ -22,4 +22,8 @@ class ServerApiPost {
       body: jsonEncode(data),
     );
   }
+
+  Future<Object?> serverDataGet(String bookAuthor) async {
+    return null;
+  }
 }

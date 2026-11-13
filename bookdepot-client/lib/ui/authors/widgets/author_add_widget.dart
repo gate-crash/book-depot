@@ -16,11 +16,13 @@ class AuthorAdd extends StatefulWidget {
 class _AuthorAddState extends State<AuthorAdd> {
   final TextEditingController _authorFirstNameInput = TextEditingController();
   final TextEditingController _authorLastNameInput = TextEditingController();
+  final TextEditingController _authorIdInput = TextEditingController();
   
   @override
   void dispose() {
     _authorFirstNameInput.dispose();
     _authorLastNameInput.dispose();
+    _authorIdInput.dispose();
     super.dispose();
   }
   
@@ -65,21 +67,33 @@ class _AuthorAddState extends State<AuthorAdd> {
                   ),
                 ),
               ),
+              Expanded(
+                child: TextField(
+                  controller: _authorIdInput,
+                  decoration: const InputDecoration(
+                    hintText: 'ID',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                  ),
+                ),
+              ),
               const SizedBox(width: 10),
               IconButton.filled(
                 icon: const Icon(Icons.add),
                 onPressed: () async {
                   final authorFirstName = _authorFirstNameInput.text.trim();
                   final authorLastName = _authorLastNameInput.text.trim();
+                  final authorId = _authorIdInput.text.trim();
                   final api = ServerApiPost();
                   // ignore: unused_local_variable
-                  final response1 = await api('/author/add', {'first_name': authorFirstName, 'last_name': authorLastName});
+                  final response1 = await api('/author/add', {'first_name': authorFirstName, 'last_name': authorLastName, 'id': authorId});
                   if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Added author successfully!')),
                   );
                   _authorFirstNameInput.clear();
                   _authorLastNameInput.clear();
+                  _authorIdInput.clear();
                 }
                 },
               ),

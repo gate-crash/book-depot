@@ -9,6 +9,10 @@ class BookLandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final thumbnailPath = book.thumbnailFilename != null && book.thumbnailFilename!.isNotEmpty
+        ? 'assets/images/books/${book.thumbnailFilename}'
+        : 'assets/images/bookcase.png';
+
     return Scaffold(
           appBar: AppBar(
             leading: IconButton(
@@ -38,9 +42,10 @@ class BookLandingPage extends StatelessWidget {
                   subtitle: Text(book.author!),
                 ),
                 Flexible(
-                child: Image.asset('assets/images/odyssey.jpg',
-                fit: BoxFit.contain,
-                ),
+                child: Image.asset(
+                          thumbnailPath,
+                          fit: BoxFit.fill,
+                        ),
                 )
               ],
           )
