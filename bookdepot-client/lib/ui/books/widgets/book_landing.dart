@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/books/models/book.dart';
 
@@ -9,8 +10,9 @@ class BookLandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     final thumbnailPath = book.thumbnailFilename != null && book.thumbnailFilename!.isNotEmpty
-        ? 'assets/images/books/${book.thumbnailFilename}'
+        ? '${book.thumbnailFilename}'
         : 'assets/images/bookcase.png';
 
     return Scaffold(
@@ -42,10 +44,20 @@ class BookLandingPage extends StatelessWidget {
                   subtitle: Text(book.author!),
                 ),
                 Flexible(
-                child: Image.asset(
-                          thumbnailPath,
-                          fit: BoxFit.fill,
-                        ),
+                child: CachedNetworkImage(
+                                  imageUrl: book.thumbnailFilename ?? '',
+                                  fit: BoxFit.fill,
+                                  width: double.infinity,
+                                  placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset(
+                                    'assets/images/bookcase.png',
+                                    fit: BoxFit.fill,
+                                    width: double.infinity,
+                                  ),
+                                )
                 )
               ],
           )

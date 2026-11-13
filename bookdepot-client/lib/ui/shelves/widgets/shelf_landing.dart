@@ -38,7 +38,8 @@ class ShelfLandingPage extends StatelessWidget {
       ),
       // 3. Place the TabBarView in the body of the Scaffold
       body: Center(
-        child: BooksGet(shelfId: shelf.id!),
+        child: AllBooksGet(endpoint: '/shelf/get-books', payload: {"shelf": shelf.id}),
+        
       ),
     );
   }

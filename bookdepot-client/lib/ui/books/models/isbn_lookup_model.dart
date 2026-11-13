@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 class IsbnLookupModel {
   final String apiHost = 'https://openlibrary.org/isbn/';
@@ -14,15 +16,33 @@ class IsbnLookupModel {
   }
 }
 
+class BookCoverLookup {
+  final String apiHost = 'https://covers.openlibrary.org/b/olid/';
+  Future<void> downloadAndSaveImage(String id) async {
+  try {
+    print('Starting download...');
+    final response = await http.get(Uri.parse(apiHost + id + '-M.jpg'));
 
+    if (response.statusCode == 200) {
+      final Directory documentDirectory = await getApplicationDocumentsDirectory();
+      String filePath = '${documentDirectory.path}/$id-cover.jpg';
+      final File file = File(filePath);
+      await file.writeAsBytes(response.bodyBytes);
+      print('Image saved successfully at: $filePath');
+    } else {
+      print('Failed to fetch image. Status code: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Error saving image: $e');
+  }
+}
+}
 class BookLookupService {
   final IsbnLookupModel _api = IsbnLookupModel();
 
   Future<BookDetails?> fetchByIsbn(String isbn) async {
     try {
-      final Map<String, dynamic>? bookData = await _api.serverDataGet(isbn);
-      
-      if (bookData == null) return null;
+      final Map<String, dynamic> bookData = await _api.serverDataGet(isbn);
       
       return BookDetails.fromJson(bookData);
     } catch (e) {

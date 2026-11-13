@@ -1,23 +1,24 @@
 import 'dart:ui';
 
 import 'package:bookdepot_client/data/models/server_api_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/books/widgets/book_landing.dart';
 import 'package:bookdepot_client/ui/books/models/book.dart';
-import 'package:bookdepot_client/ui/books/widgets/book_add_widget.dart';
+import 'package:bookdepot_client/ui/bookcases/widgets/bookcases_widget_add_book.dart';
 
-class BooksGet extends StatefulWidget {
-  const BooksGet({super.key, required this.shelfId});
-
-  final String shelfId;
+class AllBooksGet extends StatefulWidget {
+  final String? endpoint;
+  final Map<String, dynamic>? payload;
+  const AllBooksGet({super.key, this.endpoint, this.payload,});
 
   @override
-  State<BooksGet> createState() {
-    return _BooksGetState();
+  State<AllBooksGet> createState() {
+    return _AllBooksGetState();
   }
 }
 
-class _BooksGetState extends State<BooksGet> {
+class _AllBooksGetState extends State<AllBooksGet> {
   // Store the future in a state variable so it doesn't refetch on every rebuild
   late Future<Map<String, dynamic>> _dataFuture;
 
@@ -26,7 +27,7 @@ class _BooksGetState extends State<BooksGet> {
   @override
   void initState() {
     super.initState();
-    _dataFuture = _serverApiService.serverDataGet('/shelf/get-books', {"shelf": widget.shelfId});
+    _dataFuture = _serverApiService.serverDataGet(widget.endpoint!, widget.payload!);
   }
 
 @override
@@ -37,9 +38,9 @@ class _BooksGetState extends State<BooksGet> {
         {Navigator.push(
             context,
               MaterialPageRoute<void>(
-                builder: (context) => BookAdd(shelfId: widget.shelfId,
-                ),
-              ),
+                      builder: (context) => BookcasesGetAddFlow(
+                      ),
+              )
                   );
                   },
                   child: const Icon(Icons.add)
@@ -90,12 +91,20 @@ class _BooksGetState extends State<BooksGet> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Expanded(
-                        child: Image.asset(
-                          book['thumbnail_filename'] != null && book['thumbnail_filename'].isNotEmpty
-                              ? 'assets/images/books/${book['thumbnail_filename']}'
-                              : 'assets/images/bookcase.png',
-                          fit: BoxFit.fill,
-                        ),
+                        child: CachedNetworkImage(
+                                  imageUrl: book['thumbnail_filename'] ?? '',
+                                  fit: BoxFit.fill,
+                                  width: double.infinity,
+                                  placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset(
+                                    'assets/images/bookcase.png',
+                                    fit: BoxFit.fill,
+                                    width: double.infinity,
+                                  ),
+                                )
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),

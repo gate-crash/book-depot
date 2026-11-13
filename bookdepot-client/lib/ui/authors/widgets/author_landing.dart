@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/authors/models/authors.dart';
-import 'package:bookdepot_client/ui/books/widgets/filtered_books_widget.dart';
+import 'package:bookdepot_client/ui/authors/widgets/author_books_widget.dart';
 
 class AuthorLandingPage extends StatelessWidget {
   const AuthorLandingPage({super.key, required this.author, required this.authorId});

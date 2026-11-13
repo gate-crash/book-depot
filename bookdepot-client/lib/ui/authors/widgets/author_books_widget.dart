@@ -1,23 +1,24 @@
 import 'dart:ui';
 
 import 'package:bookdepot_client/data/models/server_api_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/books/widgets/book_landing.dart';
 import 'package:bookdepot_client/ui/books/models/book.dart';
 import 'package:bookdepot_client/ui/bookcases/widgets/bookcases_widget_add_book.dart';
 
-class AllBooksGet extends StatefulWidget {
+class FilteredBooksGet extends StatefulWidget {
   final String? endpoint;
-  final Map<String, dynamic>? payload;
-  const AllBooksGet({super.key, this.endpoint, this.payload,});
+  final String? authorId;
+  const FilteredBooksGet({super.key, this.endpoint, this.authorId,});
 
   @override
-  State<AllBooksGet> createState() {
-    return _AllBooksGetState();
+  State<FilteredBooksGet> createState() {
+    return _FilteredBooksGetState();
   }
 }
 
-class _AllBooksGetState extends State<AllBooksGet> {
+class _FilteredBooksGetState extends State<FilteredBooksGet> {
   // Store the future in a state variable so it doesn't refetch on every rebuild
   late Future<Map<String, dynamic>> _dataFuture;
 
@@ -26,7 +27,7 @@ class _AllBooksGetState extends State<AllBooksGet> {
   @override
   void initState() {
     super.initState();
-    _dataFuture = _serverApiService.serverDataGet(widget.endpoint!, widget.payload!);
+    _dataFuture = _serverApiService.serverDataGet(widget.endpoint!, {});
   }
 
 @override
@@ -55,6 +56,11 @@ class _AllBooksGetState extends State<AllBooksGet> {
           return const Center(child: Text('No data available'));
         }
         final books = snapshot.data!['books'] as List<dynamic>;
+        final authorId = widget.authorId;
+        final filteredBooks = books.where((book) {
+  final filteredBookMap = book as Map<String, dynamic>;
+  return filteredBookMap['author'] == authorId;
+}).toList();
 
         return ScrollConfiguration(
           behavior: const MaterialScrollBehavior().copyWith(
@@ -62,7 +68,7 @@ class _AllBooksGetState extends State<AllBooksGet> {
           ),
           child: GridView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 10.0), 
-            itemCount: books.length,
+            itemCount: filteredBooks.length,
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 375.0,
               crossAxisSpacing: 5.0,
@@ -70,7 +76,7 @@ class _AllBooksGetState extends State<AllBooksGet> {
               mainAxisSpacing: 5.0,
             ),
             itemBuilder: (context, index) {
-              final book = books[index];
+              final book = filteredBooks[index];
 
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
@@ -90,12 +96,20 @@ class _AllBooksGetState extends State<AllBooksGet> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Expanded(
-                        child: Image.asset(
-                          book['thumbnail_filename'] != null && book['thumbnail_filename'].isNotEmpty
-                              ? 'assets/images/books/${book['thumbnail_filename']}'
-                              : 'assets/images/bookcase.png',
-                          fit: BoxFit.fill,
-                        ),
+                        child: CachedNetworkImage(
+                                  imageUrl: book['thumbnail_filename'] ?? '',
+                                  fit: BoxFit.fill,
+                                  width: double.infinity,
+                                  placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset(
+                                    'assets/images/bookcase.png',
+                                    fit: BoxFit.fill,
+                                    width: double.infinity,
+                                  ),
+                                )
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -103,6 +117,7 @@ class _AllBooksGetState extends State<AllBooksGet> {
                           book['title'],
                         ),
                       ),
+                      
                     ],
                   ),
                 )
