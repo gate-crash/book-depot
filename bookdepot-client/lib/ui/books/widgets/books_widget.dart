@@ -6,19 +6,22 @@ import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/books/widgets/book_landing.dart';
 import 'package:bookdepot_client/ui/books/models/book.dart';
 import 'package:bookdepot_client/ui/bookcases/widgets/bookcases_widget_add_book.dart';
+import 'package:bookdepot_client/ui/books/widgets/book_add_widget.dart';
 
-class AllBooksGet extends StatefulWidget {
+class BooksGet extends StatefulWidget {
   final String? endpoint;
   final Map<String, dynamic>? payload;
-  const AllBooksGet({super.key, this.endpoint, this.payload,});
+  final String shelfId;
+  BooksGet({super.key, this.endpoint, this.payload, this.shelfId = ''});
 
+  final ServerApiGet _serverApiService = ServerApiGet();
   @override
-  State<AllBooksGet> createState() {
-    return _AllBooksGetState();
+  State<BooksGet> createState() {
+    return _BooksGetState();
   }
 }
 
-class _AllBooksGetState extends State<AllBooksGet> {
+class _BooksGetState extends State<BooksGet> {
   // Store the future in a state variable so it doesn't refetch on every rebuild
   late Future<Map<String, dynamic>> _dataFuture;
 
@@ -34,17 +37,25 @@ class _AllBooksGetState extends State<AllBooksGet> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.large(
-        onPressed: ()
-        {Navigator.push(
-            context,
-              MaterialPageRoute<void>(
-                      builder: (context) => BookcasesGetAddFlow(
-                      ),
-              )
-                  );
-                  },
-                  child: const Icon(Icons.add)
-                  ),
+  onPressed: () {
+    if (widget.payload == null || widget.payload!.isEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute<void>(
+          builder: (context) => BookcasesGetAddFlow(),
+        ),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute<void>(
+          builder: (context) => BookAdd(shelfId: widget.shelfId),
+        ),
+      );
+    }
+  },
+  child: const Icon(Icons.add),
+),
       body: FutureBuilder<Map<String, dynamic>>(
       future: _dataFuture,
       builder: (context, snapshot) {

@@ -1,11 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/books/models/book.dart';
+import 'package:bookdepot_client/data/models/server_api_model.dart';
 
 
 class BookLandingPage extends StatelessWidget {
   const BookLandingPage({super.key, required this.book});
-
+  
   final Book book;
 
   @override
@@ -46,16 +47,15 @@ class BookLandingPage extends StatelessWidget {
                 Flexible(
                 child: CachedNetworkImage(
                                   imageUrl: book.thumbnailFilename ?? '',
-                                  fit: BoxFit.fill,
-                                  width: double.infinity,
+                                  fit: BoxFit.contain,
+                                  width: 250,
                                   placeholder: (context, url) => const Center(
                                     child: CircularProgressIndicator(),
                                   ),
                                   errorWidget: (context, url, error) =>
                                       Image.asset(
                                     'assets/images/bookcase.png',
-                                    fit: BoxFit.fill,
-                                    width: double.infinity,
+                                    fit: BoxFit.contain,
                                   ),
                                 )
                 )

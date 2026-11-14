@@ -23,8 +23,6 @@ class _BookAddState extends State<BookAdd> {
   final TextEditingController _isbnInput = TextEditingController();
   String _publishDate = '';
   String _physicalFormat = '';
-  String _isbn_13 = '';
-  String _isbn_10 = '';
   String _bookOpenLibraryId = '';
   
   @override
@@ -163,8 +161,8 @@ class _BookAddState extends State<BookAdd> {
                   final bookOpenLibraryId = _bookOpenLibraryId;
                   final authorName = authorData['name'] ?? '';
                   final response2 = await api('/author/add', {'first_name': authorName, 'id': bookAuthor});
-                  String payloadPath = 'https://covers.openlibrary.org/b/isbn/$isbn-M.jpg';
-                  final response1 = await api('/book/add', {'title': bookName, 'author': bookAuthor, 'shelf': widget.shelfId, 'isbn': isbn, 'publish_date': _publishDate, 'format': _physicalFormat, 'thumbnail_filename': payloadPath, });
+                  final bookThumbnailPath = 'https://covers.openlibrary.org/b/isbn/$isbn-M.jpg';
+                  final response1 = await api('/book/add', {'title': bookName, 'author': bookAuthor, 'shelf': widget.shelfId, 'isbn': isbn, 'publish_date': _publishDate, 'format': _physicalFormat, 'thumbnail_filename': bookThumbnailPath, });
 
                   if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
