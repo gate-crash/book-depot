@@ -23,7 +23,7 @@ class _BookAddState extends State<BookAdd> {
   final TextEditingController _isbnInput = TextEditingController();
   String _publishDate = '';
   String _physicalFormat = '';
-  String _bookOpenLibraryId = '';
+  final String _bookOpenLibraryId = '';
   
   @override
   void dispose() {
@@ -156,8 +156,8 @@ class _BookAddState extends State<BookAdd> {
                   final bookAuthor = _bookAuthorIdInput.text.trim();
                   final api = ServerApiPost();
                   final isbn = _isbnInput.text.trim();
-                  final author_api = AuthorLookupModel();
-                  final authorData = await author_api.serverDataGet(bookAuthor);
+                  final authorApi = AuthorLookupModel();
+                  final authorData = await authorApi.serverDataGet(bookAuthor);
                   final bookOpenLibraryId = _bookOpenLibraryId;
                   final authorName = authorData['name'] ?? '';
                   final response2 = await api('/author/add', {'first_name': authorName, 'id': bookAuthor});

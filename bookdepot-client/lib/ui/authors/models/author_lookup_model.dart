@@ -21,7 +21,7 @@ class AuthorCoverLookup {
   Future<void> downloadAndSaveImage(String id) async {
   try {
     print('Starting download...');
-    final response = await http.get(Uri.parse(apiHost + id + '-M.jpg'));
+    final response = await http.get(Uri.parse('$apiHost$id-M.jpg'));
 
     if (response.statusCode == 200) {
       final Directory documentDirectory = await getApplicationDocumentsDirectory();
