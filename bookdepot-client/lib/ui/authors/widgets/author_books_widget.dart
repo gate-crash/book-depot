@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/books/widgets/book_landing.dart';
 import 'package:bookdepot_client/ui/books/models/book.dart';
 import 'package:bookdepot_client/ui/bookcases/widgets/bookcases_widget_add_book.dart';
+import 'package:bookdepot_client/ui/authors/models/authors.dart';
 
 class FilteredBooksGet extends StatefulWidget {
   final String? endpoint;
   final String? authorId;
-  const FilteredBooksGet({super.key, this.endpoint, this.authorId,});
+
+  final Author author;
+  const FilteredBooksGet({super.key, this.endpoint, this.authorId, required this.author});
 
   @override
   State<FilteredBooksGet> createState() {
@@ -20,16 +23,18 @@ class FilteredBooksGet extends StatefulWidget {
 
 class _FilteredBooksGetState extends State<FilteredBooksGet> {
   // Store the future in a state variable so it doesn't refetch on every rebuild
-  late Future<Map<String, dynamic>> _dataFuture;
+  late Future<List<Map<String, dynamic>>> _dataFuture;
 
-  final ServerApiGet _serverApiService = ServerApiGet();
+final ServerApiGet _serverApiService = ServerApiGet();
+  final ServerApiGet _serverApiServerAuthor = ServerApiGet();
   
   @override
   void initState() {
     super.initState();
-    _dataFuture = _serverApiService.serverDataGet(widget.endpoint!, {});
+    final bookGetCall = _serverApiService.serverDataGet(widget.endpoint!, {});
+    final authorGetCall = _serverApiServerAuthor.serverDataGet('/authors', {});
+    _dataFuture = Future.wait([bookGetCall, authorGetCall]);
   }
-
 @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,22 +50,23 @@ class _FilteredBooksGetState extends State<FilteredBooksGet> {
                   },
                   child: const Icon(Icons.add)
                   ),
-      body: FutureBuilder<Map<String, dynamic>>(
+      body: FutureBuilder<List<Map<String, dynamic>>>(
       future: _dataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data!['books'] == null) {
+        } else if (!snapshot.hasData || snapshot.data![0]['books'] == null) {
           return const Center(child: Text('No data available'));
         }
-        final books = snapshot.data!['books'] as List<dynamic>;
+        final books = snapshot.data![0]['books'] as List<dynamic>;
+        final authors = snapshot.data![1]['authors'] as List<dynamic>;
         final authorId = widget.authorId;
         final filteredBooks = books.where((book) {
-  final filteredBookMap = book as Map<String, dynamic>;
-  return filteredBookMap['author'] == authorId;
-}).toList();
+        final filteredBookMap = book as Map<String, dynamic>;
+        return filteredBookMap['author'] == authorId;
+      }).toList();
 
         return ScrollConfiguration(
           behavior: const MaterialScrollBehavior().copyWith(
@@ -77,6 +83,7 @@ class _FilteredBooksGetState extends State<FilteredBooksGet> {
             ),
             itemBuilder: (context, index) {
               final book = filteredBooks[index];
+               final author = authors[index];
 
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
@@ -86,6 +93,7 @@ class _FilteredBooksGetState extends State<FilteredBooksGet> {
                     MaterialPageRoute<void>(
                       builder: (context) => BookLandingPage(
                         book: Book.fromJson(book),
+                        author: Author.fromJson(author),
                       ),
                     ),
                   );
