@@ -34,7 +34,7 @@ class _BooksGetState extends State<BooksGet> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton.large(
-  onPressed: () {
+  onPressed: () async {
     if (widget.payload == null || widget.payload!.isEmpty) {
       Navigator.push(
         context,
@@ -43,12 +43,21 @@ class _BooksGetState extends State<BooksGet> {
         ),
       );
     } else {
-      Navigator.push(
+      final added = await Navigator.push<bool>(
         context,
-        MaterialPageRoute<void>(
+        MaterialPageRoute<bool>(
           builder: (context) => BookAdd(shelfId: widget.payload?['shelf']),
         ),
       );
+      if (!mounted) return;
+
+        if (added == true) {
+          setState(() {
+    final bookGetCall = _serverApiService.serverDataGet(widget.endpoint!, widget.payload!);
+    final authorGetCall = _serverApiServerAuthor.serverDataGet('/authors', {});
+    _dataFuture = Future.wait([bookGetCall, authorGetCall]);
+          });
+        }
     }
   },
   child: const Icon(Icons.add),

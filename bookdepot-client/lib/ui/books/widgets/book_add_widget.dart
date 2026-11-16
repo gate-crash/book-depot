@@ -101,6 +101,7 @@ class _BookAddState extends State<BookAdd> {
           var bookOpenLibraryId = bookData['key']?.split('/').last;
 
                   if (!context.mounted) return; 
+                  
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Scanned: $result'),
@@ -168,6 +169,8 @@ class _BookAddState extends State<BookAdd> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Added "$bookName" - successfully!')),
                   );
+                  if (!mounted) return;
+Navigator.pop(context, true);
                   _bookNameInput.clear();
                 }
                 },
