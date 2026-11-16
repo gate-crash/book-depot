@@ -59,6 +59,8 @@ class _BookcaseAddState extends State<BookcaseAdd> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Added "$caseName" - successfully!')),
                   );
+                  if (!mounted) return;
+Navigator.pop(context, true);
                   _bookCaseNameInput.clear();
                 }
                   },

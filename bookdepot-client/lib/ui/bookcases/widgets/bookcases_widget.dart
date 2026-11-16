@@ -29,13 +29,21 @@ class _BookcasesGetState extends State<BookcasesGet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.large(onPressed: () {Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (context) => BookcaseAdd(
-                      ),
-                    ),
-                  );},
+      floatingActionButton: FloatingActionButton.large(onPressed: () async {
+        final added = await Navigator.push<bool>(
+        context,
+        MaterialPageRoute<bool>(
+          builder: (context) => BookcaseAdd(),
+        ),
+      );
+      if (!mounted) return;
+
+        if (added == true) {
+          setState(() {
+    _dataFuture = _serverApiService.serverDataGet('/bookcases', {});
+          });
+        }
+      },
                   child: const Icon(Icons.add)
                   ),
       body: FutureBuilder<Map<String, dynamic>>(

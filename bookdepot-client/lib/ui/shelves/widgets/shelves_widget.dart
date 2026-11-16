@@ -32,15 +32,27 @@ class _ShelvesGetState extends State<ShelvesGet> {
 @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.large(onPressed: () {Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                        builder: (context) =>
-                          ShelfAdd(bookcaseId: widget.bookcaseId),
-                    ),
-                  );},
-                  child: const Icon(Icons.add)
-                  ),
+      floatingActionButton: FloatingActionButton.large(
+        onPressed: () async {
+          final added = await Navigator.push<bool>(
+            context,
+            MaterialPageRoute<bool>(
+              builder: (context) => ShelfAdd(bookcaseId: widget.bookcaseId),
+            ),
+          );
+          if (!mounted) return;
+
+          if (added == true) {
+            setState(() {
+              _dataFuture = _serverApiService.serverDataGet(
+                '/shelves',
+                {"bookcase": widget.bookcaseId},
+              );
+            });
+          }
+        },
+        child: const Icon(Icons.add),
+      ),
       body:FutureBuilder<Map<String, dynamic>>(
       future: _dataFuture,
       builder: (context, snapshot) {

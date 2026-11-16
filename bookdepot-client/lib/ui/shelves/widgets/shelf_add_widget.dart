@@ -43,6 +43,16 @@ class _ShelfAddState extends State<ShelfAdd> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
             children: [
+              Expanded(
+                child: TextField(
+                  controller: _ShelfNameInput,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter shelf name...',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                  ),
+                ),
+              ),
               const SizedBox(width: 10, height: 10),
               IconButton.filled(
                 icon: const Icon(Icons.add),
@@ -51,11 +61,14 @@ class _ShelfAddState extends State<ShelfAdd> {
                   // ignore: unused_local_variable
                   final response1 = await api('/shelf/add', {'bookcase': widget.bookcaseId,
                   });
+                  
                   if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Added shelf successfully!')),
                   );
                   }
+                  if (!mounted) return;
+Navigator.pop(context, true);
                 },
               ),
             ],
