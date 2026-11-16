@@ -66,9 +66,9 @@ class _ShelfAddState extends State<ShelfAdd> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Added shelf successfully!')),
                   );
-                  }
                   if (!mounted) return;
-Navigator.pop(context, true);
+                    Navigator.pop(context, true);
+                  }
                 },
               ),
             ],

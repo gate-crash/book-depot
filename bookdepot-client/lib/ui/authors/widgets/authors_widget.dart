@@ -30,13 +30,20 @@ class _AuthorsGetState extends State<AuthorsGet> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.large(onPressed: () {Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (context) => AuthorAdd(
-                      ),
-                    ),
-                  );},
+      floatingActionButton: FloatingActionButton.large(onPressed: () async {
+        final added = await Navigator.push<bool>(
+        context,
+        MaterialPageRoute<bool>(
+          builder: (context) => AuthorAdd(),
+        ),
+      );
+      if (!mounted) return;
+        if (added == true) {
+          setState(() {
+    _dataFuture = _serverApiService.serverDataGet('/authors', {});
+          });
+        }
+      },
                   child: const Icon(Icons.add)
                   ),
       body:FutureBuilder<Map<String, dynamic>>(
