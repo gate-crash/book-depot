@@ -75,8 +75,11 @@ class _BooksGetState extends State<BooksGet> {
         
         final books = snapshot.data![0]['books'] as List<dynamic>? ?? const [];
         final authors = snapshot.data![1]['authors'] as List<dynamic>? ?? const [];
-
-        return BooksGrid(books: books, authors: authors);
+        final alphabeticalBooksList = [...books]
+          ..sort((a, b) => (a['title'] as String? ?? '')
+              .toLowerCase()
+              .compareTo((b['title'] as String? ?? '').toLowerCase()));
+        return BooksGrid(books: alphabeticalBooksList, authors: authors);
       },
       ),
     );

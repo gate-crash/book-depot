@@ -58,14 +58,17 @@ class _AuthorsGetState extends State<AuthorsGet> {
         }
 
         final authors = snapshot.data!['authors'] as List<dynamic>;
-
-        return ScrollConfiguration(
+        final alphabeticalAuthorsList = [...authors]
+          ..sort((a, b) => (a['first_name'] as String? ?? '')
+              .toLowerCase()
+              .compareTo((b['first_name'] as String? ?? '').toLowerCase()));
+                return ScrollConfiguration(
           behavior: const MaterialScrollBehavior().copyWith(
             dragDevices: {...PointerDeviceKind.values},
           ),
           child: GridView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 10.0), 
-            itemCount: authors.length,
+            itemCount: alphabeticalAuthorsList.length,
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 375.0,
               crossAxisSpacing: 5.0,
@@ -73,7 +76,7 @@ class _AuthorsGetState extends State<AuthorsGet> {
               mainAxisSpacing: 5.0,
             ),
             itemBuilder: (context, index) {
-              final author = authors[index];
+              final author = alphabeticalAuthorsList[index];
               final authorId = author['id'];
               final firstName = author['first_name']?.toString() ?? '';
               final lastName = author['last_name']?.toString() ?? '';
