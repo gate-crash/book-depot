@@ -20,9 +20,6 @@ class BooksGrid extends StatelessWidget {
     if (books.isEmpty) {
       return const Center(child: Text('No books available'));
     }
-    final authorsById = {
-      for (final author in authors) author['id']: author,
-    };
         return ScrollConfiguration(
           behavior: const MaterialScrollBehavior().copyWith(
             dragDevices: {...PointerDeviceKind.values},

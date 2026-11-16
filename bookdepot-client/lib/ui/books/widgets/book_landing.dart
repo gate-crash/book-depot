@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/books/models/book.dart';
-import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:bookdepot_client/ui/authors/models/authors.dart';
 
 class BookLandingPage extends StatelessWidget {
@@ -14,9 +13,6 @@ class BookLandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authorName = author.name as String;
-    final thumbnailPath = book.thumbnailFilename != null && book.thumbnailFilename!.isNotEmpty
-        ? '${book.thumbnailFilename}'
-        : 'assets/images/bookcase.png';
     
     return Scaffold(
           appBar: AppBar(
