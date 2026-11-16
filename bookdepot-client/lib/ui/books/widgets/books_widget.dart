@@ -5,10 +5,9 @@ import 'package:bookdepot_client/ui/books/widgets/book_add_widget.dart';
 import 'package:bookdepot_client/ui/books/widgets/books_grid.dart';
 
 class BooksGet extends StatefulWidget {
-  BooksGet({super.key, this.endpoint, this.payload, this.shelfId = ''});
+  BooksGet({super.key, this.endpoint, this.payload});
   final String? endpoint;
   final Map<String, dynamic>? payload;
-  final String shelfId;
   @override
   State<BooksGet> createState() {
     return _BooksGetState();
@@ -47,7 +46,7 @@ class _BooksGetState extends State<BooksGet> {
       Navigator.push(
         context,
         MaterialPageRoute<void>(
-          builder: (context) => BookAdd(shelfId: widget.shelfId),
+          builder: (context) => BookAdd(shelfId: widget.payload?['shelf']),
         ),
       );
     }

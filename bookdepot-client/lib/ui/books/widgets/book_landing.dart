@@ -40,7 +40,7 @@ class BookLandingPage extends StatelessWidget {
                 ListTile(
                   leading: Icon(Icons.book),
                   title: Text(book.title!,),
-                  subtitle: Text(book.author!),
+                  subtitle: Text(author.name!),
                 ),
                 Padding(
                         padding: const EdgeInsets.all(8.0),
