@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:bookdepot_client/ui/authors/models/authors.dart';
 import 'package:bookdepot_client/ui/authors/widgets/author_add_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/authors/widgets/author_landing.dart';
 
@@ -78,9 +79,9 @@ class _AuthorsGetState extends State<AuthorsGet> {
             itemBuilder: (context, index) {
               final author = alphabeticalAuthorsList[index];
               final authorId = author['id'];
-              final firstName = author['first_name']?.toString() ?? '';
-              final lastName = author['last_name']?.toString() ?? '';
-              final name = '$firstName $lastName'.trim();
+          //  final name = author['name']?.toString() ?? '';
+              final name = author['first_name']?.toString() ?? '';
+              final authorThumbnailPath = 'https://covers.openlibrary.org/a/olid/$authorId-M.jpg';
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
@@ -99,21 +100,23 @@ class _AuthorsGetState extends State<AuthorsGet> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Expanded(
-                        child: Image.asset(
-                          'assets/images/bookcase.png',
-                          fit: BoxFit.fill,
-                        ),
-                      ),
+                      CachedNetworkImage(
+                                  imageUrl: authorThumbnailPath,
+                                  fit: BoxFit.contain,
+                                  width: double.infinity,
+                                  placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset(
+                                    'assets/images/bookcase.png',
+                                    fit: BoxFit.fill,
+                                    width: double.infinity,
+                                  ),
+                                ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(name,
-                        textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(authorId,
                         textAlign: TextAlign.center,
                         ),
                       ),
