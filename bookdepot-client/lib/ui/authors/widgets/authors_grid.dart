@@ -55,7 +55,7 @@ class AuthorsGrid extends StatelessWidget {
                 children: [
                   CachedNetworkImage(
                     imageUrl: authorThumbnailPath,
-                    fit: BoxFit.contain,
+                    fit: BoxFit.fill,
                     width: double.infinity,
                     placeholder: (context, url) => const Center(
                       child: CircularProgressIndicator(),
@@ -67,7 +67,7 @@ class AuthorsGrid extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: Text(
                       name,
                       textAlign: TextAlign.center,

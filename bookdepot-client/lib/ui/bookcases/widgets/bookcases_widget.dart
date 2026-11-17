@@ -1,7 +1,5 @@
-import 'dart:ui';
 import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:flutter/material.dart';
-import 'package:bookdepot_client/ui/bookcases/models/bookcase.dart';
 import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_add_widget.dart';
 import 'package:bookdepot_client/ui/bookcases/widgets/bookcases_grid.dart';
 

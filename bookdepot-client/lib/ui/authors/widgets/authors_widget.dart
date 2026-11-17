@@ -1,10 +1,6 @@
-import 'dart:ui';
 import 'package:bookdepot_client/data/models/server_api_model.dart';
-import 'package:bookdepot_client/ui/authors/models/authors.dart';
 import 'package:bookdepot_client/ui/authors/widgets/author_add_widget.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:bookdepot_client/ui/authors/widgets/author_landing.dart';
 import 'package:bookdepot_client/ui/authors/widgets/authors_grid.dart';
 
 class AuthorsGet extends StatefulWidget {
