@@ -5,7 +5,7 @@ import 'package:bookdepot_client/ui/authors/widgets/author_add_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/authors/widgets/author_landing.dart';
-
+import 'package:bookdepot_client/ui/authors/widgets/authors_grid.dart';
 
 class AuthorsGet extends StatefulWidget {
   const AuthorsGet({super.key});
@@ -63,70 +63,7 @@ class _AuthorsGetState extends State<AuthorsGet> {
           ..sort((a, b) => (a['first_name'] as String? ?? '')
               .toLowerCase()
               .compareTo((b['first_name'] as String? ?? '').toLowerCase()));
-                return ScrollConfiguration(
-          behavior: const MaterialScrollBehavior().copyWith(
-            dragDevices: {...PointerDeviceKind.values},
-          ),
-          child: GridView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0), 
-            itemCount: alphabeticalAuthorsList.length,
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 375.0,
-              crossAxisSpacing: 5.0,
-              childAspectRatio: 0.7,// Set a fixed height for each grid item
-              mainAxisSpacing: 5.0,
-            ),
-            itemBuilder: (context, index) {
-              final author = alphabeticalAuthorsList[index];
-              final authorId = author['id'];
-          //  final name = author['name']?.toString() ?? '';
-              final name = author['first_name']?.toString() ?? '';
-              final authorThumbnailPath = 'https://covers.openlibrary.org/a/olid/$authorId-M.jpg';
-              return GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (context) => AuthorLandingPage(
-                        author: Author.fromJson(author),
-                        authorId: authorId,
-                      ),
-                    ),
-                  );
-                },
-                child: Container(
-                  color: const Color.fromARGB(255, 69, 140, 199),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CachedNetworkImage(
-                                  imageUrl: authorThumbnailPath,
-                                  fit: BoxFit.contain,
-                                  width: double.infinity,
-                                  placeholder: (context, url) => const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                  errorWidget: (context, url, error) =>
-                                      Image.asset(
-                                    'assets/images/bookcase.png',
-                                    fit: BoxFit.fill,
-                                    width: double.infinity,
-                                  ),
-                                ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(name,
-                        textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-                              );
-            },
-          )
-        );
+                return AuthorsGrid(authors: authors, sortedList: alphabeticalAuthorsList,);
       },
       )
     );

@@ -52,7 +52,7 @@ class BooksGrid extends StatelessWidget {
                   );
                 },
                 child: Container(
-                  color: const Color.fromARGB(255, 69, 140, 199),
+                  color: const Color.fromARGB(255, 235, 234, 214),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
