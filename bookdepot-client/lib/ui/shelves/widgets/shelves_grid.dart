@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/shelves/widgets/shelf_landing.dart';
 import 'package:bookdepot_client/ui/shelves/models/shelf.dart';
+import 'package:bookdepot_client/data/models/themes.dart';
 
 
 class ShelvesGrid extends StatelessWidget {
@@ -45,7 +46,7 @@ class ShelvesGrid extends StatelessWidget {
                   );
                 },
                 child: Container(
-                  color: const Color.fromARGB(255, 235, 234, 214),
+                  color: AppColors.gridBackground,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [

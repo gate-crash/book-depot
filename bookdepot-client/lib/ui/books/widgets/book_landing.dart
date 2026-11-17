@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/books/models/book.dart';
 import 'package:bookdepot_client/ui/authors/models/authors.dart';
 import 'package:bookdepot_client/ui/authors/widgets/author_landing.dart';
+import 'package:bookdepot_client/data/models/themes.dart';
 
 class BookLandingPage extends StatelessWidget {
   const BookLandingPage({super.key, required this.book, required this.author});
@@ -31,7 +32,7 @@ class BookLandingPage extends StatelessWidget {
               child: const Text('Book Depot'),
             ),
             centerTitle: true,
-            backgroundColor: const Color.fromARGB(255, 84, 47, 126),
+            backgroundColor: AppColors.navigationBar,
             foregroundColor: Colors.white,
           ),
           // 3. Place the TabBarView in the body of the Scaffold

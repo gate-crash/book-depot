@@ -4,6 +4,7 @@ import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/bookcases/models/bookcase.dart';
 import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_add_widget.dart';
+import 'package:bookdepot_client/data/models/themes.dart';
 
 class BookcasesGetAddFlow extends StatefulWidget {
   const BookcasesGetAddFlow({super.key});
@@ -53,7 +54,7 @@ class _BookcasesGetAddFlowState extends State<BookcasesGetAddFlow> {
         ]
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 84, 47, 126),
+        backgroundColor: AppColors.navigationBar,
         foregroundColor: Colors.white,
       ),
       floatingActionButton: FloatingActionButton.large(onPressed: () {Navigator.push(

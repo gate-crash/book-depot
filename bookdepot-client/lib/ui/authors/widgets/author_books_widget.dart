@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:bookdepot_client/data/models/themes.dart';
 import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +97,7 @@ final ServerApiGet _serverApiService = ServerApiGet();
                   );
                 },
                 child: Container(
-                  color: const Color.fromARGB(255, 69, 140, 199),
+                  color: AppColors.gridBackground,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [

@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/authors/widgets/author_landing.dart';
 import 'package:bookdepot_client/ui/authors/models/authors.dart';
-
+import 'package:bookdepot_client/data/models/themes.dart';
 
 class AuthorsGrid extends StatelessWidget {
   const AuthorsGrid({
@@ -25,7 +25,7 @@ class AuthorsGrid extends StatelessWidget {
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 375.0,
           crossAxisSpacing: 5.0,
-          childAspectRatio: 0.7,
+          childAspectRatio: 0.65,
           mainAxisSpacing: 5.0,
         ),
         itemBuilder: (context, index) {
@@ -49,13 +49,13 @@ class AuthorsGrid extends StatelessWidget {
               );
             },
             child: Container(
-              color: const Color.fromARGB(255, 235, 234, 214),
+              color: AppColors.gridBackground,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   CachedNetworkImage(
                     imageUrl: authorThumbnailPath,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.cover,
                     width: double.infinity,
                     placeholder: (context, url) => const Center(
                       child: CircularProgressIndicator(),

@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_landing.dart';
 import 'package:bookdepot_client/ui/bookcases/models/bookcase.dart';
-
+import 'package:bookdepot_client/data/models/themes.dart';
 
 class BookcasesGrid extends StatelessWidget {
   const BookcasesGrid({
@@ -45,7 +45,7 @@ class BookcasesGrid extends StatelessWidget {
                   );
                 },
                 child: Container(
-                  color: const Color.fromARGB(255, 235, 234, 214),
+                  color: AppColors.gridBackground,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
