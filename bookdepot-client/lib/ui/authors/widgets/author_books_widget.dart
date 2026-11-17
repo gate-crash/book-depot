@@ -61,7 +61,6 @@ final ServerApiGet _serverApiService = ServerApiGet();
           return const Center(child: Text('No data available'));
         }
         final books = snapshot.data![0]['books'] as List<dynamic>;
-        final authors = snapshot.data![1]['authors'] as List<dynamic>;
         final authorId = widget.authorId;
         final filteredBooks = books.where((book) {
         final filteredBookMap = book as Map<String, dynamic>;
@@ -83,7 +82,6 @@ final ServerApiGet _serverApiService = ServerApiGet();
             ),
             itemBuilder: (context, index) {
               final book = filteredBooks[index];
-               final author = authors[index];
 
               return GestureDetector(
                 behavior: HitTestBehavior.opaque,
@@ -93,7 +91,7 @@ final ServerApiGet _serverApiService = ServerApiGet();
                     MaterialPageRoute<void>(
                       builder: (context) => BookLandingPage(
                         book: Book.fromJson(book),
-                        author: Author.fromJson(author),
+                        author: widget.author,
                       ),
                     ),
                   );
