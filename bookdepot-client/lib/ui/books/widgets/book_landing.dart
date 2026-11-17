@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/books/models/book.dart';
 import 'package:bookdepot_client/ui/authors/models/authors.dart';
+import 'package:bookdepot_client/ui/authors/widgets/author_landing.dart';
 
 class BookLandingPage extends StatelessWidget {
   const BookLandingPage({super.key, required this.book, required this.author});
@@ -40,13 +41,21 @@ class BookLandingPage extends StatelessWidget {
                 ListTile(
                   leading: Icon(Icons.book),
                   title: Text(book.title!,),
-                  subtitle: Text(author.name!),
+                  subtitle: GestureDetector(
+          onTap: () {
+            // Pops all screens off the stack until it reaches the root screen
+            Navigator.push(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (context) => AuthorLandingPage(
+                    author: author,
+                    authorId: author.id,
+                  ),
                 ),
-                Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          authorName,
-                        ),
+              );
+          },
+          child: Text(authorName),
+                ),
                       ),
                 Flexible(
                 child: CachedNetworkImage(
