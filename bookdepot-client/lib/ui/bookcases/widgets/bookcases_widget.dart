@@ -60,11 +60,7 @@ class _BookcasesGetState extends State<BookcasesGet> {
         }
 
         final bookcases = snapshot.data!['bookcases'] as List<dynamic>;
-        return GenericGrid(
-          landingPageBuilder: (item) => BookcaseLandingPage(
-            bookcase: BookCase.fromJson(item),
-          ), gridviewList: bookcases,
-        );
+        return BookcasesGrid(bookcases: bookcases);
       },
       )
     );
