@@ -39,9 +39,9 @@ class BookDepot extends StatelessWidget {
               child: SafeArea(
                 bottom: true,
                 child: TabBar(
-              labelColor: Color.fromARGB(221, 37, 15, 15),
-              unselectedLabelColor: Color.fromARGB(255, 80, 82, 78),
-              indicatorColor: Color.fromARGB(255, 0, 0, 0),
+              labelColor: Color.fromARGB(255, 40, 33, 41),
+              unselectedLabelColor: Color.fromARGB(255, 42, 31, 43),
+              indicatorColor: Color.fromARGB(255, 60, 46, 61),
               dividerColor: Colors.transparent,
               tabs: [
                 Tab(icon: Icon(Icons.shelves), text: 'Bookcases'),

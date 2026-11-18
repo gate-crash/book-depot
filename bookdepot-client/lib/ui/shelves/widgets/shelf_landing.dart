@@ -35,7 +35,7 @@ class ShelfLandingPage extends StatelessWidget {
         ),
         centerTitle: true,
         backgroundColor: AppColors.navigationBar,
-        foregroundColor: Colors.white,
+        foregroundColor: AppColors.childPageHeader,
       ),
       // 3. Place the TabBarView in the body of the Scaffold
       body: Center(

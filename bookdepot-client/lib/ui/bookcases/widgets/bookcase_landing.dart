@@ -27,7 +27,7 @@ class BookcaseLandingPage extends StatelessWidget {
         ),
         centerTitle: true,
         backgroundColor: AppColors.navigationBar,
-        foregroundColor: Colors.white,
+        foregroundColor: AppColors.childPageHeader,
       ),
       body: Center(
         child: ShelvesGet(bookcaseId: bookcase.id!),
