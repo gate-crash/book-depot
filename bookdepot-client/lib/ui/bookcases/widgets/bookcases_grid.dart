@@ -16,7 +16,9 @@ class BookcasesGrid extends StatelessWidget {
     if (bookcases.isEmpty) {
       return const Center(child: Text('No bookcases available'));
     }
-        return ScrollConfiguration(
+        return Padding(
+          padding: EdgeInsetsGeometry.all(8.0),
+          child: ScrollConfiguration(
           behavior: const MaterialScrollBehavior().copyWith(
             dragDevices: {...PointerDeviceKind.values},
           ),
@@ -32,7 +34,10 @@ class BookcasesGrid extends StatelessWidget {
             itemBuilder: (context, index) {
               final bookcase = bookcases[index];
               
-              return GestureDetector(
+              return ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(12),
+                clipBehavior: Clip.antiAlias,
+                child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
                   Navigator.push(
@@ -46,28 +51,31 @@ class BookcasesGrid extends StatelessWidget {
                 },
                 child: Container(
                   color: AppColors.gridBackground,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        child: Image.asset(
-                          'assets/images/bookcase.png',
-                          fit: BoxFit.fill,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          child: Image.asset(
+                            'assets/images/bookcase.png',
+                            fit: BoxFit.fill,
+                          ),
                         ),
+                        Text(
+                            bookcase['case_name'] ??
+                                'Bookcase ${bookcase['sequence_ordinal'] ?? ''}',
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          bookcase['case_name'] ??
-                              'Bookcase ${bookcase['sequence_ordinal'] ?? ''}',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
+                    )
+                  )
                 )
-                              );
+              );
             },
           )
-        ); }
-}
+        )
+      );
+    }
+  }

@@ -33,7 +33,10 @@ class ShelvesGrid extends StatelessWidget {
             itemBuilder: (context, index) {
               final shelf = shelves[index];
 
-              return GestureDetector(
+              return ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(12),
+                clipBehavior: Clip.antiAlias,
+                child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
                   Navigator.push(
@@ -66,6 +69,7 @@ class ShelvesGrid extends StatelessWidget {
                       ),
                     ],
                   ),
+                )
                 )
                               );
             },

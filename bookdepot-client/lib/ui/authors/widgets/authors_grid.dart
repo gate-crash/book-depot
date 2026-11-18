@@ -35,7 +35,10 @@ class AuthorsGrid extends StatelessWidget {
           final authorThumbnailPath =
               'https://covers.openlibrary.org/a/olid/$authorId-M.jpg';
 
-          return GestureDetector(
+          return ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(12),
+                clipBehavior: Clip.antiAlias,
+                child: GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: () {
               Navigator.push(
@@ -76,6 +79,7 @@ class AuthorsGrid extends StatelessWidget {
                 ],
               ),
             ),
+                )
           );
         },
       ),

@@ -38,7 +38,10 @@ class BooksGrid extends StatelessWidget {
               final author = authors.firstWhere(
                 (author) => author['id'] == book['author'],
               );
-              return GestureDetector(
+              return ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(12),
+                clipBehavior: Clip.antiAlias,
+                child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
                   Navigator.push(
@@ -80,6 +83,7 @@ class BooksGrid extends StatelessWidget {
                       ),
                     ],
                   ),
+                )
                 )
                               );
             },

@@ -83,7 +83,10 @@ final ServerApiGet _serverApiService = ServerApiGet();
             itemBuilder: (context, index) {
               final book = filteredBooks[index];
 
-              return GestureDetector(
+              return ClipRRect(
+                borderRadius: BorderRadiusGeometry.circular(12),
+                clipBehavior: Clip.antiAlias,
+                child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
                   Navigator.push(
@@ -126,6 +129,7 @@ final ServerApiGet _serverApiService = ServerApiGet();
                       
                     ],
                   ),
+                )
                 )
                               );
             },
