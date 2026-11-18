@@ -17,13 +17,15 @@ class BookcasesGrid extends StatelessWidget {
       return const Center(child: Text('No bookcases available'));
     }
         return Padding(
-          padding: EdgeInsetsGeometry.all(8.0),
+          padding: EdgeInsetsGeometry.directional(
+            top: 8.0,
+            bottom: 8.0),
           child: ScrollConfiguration(
           behavior: const MaterialScrollBehavior().copyWith(
             dragDevices: {...PointerDeviceKind.values},
           ),
           child: GridView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0), 
+            padding: const EdgeInsets.symmetric(horizontal: 8.0), 
             itemCount: bookcases.length,
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 375.0,
@@ -52,7 +54,7 @@ class BookcasesGrid extends StatelessWidget {
                 child: Container(
                   color: AppColors.gridBackground,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(4.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
