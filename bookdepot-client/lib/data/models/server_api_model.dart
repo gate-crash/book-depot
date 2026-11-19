@@ -5,10 +5,13 @@ class ServerApiGet {
   Future<Map<String, dynamic>> serverDataGet(String endpoint, Map<String, dynamic> data) async {
     final Map<String, String> queryBody = data.map((key, value) => MapEntry(key, value.toString()));
     final url = Uri.parse('$api_host$endpoint').replace(queryParameters: queryBody);
+    final Map<String, String> queryBody = data.map((key, value) => MapEntry(key, value.toString()));
+    final url = Uri.parse('$api_host$endpoint').replace(queryParameters: queryBody);
     var response = await http.get(url);
     if (response.statusCode == 200) {
       return jsonDecode(response.body) as Map<String, dynamic>;
     } else {
+      throw Exception('Failed to load data (${response.body})');
       throw Exception('Failed to load data (${response.body})');
     }
   }
@@ -27,3 +30,4 @@ class ServerApiPost {
     return null;
   }
 }
+
