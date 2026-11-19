@@ -54,7 +54,12 @@ class _BookcaseAddState extends State<BookcaseAdd> {
                   final caseName = _bookCaseNameInput.text.trim();
                   final api = ServerApiPost();
                   // ignore: unused_local_variable
+                  // ignore: unused_local_variable
                   final response1 = await api('/bookcase/add', {'case_name': caseName});
+                  if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Added "$caseName" - successfully!')),
+                  );
                   if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Added "$caseName" - successfully!')),
