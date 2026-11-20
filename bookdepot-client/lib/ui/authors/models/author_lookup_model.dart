@@ -18,24 +18,20 @@ class AuthorLookupModel {
 
 class AuthorCoverLookup {
   final String apiHost = 'https://covers.openlibrary.org/a/olid/';
-  Future<void> downloadAndSaveImage(String id) async {
-  try {
-    print('Starting download...');
-    final response = await http.get(Uri.parse('$apiHost$id-M.jpg'));
+
+  Future<File> saveAuthorCover(String id) async {
+    final url = Uri.parse('$apiHost$id-M.jpg');
+    var response = await http.get(url);
 
     if (response.statusCode == 200) {
-      final Directory documentDirectory = await getApplicationDocumentsDirectory();
+      Directory documentDirectory = await getApplicationDocumentsDirectory();
       String filePath = '${documentDirectory.path}/$id-cover.jpg';
-      final File file = File(filePath);
+      File file = File(filePath);
       await file.writeAsBytes(response.bodyBytes);
 
-
-      print('Image saved successfully at: $filePath');
+      return file; 
     } else {
-      print('Failed to fetch image. Status code: ${response.statusCode}');
+      throw Exception('Failed to download image (Status: ${response.statusCode})');
     }
-  } catch (e) {
-    print('Error saving image: $e');
   }
-}
 }
