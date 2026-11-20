@@ -1,7 +1,7 @@
 import 'package:bookdepot_client/ui/shelves/widgets/shelves_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/bookcases/models/bookcase.dart';
-
+import 'package:bookdepot_client/data/models/themes.dart';
 
 class BookcaseLandingPage extends StatelessWidget {
   const BookcaseLandingPage({super.key, required this.bookcase});
@@ -26,8 +26,8 @@ class BookcaseLandingPage extends StatelessWidget {
           child: const Text('Book Depot'),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 84, 47, 126),
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.navigationBar,
+        foregroundColor: AppColors.childPageHeader,
       ),
       body: Center(
         child: ShelvesGet(bookcaseId: bookcase.id!),

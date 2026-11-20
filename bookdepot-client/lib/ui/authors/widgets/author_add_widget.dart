@@ -91,6 +91,8 @@ class _AuthorAddState extends State<AuthorAdd> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Added author successfully!')),
                   );
+                  if (!mounted) return;
+Navigator.pop(context, true);
                   _authorFirstNameInput.clear();
                   _authorLastNameInput.clear();
                   _authorIdInput.clear();

@@ -24,7 +24,8 @@ class Author {
       sequenceOrdinal: json['sequence_ordinal'],
       firstName: json['first_name'],
       lastName: json['last_name'],
-      name: '${json['first_name']} ${json['last_name']}',
+     // name: '${json['first_name']} ${json['last_name']}',
+      name: '${json['first_name']}',
     );
   }
 

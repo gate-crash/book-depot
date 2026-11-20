@@ -23,8 +23,7 @@ class _BookAddState extends State<BookAdd> {
   final TextEditingController _isbnInput = TextEditingController();
   String _publishDate = '';
   String _physicalFormat = '';
-  String _isbn_13 = '';
-  String _isbn_10 = '';
+  final String _bookOpenLibraryId = '';
   
   @override
   void dispose() {
@@ -67,8 +66,7 @@ class _BookAddState extends State<BookAdd> {
                 _publishDate = bookData['publish_date'] ?? '';
                 _physicalFormat = bookData['physical_format'] ?? '';
                 _bookAuthorIdInput.text = bookData['authors'][0]['key'].split('/').last ?? '';
-                _isbn_13 = bookData['isbn_13'] ?? '';
-                _isbn_10 = bookData['isbn_10'] ?? '';
+                var bookOpenLibraryId = bookData['key']?.split('/').last;
                   if (!context.mounted) return; 
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -100,10 +98,10 @@ class _BookAddState extends State<BookAdd> {
           _publishDate = bookData['publish_date'] ?? '';
           _physicalFormat = bookData['physical_format'] ?? '';
           _bookAuthorIdInput.text = bookData['authors'][0]['key'].split('/').last ?? '';
-          var isbn_13 = bookData['isbn_13'] ?? '';
-          var isbn_10 = bookData['isbn_10'] ?? '';
-         
+          var bookOpenLibraryId = bookData['key']?.split('/').last;
+
                   if (!context.mounted) return; 
+                  
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('Scanned: $result'),
@@ -158,17 +156,21 @@ class _BookAddState extends State<BookAdd> {
                   final bookName = _bookNameInput.text.trim();
                   final bookAuthor = _bookAuthorIdInput.text.trim();
                   final api = ServerApiPost();
-                  final isbn_13 = _isbn_13;
-                  final isbn_10 = _isbn_10;
-                  final response1 = await api('/book/add', {'title': bookName, 'author': bookAuthor, 'shelf': widget.shelfId, 'isbn': isbn_13, 'publish_date': _publishDate, 'format': _physicalFormat});
-                  final author_api = AuthorLookupModel();
-                  final authorData = await author_api.serverDataGet(bookAuthor);
+                  final isbn = _isbnInput.text.trim();
+                  final authorApi = AuthorLookupModel();
+                  final authorData = await authorApi.serverDataGet(bookAuthor);
+                  final bookOpenLibraryId = _bookOpenLibraryId;
                   final authorName = authorData['name'] ?? '';
                   final response2 = await api('/author/add', {'first_name': authorName, 'id': bookAuthor});
+                  final bookThumbnailPath = 'https://covers.openlibrary.org/b/isbn/$isbn-M.jpg';
+                  final response1 = await api('/book/add', {'title': bookName, 'author': bookAuthor, 'shelf': widget.shelfId, 'isbn': isbn, 'publish_date': _publishDate, 'format': _physicalFormat, 'thumbnail_filename': bookThumbnailPath, });
+
                   if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Added "$bookName" - successfully!')),
                   );
+                  if (!mounted) return;
+Navigator.pop(context, true);
                   _bookNameInput.clear();
                 }
                 },

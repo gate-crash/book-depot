@@ -16,6 +16,8 @@ dependencies:
 
   cupertino_icons: ^1.0.8
   http: ^1.6.0
+  path_provider: ^2.1.6
+  cached_network_image: ^4.0.7
 
 dev_dependencies:
   flutter_test:

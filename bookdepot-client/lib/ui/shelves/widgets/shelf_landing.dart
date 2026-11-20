@@ -1,7 +1,6 @@
 import 'package:bookdepot_client/ui/books/widgets/books_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:bookdepot_client/ui/shelves/models/shelf.dart';
-
+import 'package:bookdepot_client/data/models/themes.dart';
 
 class ShelfLandingPage extends StatelessWidget {
   const ShelfLandingPage({super.key, required this.shelf});
@@ -10,6 +9,7 @@ class ShelfLandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     String title;
     if (shelf.caseName != null && shelf.caseName!.isNotEmpty) {
       title = shelf.id!;
@@ -17,16 +17,29 @@ class ShelfLandingPage extends StatelessWidget {
       title = 'Shelf ${shelf.id ?? ''}';
     }
 
-  return Scaffold(
-      appBar: AppBar(title: Text(title)),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-
-          Expanded(
-            child: BooksGet(shelfId: shelf.id!),
-          ),
-        ],
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous screen
+          },
+        ),
+        title: GestureDetector(
+          onTap: () {
+            // Pops all screens off the stack until it reaches the root screen
+            Navigator.popUntil(context, (route) => route.isFirst);
+          },
+          child: const Text('Book Depot'),
+        ),
+        centerTitle: true,
+        backgroundColor: AppColors.navigationBar,
+        foregroundColor: AppColors.childPageHeader,
+      ),
+      // 3. Place the TabBarView in the body of the Scaffold
+      body: Center(
+        child: BooksGet(endpoint: '/shelf/get-books', payload: {"shelf": shelf.id}),
+        
       ),
     );
   }

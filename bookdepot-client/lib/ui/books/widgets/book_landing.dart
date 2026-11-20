@@ -1,18 +1,21 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/books/models/book.dart';
-
+import 'package:bookdepot_client/ui/authors/models/authors.dart';
+import 'package:bookdepot_client/ui/authors/widgets/author_landing.dart';
+import 'package:bookdepot_client/data/models/themes.dart';
 
 class BookLandingPage extends StatelessWidget {
-  const BookLandingPage({super.key, required this.book});
-
+  const BookLandingPage({super.key, required this.book, required this.author});
+  
   final Book book;
+  final Author author;
+ 
 
   @override
   Widget build(BuildContext context) {
-    final thumbnailPath = book.thumbnailFilename != null && book.thumbnailFilename!.isNotEmpty
-        ? 'assets/images/books/${book.thumbnailFilename}'
-        : 'assets/images/bookcase.png';
-
+    final authorName = author.name as String;
+    
     return Scaffold(
           appBar: AppBar(
             leading: IconButton(
@@ -29,8 +32,8 @@ class BookLandingPage extends StatelessWidget {
               child: const Text('Book Depot'),
             ),
             centerTitle: true,
-            backgroundColor: const Color.fromARGB(255, 84, 47, 126),
-            foregroundColor: Colors.white,
+            backgroundColor: AppColors.navigationBar,
+            foregroundColor: AppColors.childPageHeader,
           ),
           // 3. Place the TabBarView in the body of the Scaffold
           body: Column(
@@ -39,14 +42,38 @@ class BookLandingPage extends StatelessWidget {
                 ListTile(
                   leading: Icon(Icons.book),
                   title: Text(book.title!,),
-                  subtitle: Text(book.author!),
+                  subtitle: GestureDetector(
+          onTap: () {
+            // Pops all screens off the stack until it reaches the root screen
+            Navigator.push(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (context) => AuthorLandingPage(
+                    author: author,
+                    authorId: author.id,
+                  ),
                 ),
+              );
+          },
+          child: Text(authorName),
+                ),
+                      ),
                 Flexible(
-                child: Image.asset(
-                          thumbnailPath,
-                          fit: BoxFit.fill,
-                        ),
+                child: CachedNetworkImage(
+                                  imageUrl: book.thumbnailFilename ?? '',
+                                  fit: BoxFit.contain,
+                                  width: 250,
+                                  placeholder: (context, url) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      Image.asset(
+                                    'assets/images/bookcase.png',
+                                    fit: BoxFit.contain,
+                                  ),
+                                )
                 )
+                
               ],
           )
     );

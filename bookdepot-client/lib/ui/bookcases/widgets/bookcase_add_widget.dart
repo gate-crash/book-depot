@@ -55,13 +55,15 @@ class _BookcaseAddState extends State<BookcaseAdd> {
                   final api = ServerApiPost();
                   await api('/bookcase/add', {'case_name': caseName});
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Added "$caseName" - successfully!')),
-                    );
-                    _bookCaseNameInput.clear();
-                  }
-                },
-              ),
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Added "$caseName" - successfully!')),
+                  );
+                  if (!mounted) return;
+Navigator.pop(context, true);
+                  _bookCaseNameInput.clear();
+                }
+                  },
+                ),
               ],
             ),
           ),
