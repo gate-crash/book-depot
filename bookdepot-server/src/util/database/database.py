@@ -141,7 +141,6 @@ class Database:
                                 id TEXT PRIMARY KEY,
                                 bookcase TEXT NOT NULL,
                                 shelf_name TEXT,
-                                shelf_name TEXT,
                                 number INTEGER,
                                 sorting_method TEXT,
                                 genre TEXT,
@@ -191,7 +190,7 @@ class Database:
                                 FOREIGN KEY (possession) REFERENCES {possessions} (id),
                                 FOREIGN KEY (shelf) REFERENCES {shelves} (id),
                                 FOREIGN KEY (author) REFERENCES {authors} (id),
-                                FOREIGN KEY (translator) REFERENCES {authors} (id),
+                                FOREIGN KEY (translator) REFERENCES {authors} (id)
                             );
                            """
                             .format(
