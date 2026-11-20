@@ -5,6 +5,8 @@ class ServerApiGet {
   Future<Map<String, dynamic>> serverDataGet(String endpoint, Map<String, dynamic> data) async {
     final Map<String, String> queryBody = data.map((key, value) => MapEntry(key, value.toString()));
     final url = Uri.parse('$api_host$endpoint').replace(queryParameters: queryBody);
+    data.map((key, value) => MapEntry(key, value.toString()));
+    Uri.parse('$api_host$endpoint').replace(queryParameters: queryBody);
     var response = await http.get(url);
     if (response.statusCode == 200) {
       return jsonDecode(response.body) as Map<String, dynamic>;
@@ -22,4 +24,9 @@ class ServerApiPost {
       body: jsonEncode(data),
     );
   }
+
+  Future<Object?> serverDataGet(String bookAuthor) async {
+    return null;
+  }
 }
+

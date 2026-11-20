@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bookdepot_client/api/server_api_service.dart';
+import 'package:bookdepot_client/data/models/server_api_model.dart';
 
 class ShelfAdd extends StatefulWidget {
   // Removed the unused 'bookcase' map parameter for cleaner embedding
@@ -14,18 +14,22 @@ class ShelfAdd extends StatefulWidget {
 }
 
 class _ShelfAddState extends State<ShelfAdd> {
-  final TextEditingController _bookCaseNameInput = TextEditingController();
+  final TextEditingController _ShelfNameInput = TextEditingController();
   
   @override
   void dispose() {
-    _bookCaseNameInput.dispose();
+    _ShelfNameInput.dispose();
     super.dispose();
   }
   
   @override
   Widget build(BuildContext context) {
     // Return a Column directly, omitting the Scaffold and AppBar
-    return Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add Shelf'),
+      ),
+      body:Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
@@ -39,6 +43,16 @@ class _ShelfAddState extends State<ShelfAdd> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
             children: [
+              Expanded(
+                child: TextField(
+                  controller: _ShelfNameInput,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter shelf name...',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                  ),
+                ),
+              ),
               const SizedBox(width: 10, height: 10),
               IconButton.filled(
                 icon: const Icon(Icons.add),
@@ -47,10 +61,13 @@ class _ShelfAddState extends State<ShelfAdd> {
                   // ignore: unused_local_variable
                   final response1 = await api('/shelf/add', {'bookcase': widget.bookcaseId,
                   });
+                  
                   if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Added shelf successfully!')),
                   );
+                  if (!mounted) return;
+                    Navigator.pop(context, true);
                   }
                 },
               ),
@@ -58,6 +75,7 @@ class _ShelfAddState extends State<ShelfAdd> {
           ),
         ),
       ],
+      )
     );
   }
 }

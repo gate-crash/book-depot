@@ -1,21 +1,21 @@
 import 'dart:ui';
-
-import 'package:bookdepot_client/bookcase_landing.dart';
-import 'package:bookdepot_client/api/server_api_service.dart';
+import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_landing.dart';
+import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:flutter/material.dart';
+import 'package:bookdepot_client/ui/bookcases/models/bookcase.dart';
+import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_add_widget.dart';
+import 'package:bookdepot_client/data/models/themes.dart';
 
-import 'package:bookdepot_client/dataModels/bookcase.dart';
-
-class BookcasesGet extends StatefulWidget {
-  const BookcasesGet({super.key});
+class BookcasesGetAddFlow extends StatefulWidget {
+  const BookcasesGetAddFlow({super.key});
 
   @override
-  State<BookcasesGet> createState() {
-    return _BookcasesGetState();
+  State<BookcasesGetAddFlow> createState() {
+    return _BookcasesGetAddFlowState();
   }
 }
 
-class _BookcasesGetState extends State<BookcasesGet> {
+class _BookcasesGetAddFlowState extends State<BookcasesGetAddFlow> {
   // Store the future in a state variable so it doesn't refetch on every rebuild
   late Future<Map<String, dynamic>> _dataFuture;
 
@@ -26,10 +26,47 @@ class _BookcasesGetState extends State<BookcasesGet> {
     super.initState();
     _dataFuture = _serverApiService.serverDataGet('/bookcases', {});
   }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>>(
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous screen
+          },
+        ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start, // Aligns text to the left
+    mainAxisSize: MainAxisSize.min,               // Keeps the column compact
+    children: [
+          GestureDetector(
+          onTap: () {
+            // Pops all screens off the stack until it reaches the root screen
+            Navigator.popUntil(context, (route) => route.isFirst);
+          },
+          child: const Text('Book Depot'),
+        ),
+        Text(
+        'Select a bookcase',
+        style: TextStyle(fontSize: 14, color: Colors.white70),
+      ),
+        ]
+        ),
+        centerTitle: true,
+        backgroundColor: AppColors.navigationBar,
+        foregroundColor: Colors.white,
+      ),
+      floatingActionButton: FloatingActionButton.large(onPressed: () {Navigator.push(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (context) => BookcaseAdd(
+                      ),
+                    ),
+                  );},
+                  child: const Icon(Icons.add)
+                  ),
+      body: FutureBuilder<Map<String, dynamic>>(
       future: _dataFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -65,7 +102,7 @@ class _BookcasesGetState extends State<BookcasesGet> {
                     context,
                     MaterialPageRoute<void>(
                       builder: (context) => BookcaseLandingPage(
-                        bookcase: Shelf.fromJson(bookcase),
+                        bookcase: BookCase.fromJson(bookcase),
                       ),
                     ),
                   );
@@ -97,6 +134,7 @@ class _BookcasesGetState extends State<BookcasesGet> {
           )
         );
       },
+      )
     );
   }
 }

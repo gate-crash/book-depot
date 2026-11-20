@@ -68,12 +68,14 @@ class Database:
             "title": "TEXT",
             "shelf": "TEXT",
             "author": "TEXT",
+            "translator": "TEXT",
             "isbn": "TEXT",
             "issn": "TEXT",
             "genre": "TEXT",
             "series": "TEXT",
             "volume_number": "INTEGER",
             "language": "TEXT",
+            "translated_from": "TEXT",
             "edition": "INTEGER",
             "format": "TEXT",
             "fiction": "BOOLEAN",
@@ -164,12 +166,14 @@ class Database:
                                 title TEXT NOT NULL CHECK (length(title) <= 100),
                                 shelf TEXT NOT NULL,
                                 author TEXT,
+                                translator TEXT,
                                 isbn TEXT CHECK (length(isbn) <= 13),
                                 issn TEXT CHECK (length(issn) <= 8),
                                 genre TEXT CHECK (length(genre) <= 20),
                                 series TEXT CHECK (length(series) <= 20),
                                 volume_number INTEGER,
                                 language TEXT CHECK (length(language) <= 20),
+                                translated_from TEXT CHECK (length(language) <= 20),
                                 edition INTEGER,
                                 format TEXT CHECK (length(format) <= 20),
                                 fiction BOOLEAN,
@@ -185,7 +189,8 @@ class Database:
                                 deleted BOOLEAN,
                                 FOREIGN KEY (possession) REFERENCES {possessions} (id),
                                 FOREIGN KEY (shelf) REFERENCES {shelves} (id),
-                                FOREIGN KEY (author) REFERENCES {authors} (id)
+                                FOREIGN KEY (author) REFERENCES {authors} (id),
+                                FOREIGN KEY (translator) REFERENCES {authors} (id)
                             );
                            """
                             .format(
@@ -205,16 +210,18 @@ class Database:
                                 {{row}}.id, {{row}}.title, {{row}}.series, {{row}}.genre,
                                 {{row}}.isbn, {{row}}.issn, {{row}}.description, {{row}}.notes,
                                 (SELECT first_name FROM {authors} WHERE id = {{row}}.author),
-                                (SELECT last_name FROM {authors} WHERE id = {{row}}.author)
+                                (SELECT last_name FROM {authors} WHERE id = {{row}}.author),
+                                (SELECT first_name FROM {authors} WHERE id = {{row}}.translator),
+                                (SELECT last_name FROM {authors} WHERE id = {{row}}.translator)
                             """.format(authors=self.authors_table)
             search_columns = ("book_id, title, series, genre, isbn, issn, description, notes, "
-                              "author_first, author_last")
+                              "author_first, author_last, translator_first, translator_last")
 
             search_schema = ("""
                             CREATE VIRTUAL TABLE IF NOT EXISTS {book_search} USING fts5(
                                 book_id UNINDEXED,
                                 title, series, genre, isbn, issn, description, notes,
-                                author_first, author_last,
+                                author_first, author_last, translator_first, translator_last,
                                 tokenize = 'unicode61 remove_diacritics 2'
                             );
                             CREATE TRIGGER IF NOT EXISTS {book_search}_books_ai AFTER INSERT ON {books} BEGIN
@@ -339,6 +346,78 @@ class Database:
 
         return True
 
+
+    def _table_name_map(self):
+        """Map each schema alias (used in _EXPECTED_COLUMNS) to its configured table name."""
+        return {
+            "bookcases": self.bookcases_table,
+            "shelves": self.shelves_table,
+            "authors": self.authors_table,
+            "possessions": self.possessions_table,
+            "books": self.books_table,
+        }
+
+    def validate_columns(self):
+        """Compare each existing table's actual columns against the expected schema.
+
+        Returns a dict of {table_name: [missing_column, ...]} for any table that is
+        missing one or more expected columns. Tables that don't exist yet are skipped
+        (that case is handled by check()/setup() instead).
+        """
+        cursor = self.conn.cursor()
+        missing = {}
+
+        for alias, table_name in self._table_name_map().items():
+            cursor.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name=?", (table_name,)
+            )
+            if not cursor.fetchone():
+                continue
+
+            cursor.execute("PRAGMA table_info({table});".format(table=table_name))
+            existing_columns = {row[1] for row in cursor.fetchall()}
+            expected_columns = self._EXPECTED_COLUMNS[alias]
+            missing_columns = [col for col in expected_columns if col not in existing_columns]
+
+            if missing_columns:
+                missing[table_name] = missing_columns
+
+        return missing
+
+    def migrate_columns(self):
+        """Add any columns missing from existing tables, based on _EXPECTED_COLUMNS.
+
+        Returns True if any columns were added, False otherwise.
+        """
+        missing = self.validate_columns()
+        if not missing:
+            return False
+
+        table_types = {
+            table_name: self._EXPECTED_COLUMNS[alias]
+            for alias, table_name in self._table_name_map().items()
+        }
+
+        cursor = self.conn.cursor()
+        try:
+            for table_name, columns in missing.items():
+                for column in columns:
+                    column_type = table_types[table_name][column]
+                    cursor.execute(
+                        "ALTER TABLE {table} ADD COLUMN {column} {type};"
+                        .format(table=table_name, column=column, type=column_type)
+                    )
+                    logging.log(
+                        msg="Added missing column '{column}' to table '{table}'."
+                        .format(column=column, table=table_name),
+                        level=logging.INFO
+                    )
+            self.conn.commit()
+        except sqlite3.OperationalError as e:
+            raise e
+
+        return True
+
     def check(self):
         cursor = self.conn.cursor()
 
@@ -352,6 +431,15 @@ class Database:
                 table_names = {table[0] for table in tables}
                 required = {self.bookcases_table, self.shelves_table, self.authors_table,
                             self.possessions_table, self.books_table, self.book_search_table}
+
+                if not required.issubset(table_names):
+                    return False
+
+                if self.migrate_columns():
+                    logging.log(msg="Database schema updated with missing columns.",
+                                level=logging.INFO)
+
+                return True
 
                 if not required.issubset(table_names):
                     return False

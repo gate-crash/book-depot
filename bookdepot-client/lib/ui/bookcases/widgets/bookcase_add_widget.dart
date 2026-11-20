@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:bookdepot_client/api/server_api_service.dart';
+import 'package:bookdepot_client/data/models/server_api_model.dart';
 
 class BookcaseAdd extends StatefulWidget {
-  // Removed the unused 'bookcase' map parameter for cleaner embedding
   const BookcaseAdd({super.key});
 
   @override
@@ -20,8 +19,11 @@ class _BookcaseAddState extends State<BookcaseAdd> {
   
   @override
   Widget build(BuildContext context) {
-    // Return a Column directly, omitting the Scaffold and AppBar
-    return Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add Bookcase'),
+      ),
+    body: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
@@ -51,21 +53,22 @@ class _BookcaseAddState extends State<BookcaseAdd> {
                 onPressed: () async {
                   final caseName = _bookCaseNameInput.text.trim();
                   final api = ServerApiPost();
-                  // ignore: unused_local_variable
-                  final response1 = await api('/bookcase/add', {'case_name': caseName});
+                  await api('/bookcase/add', {'case_name': caseName});
                   if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Added "$caseName" - successfully!')),
                   );
+                  if (!mounted) return;
+Navigator.pop(context, true);
                   _bookCaseNameInput.clear();
                 }
-                },
-              ),
-            ],
-
+                  },
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
