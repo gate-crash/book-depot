@@ -134,7 +134,7 @@ class Database:
                                 number INTEGER,
                                 case_name TEXT,
                                 sorting_method TEXT,
-                                sequence_ordinal INCREMENT INTEGER,
+                                sequence_ordinal INTEGER,
                                 genre TEXT,
                                 deleted BOOLEAN
                             );
@@ -145,7 +145,7 @@ class Database:
                                 number INTEGER,
                                 sorting_method TEXT,
                                 genre TEXT,
-                                sequence_ordinal INCREMENT INTEGER,
+                                sequence_ordinal INTEGER,
                                 deleted BOOLEAN,
                                 FOREIGN KEY (bookcase) REFERENCES {bookcases} (id)
                             );
@@ -192,7 +192,7 @@ class Database:
                                 FOREIGN KEY (possession) REFERENCES {possessions} (id),
                                 FOREIGN KEY (shelf) REFERENCES {shelves} (id),
                                 FOREIGN KEY (author) REFERENCES {authors} (id),
-                                FOREIGN KEY (translator) REFERENCES {authors} (id),
+                                FOREIGN KEY (translator) REFERENCES {authors} (id)
                             );
                            """
                             .format(
