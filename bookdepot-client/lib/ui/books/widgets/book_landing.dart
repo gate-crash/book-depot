@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/books/models/book.dart';
+import 'package:bookdepot_client/ui/books/widgets/book_update.dart';
 import 'package:bookdepot_client/ui/authors/models/authors.dart';
 import 'package:bookdepot_client/ui/authors/widgets/author_landing.dart';
 import 'package:bookdepot_client/data/models/themes.dart';
@@ -15,7 +16,7 @@ class BookLandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authorName = author.name as String;
-    
+    print(Book);    
     return Scaffold(
           appBar: AppBar(
             leading: IconButton(
@@ -72,8 +73,22 @@ class BookLandingPage extends StatelessWidget {
                                     fit: BoxFit.contain,
                                   ),
                                 )
-                )
-                
+                ),
+                ActionChip(
+          avatar: Icon(Icons.edit),
+          label: const Text('Edit Book Details'),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (context) => BookUpdatePage(
+                    author: author,
+                    book: book,
+                  ),
+                ),
+              );
+          },
+        ),
               ],
           )
     );
