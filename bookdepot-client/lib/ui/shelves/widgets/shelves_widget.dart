@@ -34,10 +34,13 @@ class _ShelvesGetState extends State<ShelvesGet> {
 @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       floatingActionButton: FloatingActionButton.large(onPressed: () async {final bool? wasAdded = await showModalBottomSheet<bool>(
+                    isScrollControlled: true,
                     context: context,
                     builder: (BuildContext modalContext) {
-                      return Container(
+                      return Padding(padding: EdgeInsets.only(bottom: MediaQuery.of(modalContext).viewInsets.bottom),
+                      child: Container(
                         height: 200,
                         color: Colors.amber,
                         child: Center(
@@ -91,6 +94,7 @@ class _ShelvesGetState extends State<ShelvesGet> {
         ],
       ),
                         ),
+                      )
                       );
                     },
                   );
