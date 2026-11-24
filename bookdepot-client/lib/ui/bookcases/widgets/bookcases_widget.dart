@@ -1,6 +1,5 @@
 import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:flutter/material.dart';
-import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_add_widget.dart';
 import 'package:bookdepot_client/ui/bookcases/widgets/bookcases_grid.dart';
 class BookcasesGet extends StatefulWidget {
   const BookcasesGet({super.key});
@@ -12,7 +11,12 @@ class BookcasesGet extends StatefulWidget {
 }
 
 class _BookcasesGetState extends State<BookcasesGet> {
-  // Store the future in a state variable so it doesn't refetch on every rebuild
+  final TextEditingController _bookCaseNameInput = TextEditingController();
+  @override
+  void dispose() {
+    _bookCaseNameInput.dispose();
+    super.dispose();
+  }
   late Future<Map<String, dynamic>> _dataFuture;
 
   final ServerApiGet _serverApiService = ServerApiGet();
@@ -23,25 +27,77 @@ class _BookcasesGetState extends State<BookcasesGet> {
     _dataFuture = _serverApiService.serverDataGet('/bookcases', {});
   }
 
+
   @override
   Widget build(BuildContext context) {
     
     return Scaffold(
-      floatingActionButton: FloatingActionButton.large(onPressed: () async {
-        final added = await Navigator.push<bool>(
-        context,
-        MaterialPageRoute<bool>(
-          builder: (context) => BookcaseAdd(),
+      floatingActionButton: FloatingActionButton.large(onPressed: () async {final bool? wasAdded = await showModalBottomSheet<bool>(
+                    context: context,
+                    builder: (BuildContext modalContext) {
+                      return Container(
+                        height: 200,
+                        color: Colors.amber,
+                        child: Center(
+                          child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text(
+            'Add a new bookcase',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
         ),
-      );
-      if (!mounted) return;
-
-        if (added == true) {
-          setState(() {
-    _dataFuture = _serverApiService.serverDataGet('/bookcases', {});
-          });
-        }
-      },
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  autofocus: true,
+                  controller: _bookCaseNameInput,
+                  decoration: const InputDecoration(
+                    hintText: 'Enter bookcase name...',
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 10),
+              IconButton.filled(
+                icon: const Icon(Icons.add),
+                onPressed: () async {
+                  final caseName = _bookCaseNameInput.text.trim();
+                  final api = ServerApiPost();
+                  await api('/bookcase/add', {'case_name': caseName});
+                  if (modalContext.mounted) {
+                                  ScaffoldMessenger.of(modalContext).showSnackBar(
+                                    SnackBar(content: Text('Added "$caseName" - successfully!')),
+                                  );
+                                  _bookCaseNameInput.clear();
+                                  // Passes `true` back to `wasAdded`
+                                  Navigator.pop(modalContext, true);
+                  _bookCaseNameInput.clear();
+                }
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+                        ),
+                      );
+                    },
+                  );
+                  if (wasAdded == true && mounted) {
+            setState(() {
+      _dataFuture = _serverApiService.serverDataGet('/bookcases', {});
+    });
+          }
+                },
+                
                   child: const Icon(Icons.add)
                   ),
       body: FutureBuilder<Map<String, dynamic>>(

@@ -15,7 +15,7 @@ class ShelvesGrid extends StatelessWidget {
    @override
   Widget build(BuildContext context) {
     if (shelves.isEmpty) {
-      return const Center(child: Text('No books available'));
+      return const Center(child: Text('No Shelves on this bookcase'));
     }
         return ScrollConfiguration(
           behavior: const MaterialScrollBehavior().copyWith(
