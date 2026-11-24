@@ -58,9 +58,9 @@ class _AuthorsGetState extends State<AuthorsGet> {
 
         final authors = snapshot.data!['authors'] as List<dynamic>;
         final alphabeticalAuthorsList = [...authors]
-          ..sort((a, b) => (a['first_name'] as String? ?? '')
+          ..sort((a, b) => (a['name'] as String? ?? '')
               .toLowerCase()
-              .compareTo((b['first_name'] as String? ?? '').toLowerCase()));
+              .compareTo((b['name'] as String? ?? '').toLowerCase()));
                 return AuthorsGrid(authors: authors, sortedList: alphabeticalAuthorsList,);
       },
       )

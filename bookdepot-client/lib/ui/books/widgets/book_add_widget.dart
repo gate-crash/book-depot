@@ -161,7 +161,7 @@ class _BookAddState extends State<BookAdd> {
                   final authorData = await authorApi.serverDataGet(bookAuthor);
                   final bookOpenLibraryId = _bookOpenLibraryId;
                   final authorName = authorData['name'] ?? '';
-                  final response2 = await api('/author/add', {'first_name': authorName, 'id': bookAuthor});
+                  final response2 = await api('/author/add', {'name': authorName, 'id': bookAuthor});
                   final bookThumbnailPath = 'https://covers.openlibrary.org/b/isbn/$isbn-M.jpg';
                   final response1 = await api('/book/add', {'title': bookName, 'author': bookAuthor, 'shelf': widget.shelfId, 'isbn': isbn, 'publish_date': _publishDate, 'format': _physicalFormat, 'thumbnail_filename': bookThumbnailPath, });
 

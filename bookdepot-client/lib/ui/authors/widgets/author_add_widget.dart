@@ -14,14 +14,12 @@ class AuthorAdd extends StatefulWidget {
 }
 
 class _AuthorAddState extends State<AuthorAdd> {
-  final TextEditingController _authorFirstNameInput = TextEditingController();
-  final TextEditingController _authorLastNameInput = TextEditingController();
+  final TextEditingController _authorNameInput = TextEditingController();
   final TextEditingController _authorIdInput = TextEditingController();
   
   @override
   void dispose() {
-    _authorFirstNameInput.dispose();
-    _authorLastNameInput.dispose();
+    _authorNameInput.dispose();
     _authorIdInput.dispose();
     super.dispose();
   }
@@ -49,19 +47,9 @@ class _AuthorAddState extends State<AuthorAdd> {
             children: [
               Expanded(
                 child: TextField(
-                  controller: _authorFirstNameInput,
+                  controller: _authorNameInput,
                   decoration: const InputDecoration(
-                    hintText: 'First Name..',
-                    border: OutlineInputBorder(),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: TextField(
-                  controller: _authorLastNameInput,
-                  decoration: const InputDecoration(
-                    hintText: 'Last Name..',
+                    hintText: 'Name..',
                     border: OutlineInputBorder(),
                     contentPadding: EdgeInsets.symmetric(horizontal: 16),
                   ),
@@ -81,20 +69,18 @@ class _AuthorAddState extends State<AuthorAdd> {
               IconButton.filled(
                 icon: const Icon(Icons.add),
                 onPressed: () async {
-                  final authorFirstName = _authorFirstNameInput.text.trim();
-                  final authorLastName = _authorLastNameInput.text.trim();
+                  final authorName = _authorNameInput.text.trim();
                   final authorId = _authorIdInput.text.trim();
                   final api = ServerApiPost();
                   // ignore: unused_local_variable
-                  final response1 = await api('/author/add', {'first_name': authorFirstName, 'last_name': authorLastName, 'id': authorId});
+                  final response1 = await api('/author/add', {'name': authorName, 'id': authorId});
                   if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text('Added author successfully!')),
                   );
                   if (!mounted) return;
 Navigator.pop(context, true);
-                  _authorFirstNameInput.clear();
-                  _authorLastNameInput.clear();
+                  _authorNameInput.clear();
                   _authorIdInput.clear();
                 }
                 },

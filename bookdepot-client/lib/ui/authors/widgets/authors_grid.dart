@@ -31,7 +31,7 @@ class AuthorsGrid extends StatelessWidget {
         itemBuilder: (context, index) {
           final author = sortedList[index];
           final authorId = author['id'];
-          final name = author['first_name']?.toString() ?? '';
+          final name = author['name']?.toString() ?? '';
           final authorThumbnailPath =
               'https://covers.openlibrary.org/a/olid/$authorId-M.jpg';
 

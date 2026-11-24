@@ -5,6 +5,7 @@ import 'package:bookdepot_client/ui/books/widgets/book_landing.dart';
 import 'package:bookdepot_client/ui/books/models/book.dart';
 import 'package:bookdepot_client/ui/authors/models/authors.dart';
 import 'package:bookdepot_client/data/models/themes.dart';
+import 'package:bookdepot_client/ui/books/widgets/book_update.dart';
 
 class BooksGrid extends StatelessWidget {
   const BooksGrid({
@@ -52,6 +53,76 @@ class BooksGrid extends StatelessWidget {
                         author: Author.fromJson(author)
                       ),
                     ),
+                  );
+                },
+                onLongPressStart: (LongPressStartDetails details) {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        height: 200,
+                        color: Colors.amber,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              const Text('Update Book'),
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: ElevatedButton(
+                                      child: const Text('Edit Book'),
+                                      onPressed: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute<void>(
+                                          builder: (context) => BookUpdatePage(
+                                            book: Book.fromJson(book),
+                                            author: Author.fromJson(author),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: ElevatedButton(
+                                      child: const Text('Move Book'),
+                                      onPressed: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute<void>(
+                                          builder: (context) => BookUpdatePage(
+                                            book: Book.fromJson(book),
+                                            author: Author.fromJson(author),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: ElevatedButton(
+                                      child: const Text('Delete Book'),
+                                      onPressed: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute<void>(
+                                          builder: (context) => BookUpdatePage(
+                                            book: Book.fromJson(book),
+                                            author: Author.fromJson(author),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   );
                 },
                 child: Container(
