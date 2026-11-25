@@ -29,6 +29,9 @@ class Book {
     this.title,
     this.author,
     this.thumbnailFilename,
+    this.format,
+    this.isbn,
+    this.genre,
   });
 
   factory Book.fromJson(Map<String, dynamic> json) {
@@ -38,6 +41,9 @@ class Book {
       title: json['title'],
       author: json['author'],
       thumbnailFilename: json['thumbnail_filename'],
+      format: json['format'],
+      isbn: json['isbn'],
+      genre: json['genre'],
     );
   }
 

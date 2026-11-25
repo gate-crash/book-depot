@@ -45,13 +45,16 @@ class _BookAddState extends State<BookAdd> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
+            spacing: 8,
             children: [
               Expanded(
                 child: TextField(
                   controller: _isbnInput,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Enter ISBN...',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15)
+                    ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 16),
                   ),
                 ),
@@ -128,13 +131,16 @@ class _BookAddState extends State<BookAdd> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Row(
+            spacing: 8,
             children: [
               Expanded(
                 child: TextField(
                   controller: _bookNameInput,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Book Title',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 16),
                   ),
                 ),
@@ -142,9 +148,11 @@ class _BookAddState extends State<BookAdd> {
               Expanded(
                 child: TextField(
                   controller: _bookAuthorIdInput,
-                  decoration: const InputDecoration(
-                    hintText: 'Author ID...',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    hintText: 'Author ID',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 16),
                   ),
                 ),

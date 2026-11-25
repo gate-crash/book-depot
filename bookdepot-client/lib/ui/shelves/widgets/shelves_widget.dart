@@ -1,5 +1,4 @@
 import 'package:bookdepot_client/data/models/server_api_model.dart';
-import 'package:bookdepot_client/ui/shelves/widgets/shelf_add_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/shelves/widgets/shelves_grid.dart';
 
@@ -15,10 +14,10 @@ class ShelvesGet extends StatefulWidget {
 }
 
 class _ShelvesGetState extends State<ShelvesGet> {
-  final TextEditingController _ShelfNameInput = TextEditingController();
+  final TextEditingController _shelfNameInput = TextEditingController();
   @override
   void dispose() {
-    _ShelfNameInput.dispose();
+    _shelfNameInput.dispose();
     super.dispose();
   }
   late Future<Map<String, dynamic>> _dataFuture;
@@ -61,10 +60,12 @@ class _ShelvesGetState extends State<ShelvesGet> {
               Expanded(
                 child: TextField(
                   autofocus: true,
-                  controller: _ShelfNameInput,
-                  decoration: const InputDecoration(
+                  controller: _shelfNameInput,
+                  decoration: InputDecoration(
                     hintText: 'Enter Shelf name...',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15)
+                    ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 16),
                   ),
                 ),
@@ -73,7 +74,7 @@ class _ShelvesGetState extends State<ShelvesGet> {
               IconButton.filled(
                 icon: const Icon(Icons.add),
                 onPressed: () async {
-                  final caseName = _ShelfNameInput.text.trim();
+                  final caseName = _shelfNameInput.text.trim();
                   final api = ServerApiPost();
                   await api('/shelf/add', {'bookcase': widget.bookcaseId,
                   });
@@ -81,10 +82,10 @@ class _ShelvesGetState extends State<ShelvesGet> {
                                   ScaffoldMessenger.of(modalContext).showSnackBar(
                                     SnackBar(content: Text('Added "$caseName" - successfully!')),
                                   );
-                                  _ShelfNameInput.clear();
+                                  _shelfNameInput.clear();
                                   // Passes `true` back to `wasAdded`
                                   Navigator.pop(modalContext, true);
-                  _ShelfNameInput.clear();
+                  _shelfNameInput.clear();
                 }
                   },
                 ),

@@ -48,9 +48,11 @@ class _AuthorAddState extends State<AuthorAdd> {
               Expanded(
                 child: TextField(
                   controller: _authorNameInput,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Name..',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15)
+                    ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 16),
                   ),
                 ),
@@ -58,9 +60,11 @@ class _AuthorAddState extends State<AuthorAdd> {
               Expanded(
                 child: TextField(
                   controller: _authorIdInput,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'ID',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15)
+                    ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 16),
                   ),
                 ),

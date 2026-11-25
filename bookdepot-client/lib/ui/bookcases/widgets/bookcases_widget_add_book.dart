@@ -3,7 +3,6 @@ import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_landing.dart';
 import 'package:bookdepot_client/data/models/server_api_model.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/ui/bookcases/models/bookcase.dart';
-import 'package:bookdepot_client/ui/bookcases/widgets/bookcase_add_widget.dart';
 import 'package:bookdepot_client/data/models/themes.dart';
 
 class BookcasesGetAddFlow extends StatefulWidget {
@@ -57,15 +56,6 @@ class _BookcasesGetAddFlowState extends State<BookcasesGetAddFlow> {
         backgroundColor: AppColors.navigationBar,
         foregroundColor: Colors.white,
       ),
-      floatingActionButton: FloatingActionButton.large(onPressed: () {Navigator.push(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (context) => BookcaseAdd(
-                      ),
-                    ),
-                  );},
-                  child: const Icon(Icons.add)
-                  ),
       body: FutureBuilder<Map<String, dynamic>>(
       future: _dataFuture,
       builder: (context, snapshot) {

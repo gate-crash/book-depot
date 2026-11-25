@@ -5,7 +5,6 @@ import 'package:bookdepot_client/ui/authors/models/authors.dart';
 import 'package:bookdepot_client/ui/authors/widgets/author_landing.dart';
 import 'package:bookdepot_client/data/models/themes.dart';
 import 'package:bookdepot_client/data/models/server_api_model.dart';
-import 'package:bookdepot_client/ui/authors/models/author_lookup_model.dart';
 
 class BookUpdatePage extends StatefulWidget {
   const BookUpdatePage({super.key, required this.book, required this.author});

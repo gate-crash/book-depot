@@ -60,9 +60,11 @@ class _BookcasesGetState extends State<BookcasesGet> {
                 child: TextField(
                   autofocus: true,
                   controller: _bookCaseNameInput,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: 'Enter bookcase name...',
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15)
+                    ),
                     contentPadding: EdgeInsets.symmetric(horizontal: 16),
                   ),
                 ),
