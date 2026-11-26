@@ -7,8 +7,8 @@ def test_search_index_tracks_book_and_author_changes(database):
     cursor = database.conn.cursor()
 
     cursor.execute(
-        "INSERT INTO authors (id, first_name, last_name) VALUES (?, ?, ?)",
-        ("author-1", "Ursula", "Le Guin"),
+        "INSERT INTO authors (id, name) VALUES (?, ?)",
+        ("author-1", "Ursula K. Le Guin"),
     )
     cursor.execute(
         "INSERT INTO books (id, title, shelf, author) VALUES (?, ?, ?, ?)",
@@ -24,7 +24,7 @@ def test_search_index_tracks_book_and_author_changes(database):
     assert repo.broad_book_search("dark") == []
     assert [book["id"] for book in repo.broad_book_search("disposs")] == ["book-1"]
 
-    cursor.execute("UPDATE authors SET first_name = ? WHERE id = ?", ("Octavia", "author-1"))
+    cursor.execute("UPDATE authors SET name = ? WHERE id = ?", ("Octavia Butler", "author-1"))
     database.conn.commit()
     assert repo.broad_book_search("ursula") == []
     assert [book["id"] for book in repo.broad_book_search("octavia")] == ["book-1"]

@@ -108,7 +108,7 @@ class DatabaseRepo:
                 self.conn.commit()
                 data = self.cursor.fetchall()
 
-                if len(data) == 1:
+                if len(data) >= 1:
                     return True
                 else:
                     return False

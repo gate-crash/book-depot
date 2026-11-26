@@ -1,4 +1,5 @@
 import 'package:bookdepot_client/ui/books/widgets/books_widget.dart';
+import 'package:bookdepot_client/ui/shelves/models/shelf.dart';
 import 'package:flutter/material.dart';
 import 'package:bookdepot_client/data/models/themes.dart';
 
